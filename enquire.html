@@ -63,6 +63,13 @@
                                 <input type="text" id="name" name="name" class="form-field" required placeholder="John Doe">
                             </div>
                             <div class="form-group">
+                                <label for="email">Email Address *</label>
+                                <input type="email" id="email" name="email" class="form-field" required placeholder="john@example.com">
+                            </div>
+                        </div>
+
+                        <div class="form-group-row">
+                            <div class="form-group" style="width: 100%;">
                                 <label for="phone">Phone Number *</label>
                                 <input type="tel" id="phone" name="phone" class="form-field" required placeholder="+64 123 4567">
                             </div>
@@ -150,25 +157,47 @@
             }
         });
 
-        // Form submission logic (simulated for now, would use EmailJS or similar)
+        // Form submission via Vercel Serverless Function
         const form = document.getElementById('enquiry-form');
         const status = document.getElementById('form-status');
 
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
             const formData = new FormData(form);
             const data = Object.fromEntries(formData.entries());
             
-            status.textContent = 'Sending...';
+            status.textContent = '⏳ Sending Enquiry...';
             status.style.color = 'var(--color-blue)';
+            form.querySelector('.submit-btn').disabled = true;
 
-            // Simulate sending mail to rohitbasaknote@gmail.com
-            setTimeout(() => {
-                status.textContent = 'Thank you! Your enquiry has been sent to Rohit Basak.';
+            const payload = {
+                name: data.name,
+                email: data.email,
+                phone: data.phone,
+                shootType: data['shoot-type'],
+                message: `Timing: ${data['shoot-time']}\nGuests: ${data.guests || 'N/A'}\n\nRequirements:\n${data.questions}`
+            };
+
+            try {
+                const response = await fetch('/api/send-enquire', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Failed to send');
+
+                status.textContent = '✅ Thank you! Your enquiry has been routed to Rohit Basak.';
                 status.style.color = '#27ae60';
                 form.reset();
                 guestMark.textContent = '';
-            }, 1500);
+            } catch (err) {
+                console.error('Submit Error:', err);
+                status.textContent = '⚠️ Error sending enquiry. Please email rohitbasaknote@gmail.com directly.';
+                status.style.color = '#e74c3c';
+            } finally {
+                form.querySelector('.submit-btn').disabled = false;
+            }
         });
     </script>
     <script>

@@ -326,55 +326,11 @@
 
     <script type="module" src="./main.js"></script>
 
-    <!-- EmailJS SDK -->
-    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+    <!-- HTML2PDF Library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Signature Pad Library -->
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
-
-    <!-- Signature Modal -->
-    <div id="signature-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h3>Draw Your Signature</h3>
-            <div class="canvas-container">
-                <canvas id="signature-canvas"></canvas>
-            </div>
-            <div class="modal-actions">
-                <button type="button" class="btn btn-secondary" id="sig-clear-btn">Clear</button>
-                <div class="modal-actions-right">
-                    <button type="button" class="btn btn-secondary" id="sig-cancel-btn">Cancel</button>
-                    <button type="button" class="btn btn-primary" id="sig-save-btn">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        /**
-         * ─────────────────────────────────────────────────────────────
-         * EMAILJS SETUP — One-time setup (5 minutes):
-         *
-         * 1. Go to https://www.emailjs.com/ → Create a free account
-         * 2. Add an Email Service (Gmail) → note your SERVICE_ID
-         * 3. Create an Email Template with these variables:
-         *      {{client_name}}, {{shoot_type}}, {{shoot_date}},
-         *      {{signed_date}}, {{consent_1}}, {{consent_2}},
-         *      {{consent_3}}, {{submitted_at}}
-         *    Set "To Email" to: rohitbasaknote@gmail.com
-         *    → note your TEMPLATE_ID
-         * 4. Go to Account → API Keys → note your PUBLIC_KEY
-         * 5. Replace the three placeholders below.
-         * ─────────────────────────────────────────────────────────────
-         */
-        const EMAILJS_PUBLIC_KEY  = 'l-kb-8iFln-T3WqDE';
-        const EMAILJS_SERVICE_ID  = 'service_pg8zyav';
-        const EMAILJS_TEMPLATE_ID = 'template_gu0s1xw';
-
-        const isEmailJSConfigured = !EMAILJS_PUBLIC_KEY.includes('YOUR_');
-
-        if (isEmailJSConfigured) {
-            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
-        }
 
         // ── Toast helper ─────────────────────────────────────────────
         function showToast(msg, type = 'success') {
@@ -457,29 +413,54 @@ Signed Date  : ${signedDate}
 
             // Update button state
             btn.disabled = true;
-            btn.textContent = '⏳ Sending…';
+            btn.textContent = '⏳ Generating PDF & Sending…';
 
-            if (isEmailJSConfigured) {
-                // Send via EmailJS
-                try {
-                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data);
-                    showToast('✅ Email sent to Rohit Basak! Printing now…', 'success');
-                } catch (err) {
-                    console.error('EmailJS error:', err);
-                    // Fallback: open mailto with all data
-                    sendMailtoFallback(data);
-                    showToast('⚠️ Auto-send failed — your email client has been opened.', 'warn');
+            try {
+                // 1. Generate PDF blob
+                const element = document.querySelector('.doc-container');
+                
+                // Temporarily hide the placeholder when capturing
+                const placeholder = document.querySelector('.sig-placeholder');
+                const origDisplay = placeholder.style.display;
+                placeholder.style.display = 'none';
+
+                const opt = {
+                    margin:       10,
+                    filename:     'Declaration.pdf',
+                    image:        { type: 'jpeg', quality: 0.98 },
+                    html2canvas:  { scale: 2, useCORS: true },
+                    jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                };
+                
+                const pdfBase64 = await html2pdf().from(element).set(opt).outputPdf('datauristring');
+                
+                // Restore placeholder if needed
+                placeholder.style.display = origDisplay;
+
+                data.pdfBase64 = pdfBase64;
+
+                // 2. Send to Vercel API
+                const response = await fetch('/api/send-declaration', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
-            } else {
-                // EmailJS not configured yet — use mailto fallback
+
+                showToast('✅ Email with completely signed PDF sent to Rohit Basak!', 'success');
+            } catch (err) {
+                console.error('API Error:', err);
                 sendMailtoFallback(data);
-                showToast('📧 Email client opened. Please send the pre-filled email to Rohit.', 'warn');
+                showToast('⚠️ Auto-send failed — your email client has been opened.', 'warn');
             }
 
             // Brief pause so toast is visible, then print
             setTimeout(() => {
                 btn.disabled = false;
-                btn.innerHTML = '📄 Print &amp; Send to Photographer';
+                btn.innerHTML = '📄 Print &amp; Save as PDF manually';
                 window.print();
             }, 1500);
         });

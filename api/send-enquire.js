@@ -1,0 +1,44 @@
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
+
+export default async function handler(req, res) {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
+    try {
+        const { name, email, phone, shootType, message } = req.body;
+
+        const { data, error } = await resend.emails.send({
+            from: 'Frame 2 Remember <onboarding@resend.dev>',
+            to: 'rohitbasaknote@gmail.com',
+            reply_to: email, // Instantly reply to the client's email right from your mail app
+            subject: `New Enquiry: ${name} (${shootType})`,
+            html: `
+                <div style="font-family: sans-serif; padding: 20px; color: #333; max-width: 600px;">
+                    <h2>New Shoot Enquiry</h2>
+                    <p><strong>Name:</strong> ${name || 'N/A'}</p>
+                    <p><strong>Email:</strong> ${email || 'N/A'}</p>
+                    <p><strong>Phone:</strong> ${phone || 'Not provided'}</p>
+                    <p><strong>Shoot Type:</strong> ${shootType || 'N/A'}</p>
+                    <br/>
+                    <h3>Message:</h3>
+                    <div style="padding: 15px; border-radius: 8px; background: #f9f9f9; border: 1px solid #ddd;">
+                        <p style="white-space: pre-wrap; font-family: inherit; margin: 0;">${message || 'No additional message.'}</p>
+                    </div>
+                </div>
+            `
+        });
+
+        if (error) {
+            console.error('Resend payload error:', error);
+            return res.status(400).json({ error });
+        }
+
+        return res.status(200).json({ success: true, data });
+    } catch (error) {
+        console.error('Server error handling enquiry email:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+}
