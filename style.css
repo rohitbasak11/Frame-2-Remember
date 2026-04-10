@@ -616,6 +616,36 @@ footer {
     .navbar.scrolled #nav-logo-placeholder { width: 120px; }
 }
 
+/* Enhanced touch targets for checkboxes */
+.checkbox-item-block {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    margin-bottom: 12px;
+    cursor: pointer;
+    padding: 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    background: rgba(0,0,0,0.02);
+    border: 1px solid rgba(0,0,0,0.03);
+    user-select: none;
+}
+.checkbox-item-block:hover {
+    background: rgba(0,0,0,0.04);
+    border-color: rgba(0,0,0,0.1);
+}
+.checkbox-item-block input[type="checkbox"] {
+    margin-top: 4px;
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+}
+.checkbox-item-block span {
+    font-size: 1rem;
+    color: var(--color-text);
+    line-height: 1.4;
+}
+
 @media (max-width: 768px) {
     .container { padding: 80px 24px; }
     .gallery-grid { grid-template-columns: 1fr; }

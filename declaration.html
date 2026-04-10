@@ -245,7 +245,7 @@
                     </div>
                     <div class="form-row">
                         <label class="form-label">Full Name:</label>
-                        <input type="text" id="dec-name" class="doc-field" placeholder="Your full name">
+                        <input type="text" id="dec-name" class="doc-field" placeholder="Your full name" autocomplete="name">
                     </div>
                     <div class="form-row">
                         <label class="form-label">Type of Shoot:</label>
@@ -267,18 +267,18 @@
                         the right to use, reproduce, and publish photographs taken during this session for promotional,
                         portfolio, and commercial purposes.
                     </div>
-                    <div class="checkbox-item">
+                    <label class="checkbox-item-block" for="c1">
                         <input type="checkbox" id="c1">
-                        <label for="c1">I acknowledge all images remain copyright of Rohit Basak.</label>
-                    </div>
-                    <div class="checkbox-item">
+                        <span>I acknowledge all images remain copyright of Rohit Basak.</span>
+                    </label>
+                    <label class="checkbox-item-block" for="c2">
                         <input type="checkbox" id="c2">
-                        <label for="c2">I confirm I am over 18 or a legal guardian of the subject.</label>
-                    </div>
-                    <div class="checkbox-item">
+                        <span>I confirm I am over 18 or a legal guardian of the subject.</span>
+                    </label>
+                    <label class="checkbox-item-block" for="c3">
                         <input type="checkbox" id="c3">
-                        <label for="c3">I have read and understood this agreement.</label>
-                    </div>
+                        <span>I have read and understood this agreement.</span>
+                    </label>
                 </section>
 
                 <div class="signature-grid">
@@ -291,7 +291,7 @@
                         </div>
                         <div class="form-row">
                             <label class="form-label">Date:</label>
-                            <input type="text" id="dec-signed-date" class="doc-field" placeholder="DD/MM/YYYY">
+                            <input type="text" id="dec-signed-date" class="doc-field" placeholder="DD/MM/YYYY" readonly>
                         </div>
                     </div>
                     <div class="sig-box">
@@ -497,6 +497,10 @@ Signed Date  : ${signedDate}
             const placeholder = sigContainer.querySelector('.sig-placeholder');
             const sigImage = document.getElementById('client-sig-image');
             
+            // Auto-fill today's date in Signed Date field
+            const today = new Date().toLocaleDateString('en-NZ');
+            document.getElementById('dec-signed-date').value = today;
+
             // Initialize SignaturePad
             const signaturePad = new SignaturePad(canvas, {
                 penColor: "rgb(0, 0, 0)",
