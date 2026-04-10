@@ -331,7 +331,24 @@
 
     <!-- Signature Pad Library -->
     <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+    <!-- Signature Modal -->
+    <div id="signature-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Draw Your Signature</h3>
+            <div class="canvas-container">
+                <canvas id="signature-canvas"></canvas>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="sig-clear-btn">Clear</button>
+                <div class="modal-actions-right">
+                    <button type="button" class="btn btn-secondary" id="sig-cancel-btn">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="sig-save-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
+    <script>
         // ── Toast helper ─────────────────────────────────────────────
         function showToast(msg, type = 'success') {
             const toast = document.getElementById('send-toast');
