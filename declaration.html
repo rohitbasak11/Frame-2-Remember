@@ -284,7 +284,11 @@
                 <div class="signature-grid">
                     <div class="sig-box">
                         <h3>Client Signature</h3>
-                        <div class="sig-line"></div>
+                        <!-- Clickable container that holds either instructions or the final signature image -->
+                        <div class="sig-line interactive-sig" id="client-sig-container">
+                            <span class="sig-placeholder">✍️ Click to sign</span>
+                            <img id="client-sig-image" src="" style="display: none; max-height: 100%; max-width: 100%; object-fit: contain;">
+                        </div>
                         <div class="form-row">
                             <label class="form-label">Date:</label>
                             <input type="text" id="dec-signed-date" class="doc-field" placeholder="DD/MM/YYYY">
@@ -324,6 +328,26 @@
 
     <!-- EmailJS SDK -->
     <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <!-- Signature Pad Library -->
+    <script src="https://cdn.jsdelivr.net/npm/signature_pad@4.1.7/dist/signature_pad.umd.min.js"></script>
+
+    <!-- Signature Modal -->
+    <div id="signature-modal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Draw Your Signature</h3>
+            <div class="canvas-container">
+                <canvas id="signature-canvas"></canvas>
+            </div>
+            <div class="modal-actions">
+                <button type="button" class="btn btn-secondary" id="sig-clear-btn">Clear</button>
+                <div class="modal-actions-right">
+                    <button type="button" class="btn btn-secondary" id="sig-cancel-btn">Cancel</button>
+                    <button type="button" class="btn btn-primary" id="sig-save-btn">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         /**
@@ -466,49 +490,170 @@ Signed Date  : ${signedDate}
             const body = encodeURIComponent(data.message);
             window.location.href = `mailto:rohitbasaknote@gmail.com?subject=${subject}&body=${body}`;
         }
+
+        // ── Signature Pad Logic ───────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('signature-modal');
+            const canvas = document.getElementById('signature-canvas');
+            const sigContainer = document.getElementById('client-sig-container');
+            const placeholder = sigContainer.querySelector('.sig-placeholder');
+            const sigImage = document.getElementById('client-sig-image');
+            
+            // Initialize SignaturePad
+            const signaturePad = new SignaturePad(canvas, {
+                penColor: "rgb(0, 0, 0)",
+                backgroundColor: "rgb(255, 255, 255)"
+            });
+
+            // Adjust canvas to its container size
+            function resizeCanvas() {
+                const ratio =  Math.max(window.devicePixelRatio || 1, 1);
+                canvas.width = canvas.offsetWidth * ratio;
+                canvas.height = canvas.offsetHeight * ratio;
+                canvas.getContext("2d").scale(ratio, ratio);
+                signaturePad.clear(); // Clear when resizing to prevent distortion
+            }
+
+            // Open modal
+            sigContainer.addEventListener('click', () => {
+                modal.classList.add('active');
+                resizeCanvas();
+            });
+
+            // Cancel
+            document.getElementById('sig-cancel-btn').addEventListener('click', () => {
+                modal.classList.remove('active');
+            });
+
+            // Clear
+            document.getElementById('sig-clear-btn').addEventListener('click', () => {
+                signaturePad.clear();
+            });
+
+            // Save
+            document.getElementById('sig-save-btn').addEventListener('click', () => {
+                if (signaturePad.isEmpty()) {
+                    alert("Please provide a signature first.");
+                    return;
+                }
+                const dataURL = signaturePad.toDataURL("image/png");
+                sigImage.src = dataURL;
+                sigImage.style.display = 'block';
+                placeholder.style.display = 'none';
+                modal.classList.remove('active');
+            });
+
+            // Only close modal on esc key
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape' && modal.classList.contains('active')) {
+                    modal.classList.remove('active');
+                }
+            });
+        });
     </script>
 
     <style>
+        /* Signature Component Styles */
+        .interactive-sig {
+            cursor: pointer;
+            position: relative;
+            background: rgba(0, 0, 0, 0.02);
+            border: 1px dashed rgba(0, 0, 0, 0.2);
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 60px; /* fixed height for the line area */
+        }
+        .interactive-sig:hover {
+            background: rgba(0, 0, 0, 0.05);
+            border-color: var(--color-blue);
+        }
+        .sig-placeholder {
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        /* Signature Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.6);
+            backdrop-filter: blur(12px) saturate(140%);
+            -webkit-backdrop-filter: blur(12px) saturate(140%);
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            width: 90%;
+            max-width: 600px;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .modal-content h3 {
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: var(--color-text);
+        }
+        .canvas-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            width: 100%;
+            height: 250px;
+            background: white;
+            margin-bottom: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        #signature-canvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none; /* Prevents scrolling while signing on mobile */
+        }
+        .modal-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .modal-actions-right {
+            display: flex;
+            gap: 12px;
+        }
+
         /* Print styles */
         @media print {
-
-            .navbar,
-            .print-btn,
-            #print-send-btn,
-            #send-toast,
-            #gradient-bg,
-            #gradient-pointer,
-            #cursor,
-            #cursor-follower,
-            #camera-flash,
-            #transition-overlay,
-            #logo-main-container,
-            .mobile-menu,
-            footer {
-                display: none !important;
-            }
-
-            body {
-                background: white !important;
-            }
-
-            #smooth-wrapper {
-                filter: none !important;
-                opacity: 1 !important;
-            }
-
-            #smooth-content {
-                opacity: 1 !important;
-            }
-
+            .navbar, .print-btn, #print-send-btn, #send-toast,
+            #gradient-bg, #gradient-pointer, #cursor, #cursor-follower,
+            #camera-flash, #transition-overlay, #logo-main-container,
+            .mobile-menu, footer, .modal-overlay { display: none !important; }
+            body { background: white !important; }
+            #smooth-wrapper { filter: none !important; opacity: 1 !important; }
+            #smooth-content { opacity: 1 !important; transform: none !important; }
+            
+            /* Clean up the box for print */
             .doc-container {
                 box-shadow: none !important;
                 margin: 0 !important;
                 padding: 20px !important;
-                border-radius: 0 !important;
+                border: none !important;
             }
+            .interactive-sig { border: none !important; border-bottom: 1px solid #000 !important; background: transparent !important; }
+            .sig-placeholder { display: none !important; }
         }
     </style>
 </body>
-
 </html>
