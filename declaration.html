@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declaration | Frame 2 Remember - Consent Agreement</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <style>
+        .doc-container {
+            max-width: 850px;
+            margin: 120px auto 60px;
+            background: white;
+            box-shadow: 0 40px 100px rgba(0, 0, 0, 0.08);
+            padding: 60px;
+            border-radius: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header-accent {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: linear-gradient(90deg, #FF6B5B 0%, #00C8E6 50%, #E85D9A 100%);
+        }
+
+        .doc-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            text-align: center;
+            margin-bottom: 50px;
+            line-height: 1.3;
+        }
+
+        .section {
+            margin-bottom: 40px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--color-blue);
+        }
+
+        .section-number {
+            background: linear-gradient(135deg, var(--color-salmon), var(--color-pink));
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            margin-right: 15px;
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .form-row {
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .form-label {
+            min-width: 150px;
+            font-weight: 500;
+            color: var(--color-text-muted);
+        }
+
+        .doc-field {
+            flex: 1;
+            border: none;
+            border-bottom: 1px solid #dfe6e9;
+            padding: 8px 0;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            background: transparent;
+            transition: border-color 0.3s;
+        }
+
+        .doc-field:focus {
+            outline: none;
+            border-bottom: 2px solid var(--color-blue);
+        }
+
+        .consent-text {
+            background: var(--color-gray);
+            padding: 25px;
+            border-left: 5px solid var(--color-pink);
+            margin: 20px 0;
+            font-size: 0.95rem;
+            border-radius: 0 15px 15px 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+            cursor: pointer;
+        }
+
+        .checkbox-item input {
+            margin-top: 5px;
+            margin-right: 15px;
+            width: 18px;
+            height: 18px;
+            accent-color: var(--color-blue);
+        }
+
+        .signature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 60px;
+        }
+
+        .sig-box {
+            border: 2px solid var(--color-gray);
+            padding: 30px;
+            border-radius: 20px;
+        }
+
+        .sig-line {
+            border-bottom: 2px solid var(--color-text);
+            height: 60px;
+            margin: 20px 0 10px;
+        }
+
+        .print-btn {
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            z-index: 1001;
+        }
+
+        @media print {
+
+            .navbar,
+            .print-btn,
+            footer {
+                display: none;
+            }
+
+            body {
+                background: white;
+                padding: 0;
+            }
+
+            .doc-container {
+                box-shadow: none;
+                margin: 0;
+                padding: 20px;
+                border-radius: 0;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .doc-container {
+                padding: 30px;
+            }
+
+            .signature-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .form-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gradient-bg"></div>
+    <div id="gradient-pointer"></div>
+    <div id="camera-flash"></div>
+    <div id="transition-overlay"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <ul class="nav-links nav-left">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+
+            <div id="nav-logo-placeholder"></div>
+
+            <ul class="nav-links nav-right">
+                <li><a href="/enquire.html">Enquire</a></li>
+                <li><a href="/declaration.html" class="active">Declaration</a></li>
+            </ul>
+
+            <div class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/enquire.html">Enquire</a>
+        <a href="/declaration.html">Declaration</a>
+    </div>
+
+    <div id="logo-main-container">
+        <img src="/Logo-1.png" alt="Frame 2 Remember Logo" id="main-logo">
+    </div>
+
+    <button class="btn btn-primary print-btn" id="print-send-btn">📄 Print &amp; Send to Photographer</button>
+    <div id="send-toast" style="display:none;"></div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            <div class="doc-container reveal">
+                <div class="header-accent"></div>
+                <h1 class="doc-title">Client Declaration & <br>Image Usage Consent Agreement</h1>
+
+                <section class="section">
+                    <div class="section-header">
+                        <span class="section-number">1</span>
+                        <h2 class="section-title">Client & Shoot Details</h2>
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Full Name:</label>
+                        <input type="text" id="dec-name" class="doc-field" placeholder="Your full name">
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Type of Shoot:</label>
+                        <input type="text" id="dec-shoot-type" class="doc-field" placeholder="e.g. Wedding, Portrait">
+                    </div>
+                    <div class="form-row">
+                        <label class="form-label">Shoot Date:</label>
+                        <input type="date" id="dec-shoot-date" class="doc-field">
+                    </div>
+                </section>
+
+                <section class="section">
+                    <div class="section-header">
+                        <span class="section-number">2</span>
+                        <h2 class="section-title">Declaration & Consent</h2>
+                    </div>
+                    <div class="consent-text">
+                        I hereby grant <strong>Frame 2 Remember</strong> and photographer <strong>Rohit Basak</strong>
+                        the right to use, reproduce, and publish photographs taken during this session for promotional,
+                        portfolio, and commercial purposes.
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="c1">
+                        <label for="c1">I acknowledge all images remain copyright of Rohit Basak.</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="c2">
+                        <label for="c2">I confirm I am over 18 or a legal guardian of the subject.</label>
+                    </div>
+                    <div class="checkbox-item">
+                        <input type="checkbox" id="c3">
+                        <label for="c3">I have read and understood this agreement.</label>
+                    </div>
+                </section>
+
+                <div class="signature-grid">
+                    <div class="sig-box">
+                        <h3>Client Signature</h3>
+                        <div class="sig-line"></div>
+                        <div class="form-row">
+                            <label class="form-label">Date:</label>
+                            <input type="text" id="dec-signed-date" class="doc-field" placeholder="DD/MM/YYYY">
+                        </div>
+                    </div>
+                    <div class="sig-box">
+                        <h3>Photographer</h3>
+                        <div class="sig-line"
+                            style="display: flex; align-items: flex-end; font-family: var(--font-heading); font-size: 1.2rem; padding-bottom: 5px;">
+                            Rohit Basak</div>
+                        <div class="form-row">
+                            <p style="color: var(--color-blue); font-weight: 600;">Frame 2 Remember</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <footer>
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-brand">
+                            <img src="/Logo-1.png" alt="Frame 2 Remember" class="footer-logo">
+                            <p>Photography by Rohit Basak. Based in New Zealand.</p>
+                        </div>
+                        <div class="footer-contact">
+                            <h4>Contact</h4>
+                            <p>rohitbasaknote@gmail.com</p>
+                            <p>Established 2018</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+
+    <!-- EmailJS SDK -->
+    <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+
+    <script>
+        /**
+         * ─────────────────────────────────────────────────────────────
+         * EMAILJS SETUP — One-time setup (5 minutes):
+         *
+         * 1. Go to https://www.emailjs.com/ → Create a free account
+         * 2. Add an Email Service (Gmail) → note your SERVICE_ID
+         * 3. Create an Email Template with these variables:
+         *      {{client_name}}, {{shoot_type}}, {{shoot_date}},
+         *      {{signed_date}}, {{consent_1}}, {{consent_2}},
+         *      {{consent_3}}, {{submitted_at}}
+         *    Set "To Email" to: rohitbasaknote@gmail.com
+         *    → note your TEMPLATE_ID
+         * 4. Go to Account → API Keys → note your PUBLIC_KEY
+         * 5. Replace the three placeholders below.
+         * ─────────────────────────────────────────────────────────────
+         */
+        const EMAILJS_PUBLIC_KEY  = 'l-kb-8iFln-T3WqDE';
+        const EMAILJS_SERVICE_ID  = 'service_pg8zyav';
+        const EMAILJS_TEMPLATE_ID = 'template_gu0s1xw';
+
+        const isEmailJSConfigured = !EMAILJS_PUBLIC_KEY.includes('YOUR_');
+
+        if (isEmailJSConfigured) {
+            emailjs.init({ publicKey: EMAILJS_PUBLIC_KEY });
+        }
+
+        // ── Toast helper ─────────────────────────────────────────────
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('send-toast');
+            toast.textContent = msg;
+            toast.style.cssText = `
+            display: block;
+            position: fixed;
+            bottom: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: ${type === 'success' ? '#27ae60' : type === 'warn' ? '#f39c12' : '#e74c3c'};
+            color: white;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 500;
+            z-index: 99999;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            opacity: 1;
+            transition: opacity 0.5s;
+            max-width: 90vw;
+            text-align: center;
+        `;
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => { toast.style.display = 'none'; }, 500);
+            }, 4000);
+        }
+
+        // ── Collect form data ─────────────────────────────────────────
+        function collectFormData() {
+            const clientName  = document.getElementById('dec-name')?.value?.trim()       || '(not filled)';
+            const shootType   = document.getElementById('dec-shoot-type')?.value?.trim() || '(not filled)';
+            const shootDate   = document.getElementById('dec-shoot-date')?.value          || '(not filled)';
+            const signedDate  = document.getElementById('dec-signed-date')?.value?.trim() || '(not filled)';
+            const consent1    = document.getElementById('c1')?.checked ? '✅ Agreed' : '❌ Not checked';
+            const consent2    = document.getElementById('c2')?.checked ? '✅ Agreed' : '❌ Not checked';
+            const consent3    = document.getElementById('c3')?.checked ? '✅ Agreed' : '❌ Not checked';
+            const timestamp   = new Date().toLocaleString('en-NZ', { timeZone: 'Pacific/Auckland' });
+
+            return {
+                name: clientName,
+                time: timestamp,
+                message:
+`📋 CLIENT DECLARATION — Frame 2 Remember
+
+Client Name  : ${clientName}
+Shoot Type   : ${shootType}
+Shoot Date   : ${shootDate}
+Signed Date  : ${signedDate}
+
+── Consent Checkboxes ──────────────────
+1. Images copyright of Rohit Basak : ${consent1}
+2. Over 18 / legal guardian        : ${consent2}
+3. Read and understood agreement   : ${consent3}`,
+            };
+        }
+
+        // ── Main button handler ───────────────────────────────────────
+        document.getElementById('print-send-btn').addEventListener('click', async function () {
+            const btn = this;
+            const data = collectFormData();
+
+            // Soft validation — warn but don't block
+            const hasName = data.name !== '(not filled)';
+            const allConsents = data.message.includes('✅') && 
+                                !data.message.includes('❌ Not checked'); // Simplified check based on new structure
+
+            if (!hasName || !allConsents) {
+                const missing = [];
+                if (!hasName) missing.push('Client Name');
+                if (!allConsents) missing.push('all three consent checkboxes');
+                const proceed = confirm(
+                    `Please note: ${missing.join(' and ')} are incomplete.\n\nDo you still want to proceed with printing?`
+                );
+                if (!proceed) return;
+            }
+
+            // Update button state
+            btn.disabled = true;
+            btn.textContent = '⏳ Sending…';
+
+            if (isEmailJSConfigured) {
+                // Send via EmailJS
+                try {
+                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, data);
+                    showToast('✅ Email sent to Rohit Basak! Printing now…', 'success');
+                } catch (err) {
+                    console.error('EmailJS error:', err);
+                    // Fallback: open mailto with all data
+                    sendMailtoFallback(data);
+                    showToast('⚠️ Auto-send failed — your email client has been opened.', 'warn');
+                }
+            } else {
+                // EmailJS not configured yet — use mailto fallback
+                sendMailtoFallback(data);
+                showToast('📧 Email client opened. Please send the pre-filled email to Rohit.', 'warn');
+            }
+
+            // Brief pause so toast is visible, then print
+            setTimeout(() => {
+                btn.disabled = false;
+                btn.innerHTML = '📄 Print &amp; Send to Photographer';
+                window.print();
+            }, 1500);
+        });
+
+        // ── mailto fallback ───────────────────────────────────────────
+        function sendMailtoFallback(data) {
+            const subject = encodeURIComponent(`F2R Declaration — ${data.name}`);
+            const body = encodeURIComponent(data.message);
+            window.location.href = `mailto:rohitbasaknote@gmail.com?subject=${subject}&body=${body}`;
+        }
+    </script>
+
+    <style>
+        /* Print styles */
+        @media print {
+
+            .navbar,
+            .print-btn,
+            #print-send-btn,
+            #send-toast,
+            #gradient-bg,
+            #gradient-pointer,
+            #cursor,
+            #cursor-follower,
+            #camera-flash,
+            #transition-overlay,
+            #logo-main-container,
+            .mobile-menu,
+            footer {
+                display: none !important;
+            }
+
+            body {
+                background: white !important;
+            }
+
+            #smooth-wrapper {
+                filter: none !important;
+                opacity: 1 !important;
+            }
+
+            #smooth-content {
+                opacity: 1 !important;
+            }
+
+            .doc-container {
+                box-shadow: none !important;
+                margin: 0 !important;
+                padding: 20px !important;
+                border-radius: 0 !important;
+            }
+        }
+    </style>
+</body>
+
+</html>

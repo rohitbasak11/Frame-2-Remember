@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enquire | Frame 2 Remember - Book Your Session</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="gradient-bg"></div>
+    <div id="gradient-pointer"></div>
+    <div id="camera-flash"></div>
+    <div id="transition-overlay"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <ul class="nav-links nav-left">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+
+            <div id="nav-logo-placeholder"></div>
+
+            <ul class="nav-links nav-right">
+                <li><a href="/enquire.html" class="active">Enquire</a></li>
+                <li><a href="/declaration.html">Declaration</a></li>
+            </ul>
+
+            <div class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/enquire.html">Enquire</a>
+        <a href="/declaration.html">Declaration</a>
+    </div>
+
+    <div id="logo-main-container">
+        <img src="/Logo-1.png" alt="Frame 2 Remember Logo" id="main-logo">
+    </div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            <section class="enquiry-section container">
+                <div class="form-container">
+                    <h1 class="reveal-text">Let's <span class="accent-blue">Capture</span> Something <span class="accent-pink">Beautiful</span></h1>
+                    <p class="reveal">Fill out the form below and I'll get back to you within 24 hours.</p>
+
+                    <form id="enquiry-form" class="reveal">
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="name">Full Name *</label>
+                                <input type="text" id="name" name="name" class="form-field" required placeholder="John Doe">
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Phone Number *</label>
+                                <input type="tel" id="phone" name="phone" class="form-field" required placeholder="+64 123 4567">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="shoot-type">Type of Shoot *</label>
+                            <select id="shoot-type" name="shoot-type" class="form-field" required>
+                                <option value="" disabled selected>Select an option</option>
+                                <option value="Individual Portrait">Individual Portrait</option>
+                                <option value="Couple Session">Couple Session</option>
+                                <option value="Wedding">Wedding (Event)</option>
+                                <option value="Engagement">Engagement (Event)</option>
+                                <option value="Corporate Event">Corporate Event (Event)</option>
+                                <option value="Family Portraits">Family Portraits</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="shoot-time">Timing of the Shoot *</label>
+                                <input type="datetime-local" id="shoot-time" name="shoot-time" class="form-field" required>
+                            </div>
+                            <div class="form-group" id="guest-group">
+                                <label for="guests">Expected Number of Guests <span id="guest-req-mark"></span></label>
+                                <input type="number" id="guests" name="guests" class="form-field" placeholder="e.g. 50">
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="questions">What are your questions / requirements?</label>
+                            <textarea id="questions" name="questions" class="form-field" rows="5" placeholder="Tell me more about your vision..."></textarea>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary submit-btn">Send Enquiry</button>
+                    </form>
+                    <div id="form-status"></div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-brand">
+                            <img src="/Logo-1.png" alt="Frame 2 Remember" class="footer-logo">
+                            <p>Photography by Rohit Basak. Based in New Zealand.</p>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/about.html">About</a></li>
+                                <li><a href="/enquire.html">Enquire</a></li>
+                                <li><a href="/declaration.html">Declaration</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-contact">
+                            <h4>Contact</h4>
+                            <p>rohitbasaknote@gmail.com</p>
+                            <p>Established 2018</p>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+    <script>
+        const shootType = document.getElementById('shoot-type');
+        const guestInput = document.getElementById('guests');
+        const guestMark = document.getElementById('guest-req-mark');
+
+        shootType.addEventListener('change', () => {
+            const isEvent = shootType.value.includes('(Event)');
+            if (isEvent) {
+                guestInput.required = true;
+                guestMark.textContent = '*';
+                guestMark.style.color = '#E85D9A';
+            } else {
+                guestInput.required = false;
+                guestMark.textContent = '(Optional)';
+                guestMark.style.color = '#636e72';
+            }
+        });
+
+        // Form submission logic (simulated for now, would use EmailJS or similar)
+        const form = document.getElementById('enquiry-form');
+        const status = document.getElementById('form-status');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+            
+            status.textContent = 'Sending...';
+            status.style.color = 'var(--color-blue)';
+
+            // Simulate sending mail to rohitbasaknote@gmail.com
+            setTimeout(() => {
+                status.textContent = 'Thank you! Your enquiry has been sent to Rohit Basak.';
+                status.style.color = '#27ae60';
+                form.reset();
+                guestMark.textContent = '';
+            }, 1500);
+        });
+    </script>
+    <style>
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding-top: 100px;
+            text-align: center;
+        }
+        .form-container h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            text-align: left;
+            margin-top: 50px;
+            background: white;
+            padding: 40px;
+            border-radius: 30px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.05);
+        }
+        .form-group-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .form-group {
+            margin-bottom: 25px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: 500;
+            color: var(--color-text);
+        }
+        .form-field {
+            width: 100%;
+            padding: 15px 20px;
+            border: 1px solid #dfe6e9;
+            border-radius: 12px;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .form-field:focus {
+            outline: none;
+            border-color: var(--color-blue);
+            box-shadow: 0 0 0 4px rgba(0, 200, 230, 0.1);
+        }
+        .submit-btn {
+            width: 100%;
+            margin-top: 20px;
+        }
+        #form-status {
+            margin-top: 20px;
+            font-weight: 500;
+        }
+        @media (max-width: 600px) {
+            .form-group-row { grid-template-columns: 1fr; }
+            form { padding: 25px; }
+        }
+    </style>
+</body>
+</html>

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Frame 2 Remember | Premium Photography in New Zealand</title>
+    <meta name="description" content="Timeless photography by Rohit Basak. Specializing in weddings, portraits, and events since 2018 in New Zealand.">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Gradient Background & Pointer Orb -->
+    <div id="gradient-bg"></div>
+    <div id="gradient-pointer"></div>
+
+    <!-- Flash & Page Transition -->
+    <div id="camera-flash"></div>
+    <div id="transition-overlay"></div>
+
+    <!-- Custom Cursor -->
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar at-top">
+        <div class="nav-container">
+            <ul class="nav-links nav-left">
+                <li><a href="/" class="active">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+
+            <div id="nav-logo-placeholder"></div>
+
+            <ul class="nav-links nav-right">
+                <li><a href="/enquire.html">Enquire</a></li>
+                <li><a href="/declaration.html">Declaration</a></li>
+            </ul>
+
+            <div class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div class="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/enquire.html">Enquire</a>
+        <a href="/declaration.html">Declaration</a>
+    </div>
+
+    <!-- Floating Logo (animated by GSAP) -->
+    <div id="logo-main-container">
+        <img src="/Logo-1.png" alt="Frame 2 Remember Logo" id="main-logo">
+    </div>
+
+    <!-- Page Content -->
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            <!-- HERO SECTION -->
+            <section class="hero">
+                <div class="hero-content">
+                    <h1>Capturing <span class="accent-blue">Moments</span>,<br>Creating <span class="accent-pink">Memories</span>.</h1>
+                    <p class="hero-subtitle">Premium Photography from the heart of New Zealand.</p>
+                    <div class="hero-cta">
+                        <a href="/enquire.html" class="btn btn-primary main-f2r-btn">Book a Session</a>
+                        <div style="display:flex; gap:16px; flex-wrap:wrap; justify-content:center;">
+                            <a href="#portfolio" class="btn btn-secondary">View Portfolio</a>
+                            <a href="/about.html" class="btn btn-secondary">About Rohit</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hero-scroll-indicator">
+                    <div class="mouse"></div>
+                    <span>Scroll to explore</span>
+                </div>
+            </section>
+
+            <section id="portfolio" class="featured-work">
+                <div class="container">
+                    <h2 class="section-title reveal">Excellence in Every Frame</h2>
+                    <div class="gallery-grid">
+                        <div class="gallery-item reveal">
+                            <div class="item-overlay">
+                                <h3>Weddings</h3>
+                                <p>Timeless celebrations of love.</p>
+                            </div>
+                            <img src="/gracewed10.jpg" alt="Wedding Photography" class="gallery-img">
+                        </div>
+                        <div class="gallery-item reveal">
+                            <div class="item-overlay">
+                                <h3>Portraits</h3>
+                                <p>Authentic expressions, captured forever.</p>
+                            </div>
+                            <img src="/gracewed9.jpg" alt="Portrait Photography" class="gallery-img">
+                        </div>
+                        <div class="gallery-item reveal">
+                            <div class="item-overlay">
+                                <h3>Events</h3>
+                                <p>Dynamic coverage of your important days.</p>
+                            </div>
+                            <img src="/gracewed2.jpg" alt="Event Photography" class="gallery-img">
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-brand">
+                            <img src="/Logo-1.png" alt="Frame 2 Remember" class="footer-logo">
+                            <p>Photography by Rohit Basak. Based in New Zealand.</p>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/about.html">About</a></li>
+                                <li><a href="/enquire.html">Enquire</a></li>
+                                <li><a href="/declaration.html">Declaration</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-contact">
+                            <h4>Contact</h4>
+                            <p>rohitbasaknote@gmail.com</p>
+                            <p>Established 2018</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2018-2026 Frame 2 Remember. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+</body>
+</html>

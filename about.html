@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About | Frame 2 Remember - Rohit Basak</title>
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div id="gradient-bg"></div>
+    <div id="gradient-pointer"></div>
+    <div id="camera-flash"></div>
+    <div id="transition-overlay"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <ul class="nav-links nav-left">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html" class="active">About</a></li>
+            </ul>
+
+            <div id="nav-logo-placeholder"></div>
+
+            <ul class="nav-links nav-right">
+                <li><a href="/enquire.html">Enquire</a></li>
+                <li><a href="/declaration.html">Declaration</a></li>
+            </ul>
+
+            <div class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/enquire.html">Enquire</a>
+        <a href="/declaration.html">Declaration</a>
+    </div>
+
+    <div id="logo-main-container">
+        <img src="/Logo-1.png" alt="Frame 2 Remember Logo" id="main-logo">
+    </div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+            <section class="about-hero container">
+                <div class="about-grid">
+                    <div class="about-text">
+                        <h1 class="reveal-text">The Story Behind <br><span class="accent-pink">The Lens</span></h1>
+                        <div class="reveal">
+                            <p class="lead">Frame 2 Remember was born out of a passion for capturing the raw, unscripted beauty of life. Established in 2018, we have been dedicated to preserving memories across New Zealand.</p>
+                            <p>Founded by Rohit Basak, our mission has always been simple: to create timeless images that tell a story. Whether it's the intimate glance during a wedding or the dynamic energy of a corporate event, we approach every shoot with the same level of care and artistic vision.</p>
+                            <p>Based in the stunning landscapes of New Zealand, we draw inspiration from our surroundings—incorporating natural light and authentic moments to create photography that resonates for a lifetime.</p>
+                        </div>
+                    </div>
+                    <div class="about-image reveal">
+                        <img src="/rohitport.JPG" alt="Rohit Basak - Founder of Frame 2 Remember" style="width: 100%; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
+                    </div>
+                </div>
+            </section>
+
+            <section class="values container">
+                <h2 class="section-title reveal">Our Philosophy</h2>
+                <div class="values-grid">
+                    <div class="value-card reveal">
+                        <div class="value-icon">✦</div>
+                        <h3>Authenticity</h3>
+                        <p>We believe the best photos are the ones where you are truly yourself.</p>
+                    </div>
+                    <div class="value-card reveal">
+                        <div class="value-icon">✦</div>
+                        <h3>Excellence</h3>
+                        <p>Using state-of-the-art equipment and refined techniques for premium results.</p>
+                    </div>
+                    <div class="value-card reveal">
+                        <div class="value-icon">✦</div>
+                        <h3>Connection</h3>
+                        <p>Building a relationship with our clients is the key to capturing their spirit.</p>
+                    </div>
+                </div>
+            </section>
+
+            <footer>
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-brand">
+                            <img src="/Logo-1.png" alt="Frame 2 Remember" class="footer-logo">
+                            <p>Photography by Rohit Basak. Based in New Zealand.</p>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/about.html">About</a></li>
+                                <li><a href="/enquire.html">Enquire</a></li>
+                                <li><a href="/declaration.html">Declaration</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-contact">
+                            <h4>Contact</h4>
+                            <p>rohitbasaknote@gmail.com</p>
+                            <p>Established 2018</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2018-2026 Frame 2 Remember. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+    <style>
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 60px;
+            align-items: center;
+            padding-top: 100px;
+        }
+        .lead {
+            font-size: 1.4rem;
+            color: var(--color-text);
+            font-weight: 500;
+            margin-bottom: 25px;
+        }
+        .about-text p {
+            margin-bottom: 20px;
+            color: var(--color-text-muted);
+        }
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        .value-card {
+            padding: 40px;
+            background: var(--color-gray);
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+        .value-card:hover {
+            transform: translateY(-10px);
+            background: white;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        }
+        .value-icon {
+            font-size: 2rem;
+            color: var(--color-pink);
+            margin-bottom: 20px;
+        }
+        @media (max-width: 992px) {
+            .about-grid { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</body>
+</html>
