@@ -228,28 +228,37 @@ if (logoEl && logoContainer && isHome) {
 window.addEventListener('load', () => {
     gsap.timeline()
         .set('#transition-overlay', { autoAlpha: 0.9 })
-        .to('#transition-overlay', { autoAlpha: 0, duration: 1.8, ease: 'power2.inOut' })
+        .to('#transition-overlay', { autoAlpha: 0, duration: 1.5, ease: 'power2.inOut' })
         .to('#smooth-wrapper', {
             filter: 'blur(0px) grayscale(0%) sepia(0%)',
             opacity: 1,
-            duration: 2,
+            duration: 1.8,
             ease: 'power2.out',
-        }, '-=1.3');
+        }, '-=1.1');
 });
 
-/* =====================================================
-   SCROLL REVEAL — IntersectionObserver
-   ===================================================== */
-const observer = new IntersectionObserver(entries => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.classList.add('visible');
-            observer.unobserve(e.target);
-        }
+// Fallback: Ensure unblur happens even if load event is late
+setTimeout(() => {
+    gsap.to('#smooth-wrapper', {
+        filter: 'blur(0px) grayscale(0%) sepia(0%)',
+        opacity: 1,
+        duration: 1,
+        overwrite: 'auto'
     });
-}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    gsap.to('#transition-overlay', { autoAlpha: 0, duration: 0.5, overwrite: 'auto' });
+}, 2500);
 
-document.querySelectorAll('.reveal, .reveal-text').forEach(el => observer.observe(el));
+/* =====================================================
+   SCROLL REVEAL — GSAP ScrollTrigger (Reliable)
+   ===================================================== */
+document.querySelectorAll('.reveal, .reveal-text').forEach(el => {
+    ScrollTrigger.create({
+        trigger: el,
+        start: 'top 92%', // Trigger earlier for better feel
+        onEnter: () => el.classList.add('visible'),
+        once: true
+    });
+});
 
 /* =====================================================
    GALLERY — 3D TILT ON HOVER (desktop only)
