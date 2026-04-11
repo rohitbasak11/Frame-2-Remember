@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Frame 2 Remember — Premium Photography</title>
+    <meta name="description" content="Browse the full portfolio of Frame 2 Remember — a curated selection of wedding commissions, events, and personal fine-art photography by Rohit Basak.">
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Portfolio | Frame 2 Remember">
+    <meta property="og:description" content="Explore the full portfolio of Frame 2 Remember — weddings, events, and personal fine-art photography.">
+    <meta property="og:image" content="/gracewed10.jpg">
+    <meta property="og:url" content="https://frame2remember.com/portfolio">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/Logo-1.png">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <!-- GLightbox -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
+    <style>
+        /* ── Portfolio Page Specific ── */
+        .portfolio-hero {
+            padding: 160px 0 60px;
+            text-align: center;
+        }
+
+        .portfolio-hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .portfolio-hero p {
+            font-size: 1.15rem;
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Two-column layout */
+        .portfolio-columns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            padding: 80px 60px 120px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .portfolio-column {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        /* Column headers */
+        .column-header {
+            position: sticky;
+            top: 80px;
+            z-index: 10;
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            border-radius: 24px;
+            padding: 28px 36px;
+            margin-bottom: 36px;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .column-header .col-eyebrow {
+            font-size: 0.72rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+        }
+
+        .col-client .col-eyebrow { color: var(--color-pink); }
+        .col-personal .col-eyebrow { color: var(--color-blue); }
+
+        .column-header h2 {
+            font-family: var(--font-heading);
+            font-size: clamp(1.6rem, 3vw, 2.2rem);
+            margin-bottom: 6px;
+        }
+
+        .column-header p {
+            font-size: 0.92rem;
+            color: var(--color-text-muted);
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        /* Photo grid inside a column */
+        .photo-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Section label inside a column */
+        .photo-section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--color-text-muted);
+            margin: 16px 0 8px;
+            padding-left: 4px;
+        }
+
+        /* Each photo card */
+        .photo-card {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            background: var(--glass-bg);
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            cursor: pointer;
+            display: block;
+            transition: transform 0.45s var(--ease), box-shadow 0.45s var(--ease);
+        }
+
+        .photo-card:hover {
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.14);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.7s var(--ease);
+        }
+
+        .photo-card:hover img {
+            transform: scale(1.06);
+        }
+
+        /* Varying heights for masonry feel */
+        .photo-card.tall  { height: 520px; }
+        .photo-card.mid   { height: 360px; }
+        .photo-card.short { height: 280px; }
+        .photo-card.wide  { height: 440px; }
+
+        /* Hover overlay */
+        .photo-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease);
+            display: flex;
+            align-items: flex-end;
+            padding: 24px;
+        }
+
+        .photo-card:hover .photo-card-overlay {
+            opacity: 1;
+        }
+
+        .photo-card-overlay span {
+            color: white;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .photo-card-overlay span::before {
+            content: '↗';
+            font-size: 1.1rem;
+        }
+
+        /* Divider between columns on mobile */
+        @media (max-width: 900px) {
+            .portfolio-columns {
+                grid-template-columns: 1fr;
+                padding: 60px 24px 80px;
+                gap: 80px;
+            }
+
+            .column-header {
+                position: relative;
+                top: auto;
+            }
+
+            .photo-card.tall  { height: 380px; }
+            .photo-card.mid   { height: 280px; }
+            .photo-card.wide  { height: 340px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="gradient-bg"></div>
+    <div id="gradient-pointer"></div>
+    <div id="camera-flash"></div>
+    <div id="transition-overlay"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <ul class="nav-links nav-left">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+
+            <div id="nav-logo-placeholder"></div>
+
+            <ul class="nav-links nav-right">
+                <li><a href="/portfolio.html" class="active">Portfolio</a></li>
+                <li><a href="/enquire.html">Enquire</a></li>
+            </ul>
+
+            <div class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/portfolio.html">Portfolio</a>
+        <a href="/enquire.html">Enquire</a>
+        <a href="/declaration.html">Declaration</a>
+    </div>
+
+    <!-- Logo -->
+    <div id="logo-main-container">
+        <img src="/Logo-1.png" alt="Frame 2 Remember Logo" id="main-logo">
+    </div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- Page Header -->
+            <section class="portfolio-hero container">
+                <h1 class="reveal-text">The <span class="accent-pink">Work</span></h1>
+                <p class="reveal">Every frame tells a story. Here is a curated selection of commissions and personal explorations — the moments that define this practice.</p>
+            </section>
+
+            <!-- Two-Column Portfolio -->
+            <div class="portfolio-columns">
+
+                <!-- ── COLUMN 1: Client Work ── -->
+                <div class="portfolio-column col-client reveal">
+                    <div class="column-header">
+                        <div class="col-eyebrow">Commissions</div>
+                        <h2>Client Work</h2>
+                        <p>Weddings, celebrations and events — crafted for those who value the art of a well-told story.</p>
+                    </div>
+
+                    <div class="photo-grid">
+                        <p class="photo-section-label">Weddings</p>
+
+                        <a href="/gracewed10.jpg" class="glightbox photo-card tall" data-gallery="client" data-title="Wedding — Grace &amp; Co.">
+                            <img src="/gracewed10.jpg" alt="Wedding photography" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed1.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Ceremony">
+                            <img src="/gracewed1.jpg" alt="Wedding ceremony" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed2.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Couple Portraits">
+                            <img src="/gracewed2.jpg" alt="Wedding couple" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed3.jpg" class="glightbox photo-card wide" data-gallery="client" data-title="Wedding — Reception">
+                            <img src="/gracewed3.jpg" alt="Wedding reception" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed4.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Details">
+                            <img src="/gracewed4.jpg" alt="Wedding details" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed5.jpg" class="glightbox photo-card tall" data-gallery="client" data-title="Wedding — Bridal">
+                            <img src="/gracewed5.jpg" alt="Bridal photography" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed6.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Candid">
+                            <img src="/gracewed6.jpg" alt="Wedding candid" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed7.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Portraits">
+                            <img src="/gracewed7.jpg" alt="Wedding portraits" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed8.jpg" class="glightbox photo-card wide" data-gallery="client" data-title="Wedding — Venue">
+                            <img src="/gracewed8.jpg" alt="Wedding venue" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed9.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Moments">
+                            <img src="/gracewed9.jpg" alt="Wedding moments" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed11.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Golden Hour">
+                            <img src="/gracewed11.jpg" alt="Wedding golden hour" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed12.jpg" class="glightbox photo-card tall" data-gallery="client" data-title="Wedding — Dance">
+                            <img src="/gracewed12.jpg" alt="Wedding dancing" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed13.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Kiss">
+                            <img src="/gracewed13.jpg" alt="Wedding first kiss" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed14.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Family">
+                            <img src="/gracewed14.jpg" alt="Wedding family" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/gracewed15.jpg" class="glightbox photo-card wide" data-gallery="client" data-title="Wedding — Final Portrait">
+                            <img src="/gracewed15.jpg" alt="Wedding final portrait" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <p class="photo-section-label">Events</p>
+
+                        <a href="/diwali dance.webp" class="glightbox photo-card tall" data-gallery="client" data-title="Diwali Festival — Dance Performance">
+                            <img src="/diwali dance.webp" alt="Diwali dance performance" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/diwalithaidance.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Diwali Festival — Thai Dance">
+                            <img src="/diwalithaidance.jpg" alt="Thai dance at Diwali" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/diwalifoodstall.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Diwali Festival — Food Stalls">
+                            <img src="/diwalifoodstall.jpg" alt="Diwali food stalls" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/diwalieventpolice.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Diwali Festival — Community">
+                            <img src="/diwalieventpolice.jpg" alt="Diwali community event" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/diwalidance.webp" class="glightbox photo-card wide" data-gallery="client" data-title="Diwali Festival — Stage">
+                            <img src="/diwalidance.webp" alt="Diwali stage performance" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- ── COLUMN 2: Personal Vision ── -->
+                <div class="portfolio-column col-personal reveal">
+                    <div class="column-header">
+                        <div class="col-eyebrow">Fine Art</div>
+                        <h2>Personal Vision</h2>
+                        <p>Photographs made purely for the love of the craft — observations of the natural world and quiet, considered moments.</p>
+                    </div>
+
+                    <div class="photo-grid">
+                        <p class="photo-section-label">Nature &amp; Wildlife</p>
+
+                        <a href="/birdbeachbnw.jpg" class="glightbox photo-card tall" data-gallery="personal" data-title="Shore — Black &amp; White Study">
+                            <img src="/birdbeachbnw.jpg" alt="Bird on beach black and white" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/birdbeachbnw1.jpg" class="glightbox photo-card wide" data-gallery="personal" data-title="Shore — Solitude">
+                            <img src="/birdbeachbnw1.jpg" alt="Bird on beach solitude" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <a href="/birdintree.jpg" class="glightbox photo-card tall" data-gallery="personal" data-title="Canopy — Bird in Tree">
+                            <img src="/birdintree.jpg" alt="Bird perched in tree" loading="lazy">
+                            <div class="photo-card-overlay"><span>View Full</span></div>
+                        </a>
+
+                        <!-- Enquire CTA card -->
+                        <div class="column-header" style="margin-top: 20px; position: relative; top: auto; background: linear-gradient(135deg, rgba(0,200,230,0.12) 0%, rgba(232,93,154,0.12) 100%);">
+                            <div class="col-eyebrow" style="color: var(--color-text-muted);">Commission a Shoot</div>
+                            <h2 style="font-size: 1.4rem;">Have a project in mind?</h2>
+                            <p style="margin-bottom: 20px;">Whether it's a once-in-a-lifetime event or an artistic collaboration, let's create something together.</p>
+                            <a href="/enquire.html" class="btn btn-primary" style="font-size: 0.9rem; padding: 12px 28px; letter-spacing: 1px;">Start a Conversation</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <footer>
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-brand">
+                            <img src="/Logo-1.png" alt="Frame 2 Remember" class="footer-logo">
+                            <p>Photography by Rohit Basak. Based in New Zealand.</p>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/about.html">About</a></li>
+                                <li><a href="/portfolio.html">Portfolio</a></li>
+                                <li><a href="/enquire.html">Enquire</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-contact">
+                            <h4>Contact</h4>
+                            <p><a href="mailto:rohitbasaknote@gmail.com">rohitbasaknote@gmail.com</a></p>
+                            <p>Established 2018</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2018-2026 Frame 2 Remember. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            GLightbox({
+                selector: '.glightbox',
+                touchNavigation: true,
+                loop: true,
+                zoomable: true,
+                openEffect: 'zoom',
+                closeEffect: 'zoom',
+                slideEffect: 'fade'
+            });
+        });
+    </script>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+
+</html>

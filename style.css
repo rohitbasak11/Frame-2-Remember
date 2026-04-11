@@ -367,7 +367,7 @@ body:has(button:hover) #cursor-follower {
     transform: translateY(20px);
 }
 
-/* Scroll indicator */
+/* Scroll indicator — animated cascading chevrons */
 .hero-scroll-indicator {
     position: absolute;
     bottom: 36px; left: 50%;
@@ -375,33 +375,49 @@ body:has(button:hover) #cursor-follower {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    color: var(--color-text-muted);
-    font-size: 0.72rem;
-    text-transform: uppercase;
-    letter-spacing: 2.5px;
+    gap: 8px;
     z-index: 10;
+    animation: indicatorPulse 2.5s ease-in-out infinite;
 }
 
-.mouse {
-    width: 24px; height: 38px;
-    border: 2px solid rgba(0,200,230,0.7);
-    border-radius: 14px;
-    position: relative;
+.scroll-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--color-text-muted);
 }
-.mouse::before {
-    content: '';
-    position: absolute;
-    top: 7px; left: 50%;
-    transform: translateX(-50%);
-    width: 3px; height: 7px;
-    background: var(--color-pink);
-    border-radius: 2px;
-    animation: scrollDot 1.5s infinite;
+
+.scroll-chevrons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
 }
-@keyframes scrollDot {
-    0%   { transform: translate(-50%, 0); opacity: 1; }
-    100% { transform: translate(-50%, 13px); opacity: 0; }
+
+.scroll-chevrons span {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-right: 2.5px solid var(--color-blue);
+    border-bottom: 2.5px solid var(--color-blue);
+    transform: rotate(45deg);
+    animation: chevronFade 1.4s ease-in-out infinite;
+    border-radius: 1px;
+}
+
+.scroll-chevrons span:nth-child(1) { animation-delay: 0s;    opacity: 0.4; }
+.scroll-chevrons span:nth-child(2) { animation-delay: 0.18s; opacity: 0.65; }
+.scroll-chevrons span:nth-child(3) { animation-delay: 0.36s; opacity: 1; }
+
+@keyframes chevronFade {
+    0%, 100% { opacity: 0.2; transform: rotate(45deg) translateY(-4px); }
+    50%       { opacity: 1;   transform: rotate(45deg) translateY(4px);  }
+}
+
+@keyframes indicatorPulse {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50%       { transform: translateX(-50%) translateY(-6px); }
 }
 
 /* =====================================================

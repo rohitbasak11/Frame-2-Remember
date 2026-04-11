@@ -138,7 +138,7 @@ if (logoEl && logoContainer && isHome) {
         scrollTrigger: {
             trigger: '.hero',
             start: 'top top',
-            end: '+=120%',          // 120vh of scroll travel
+            end: '+=60%',          // 60vh of scroll travel — content appears quickly
             pin: true,
             scrub: 1,
             invalidateOnRefresh: true,
