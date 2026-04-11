@@ -553,91 +553,113 @@ body:has(button:hover) #cursor-follower {
     margin-bottom: 8px;
 }
 
-.gallery-item.expanded h3 {
-    font-size: clamp(2.5rem, 8vw, 5rem);
-    text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+/* =====================================================
+   DEDICATED ALBUM MODAL (Fix for filter bugs)
+   ===================================================== */
+#album-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: none; /* Controlled via JS */
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
 }
 
-/* =====================================================
-   EXPANDED STATE (Album Mode)
-   ===================================================== */
-.gallery-item.expanded {
-    position: fixed !important;
-    inset: 0 !important;
-    width: 100vw !important;
-    height: 100vh !important;
-    z-index: 9999 !important;
-    border-radius: 0 !important;
+#album-modal.active {
+    display: flex;
+}
+
+.modal-bg-overlay {
+    position: absolute;
+    inset: 0;
     background: rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(40px) saturate(150%);
     -webkit-backdrop-filter: blur(40px) saturate(150%);
+    animation: modalFadeIn 0.8s var(--ease) forwards;
 }
 
-.gallery-item.expanded .gallery-img {
-    position: absolute;
-    inset: 0;
+@keyframes modalFadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.modal-content-area {
+    position: relative;
+    width: 100%;
     height: 100%;
-    filter: blur(30px) brightness(0.7);
-    transform: scale(1.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 2;
+}
+
+.modal-text-centered {
+    text-align: center;
+    z-index: 10;
+    pointer-events: none;
+    max-width: 800px;
+}
+
+.modal-text-centered h2 {
+    font-family: var(--font-heading);
+    font-size: clamp(3rem, 10vw, 6rem);
+    margin-bottom: 0.2em;
+    color: var(--color-text);
+    text-shadow: 0 10px 40px rgba(0,0,0,0.1);
+}
+
+.modal-text-centered p {
+    font-size: 1.2rem;
+    color: var(--color-text-muted);
 }
 
 .album-close-btn {
     position: fixed;
     top: 40px; right: 40px;
-    width: 50px; height: 50px;
+    width: 60px; height: 60px;
     border-radius: 50%;
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     border: var(--glass-border);
     color: var(--color-text);
-    font-size: 2rem;
+    font-size: 2.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     z-index: 10001;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s var(--ease);
+    transition: all 0.4s var(--ease);
 }
 
-.gallery-item.expanded .album-close-btn {
-    opacity: 1;
-    visibility: visible;
+.album-close-btn:hover {
+    transform: rotate(90deg) scale(1.1);
+    background: white;
 }
 
-/* =====================================================
-   FLOATING THUMBNAILS (Scatter Effect)
-   ===================================================== */
-.floating-thumbnails {
+/* Floating Thumbnails in Modal */
+#album-modal .floating-thumbnails {
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 5;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.8s var(--ease);
-}
-
-.gallery-item.expanded .floating-thumbnails {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
+    display: block; /* Always visible when modal active */
 }
 
 .thumb {
     position: absolute;
-    width: 100px;
-    height: 125px;
+    width: 110px;
+    height: 140px;
     border-radius: 12px;
     overflow: hidden;
     background: var(--glass-bg);
     backdrop-filter: var(--glass-blur);
     border: 2px solid rgba(255, 255, 255, 0.8);
-    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.2);
     cursor: pointer;
     pointer-events: auto;
-    transition: transform 0.4s var(--ease), z-index 0s;
+    transition: transform 0.4s var(--ease), z-index 0.2s;
     display: block;
 }
 
@@ -648,22 +670,49 @@ body:has(button:hover) #cursor-follower {
 }
 
 .thumb:hover {
-    z-index: 50 !important;
+    z-index: 100 !important;
     transform: scale(1.6) rotate(0deg) !important;
 }
 
-/* Precise Scatter Positions */
-.t1 { top: 15%; left: 10%; transform: rotate(-8deg); }
-.t2 { top: 20%; right: 12%; transform: rotate(12deg); }
-.t3 { bottom: 25%; left: 15%; transform: rotate(15deg); }
-.t4 { bottom: 20%; right: 10%; transform: rotate(-10deg); }
-.t5 { top: 50%; left: 5%; transform: translateY(-50%) rotate(-5deg); }
-.t6 { top: 50%; right: 5%; transform: translateY(-50%) rotate(5deg); }
-.t7 { top: 10%; left: 45%; transform: translateX(-50%) rotate(3deg); }
-.t8 { bottom: 10%; left: 45%; transform: translateX(-50%) rotate(-4deg); }
+/* Scatter Layout */
+.t1 { top: 12%; left: 8%; transform: rotate(-5deg); }
+.t2 { top: 18%; right: 10%; transform: rotate(8deg); }
+.t3 { bottom: 22%; left: 12%; transform: rotate(10deg); }
+.t4 { bottom: 15%; right: 8%; transform: rotate(-12deg); }
+.t5 { top: 50%; left: 4%; transform: translateY(-50%) rotate(-3deg); }
+.t6 { top: 50%; right: 4%; transform: translateY(-50%) rotate(5deg); }
+.t7 { top: 10%; left: 50%; transform: translateX(-50%) rotate(2deg); }
+.t8 { bottom: 10%; left: 50%; transform: translateX(-50%) rotate(-4deg); }
 
-.blur-bg {
-    filter: blur(4px) brightness(0.85);
+@media (max-width: 768px) {
+    #album-modal .modal-content-area {
+        justify-content: flex-start;
+        padding-top: 15vh;
+    }
+    #album-modal .floating-thumbnails {
+        position: relative;
+        inset: auto;
+        display: flex;
+        gap: 15px;
+        padding: 40px 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        pointer-events: auto;
+        width: 100%;
+        margin-top: 30px;
+    }
+    .thumb {
+        position: relative !important;
+        flex: 0 0 140px;
+        height: 180px;
+        top: auto !important; left: auto !important; right: auto !important; bottom: auto !important;
+        transform: none !important;
+    }
+    .album-close-btn {
+        top: 20px; right: 20px;
+        width: 44px; height: 44px;
+        font-size: 1.8rem;
+    }
 }
 
 @media (max-width: 768px) {

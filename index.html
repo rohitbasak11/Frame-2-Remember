@@ -30,6 +30,21 @@
     <div id="cursor"></div>
     <div id="cursor-follower"></div>
 
+    <!-- NEW ALBUM MODAL (Body level to avoid filter bugs) -->
+    <div id="album-modal">
+        <div class="modal-bg-overlay"></div>
+        <button class="album-close-btn" aria-label="Close Album">&times;</button>
+        <div class="modal-content-area">
+            <div class="modal-text-centered">
+                <h2 id="modal-album-title">Album Title</h2>
+                <p id="modal-album-desc">Album description goes here.</p>
+            </div>
+            <div id="modal-thumbnails" class="floating-thumbnails">
+                <!-- Dynamically populated -->
+            </div>
+        </div>
+    </div>
+
     <!-- Navigation -->
     <nav class="navbar at-top">
         <div class="nav-container">
@@ -97,74 +112,62 @@
                     <h2 class="section-title reveal">Excellence in Every Frame</h2>
                     <div class="gallery-grid">
                         <!-- WEDDING ALBUM -->
-                        <div class="gallery-item reveal" data-album="wedding">
+                        <div class="gallery-item reveal" data-album-type="wedding" data-title="Wedding Collection" data-desc="Timeless celebrations of love.">
                             <div class="item-overlay">
                                 <h3>Weddings</h3>
                                 <p>Timeless celebrations of love.</p>
                             </div>
                             <img src="/gracewed10.jpg" alt="Wedding Photography" class="gallery-img">
                             
-                            <button class="album-close-btn" aria-label="Close Album">&times;</button>
-                            
-                            <!-- Visible Floating Thumbnails -->
-                            <div class="floating-thumbnails">
-                                <a href="/gracewed1.jpg" class="glightbox thumb t1" data-gallery="wedding"><img src="/gracewed1.jpg"></a>
-                                <a href="/gracewed2.jpg" class="glightbox thumb t2" data-gallery="wedding"><img src="/gracewed2.jpg"></a>
-                                <a href="/gracewed3.jpg" class="glightbox thumb t3" data-gallery="wedding"><img src="/gracewed3.jpg"></a>
-                                <a href="/gracewed4.jpg" class="glightbox thumb t4" data-gallery="wedding"><img src="/gracewed4.jpg"></a>
-                                <a href="/gracewed5.jpg" class="glightbox thumb t5" data-gallery="wedding"><img src="/gracewed5.jpg"></a>
-                                <a href="/gracewed6.jpg" class="glightbox thumb t6" data-gallery="wedding"><img src="/gracewed6.jpg"></a>
-                                <a href="/gracewed7.jpg" class="glightbox thumb t7" data-gallery="wedding"><img src="/gracewed7.jpg"></a>
-                                <a href="/gracewed8.jpg" class="glightbox thumb t8" data-gallery="wedding"><img src="/gracewed8.jpg"></a>
-                            </div>
-
-                            <!-- Remaining items for full gallery -->
-                            <div style="display:none;">
-                                <a href="/gracewed9.jpg" class="glightbox" data-gallery="wedding"></a>
-                                <a href="/gracewed10.jpg" class="glightbox" data-gallery="wedding"></a>
-                                <a href="/gracewed11.jpg" class="glightbox" data-gallery="wedding"></a>
-                                <a href="/gracewed12.jpg" class="glightbox" data-gallery="wedding"></a>
-                                <a href="/gracewed13.jpg" class="glightbox" data-gallery="wedding"></a>
-                                <a href="/gracewed14.jpg" class="glightbox" data-gallery="wedding"></a>
-                                <a href="/gracewed15.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <!-- Hidden Album Links for JS to pick up -->
+                            <div class="hidden-album-data" style="display:none;">
+                                <a href="/gracewed1.jpg"></a>
+                                <a href="/gracewed2.jpg"></a>
+                                <a href="/gracewed3.jpg"></a>
+                                <a href="/gracewed4.jpg"></a>
+                                <a href="/gracewed5.jpg"></a>
+                                <a href="/gracewed6.jpg"></a>
+                                <a href="/gracewed7.jpg"></a>
+                                <a href="/gracewed8.jpg"></a>
+                                <a href="/gracewed9.jpg"></a>
+                                <a href="/gracewed10.jpg"></a>
+                                <a href="/gracewed11.jpg"></a>
+                                <a href="/gracewed12.jpg"></a>
+                                <a href="/gracewed13.jpg"></a>
+                                <a href="/gracewed14.jpg"></a>
+                                <a href="/gracewed15.jpg"></a>
                             </div>
                         </div>
 
                         <!-- EVENTS ALBUM -->
-                        <div class="gallery-item reveal" data-album="events">
+                        <div class="gallery-item reveal" data-album-type="events" data-title="Events" data-desc="Dynamic coverage of your important days.">
                             <div class="item-overlay">
                                 <h3>Events</h3>
                                 <p>Dynamic coverage of your important days.</p>
                             </div>
                             <img src="/diwali dance.webp" alt="Events Photography" class="gallery-img">
-
-                            <button class="album-close-btn" aria-label="Close Album">&times;</button>
-
-                            <!-- Visible Floating Thumbnails -->
-                            <div class="floating-thumbnails">
-                                <a href="/diwali dance.webp" class="glightbox thumb t1" data-gallery="events"><img src="/diwali dance.webp"></a>
-                                <a href="/diwalithaidance.jpg" class="glightbox thumb t2" data-gallery="events"><img src="/diwalithaidance.jpg"></a>
-                                <a href="/diwalifoodstall.jpg" class="glightbox thumb t3" data-gallery="events"><img src="/diwalifoodstall.jpg"></a>
-                                <a href="/diwalieventpolice.jpg" class="glightbox thumb t4" data-gallery="events"><img src="/diwalieventpolice.jpg"></a>
-                                <a href="/diwalidance.webp" class="glightbox thumb t5" data-gallery="events"><img src="/diwalidance.webp"></a>
+                            
+                            <div class="hidden-album-data" style="display:none;">
+                                <a href="/diwali dance.webp"></a>
+                                <a href="/diwalithaidance.jpg"></a>
+                                <a href="/diwalifoodstall.jpg"></a>
+                                <a href="/diwalieventpolice.jpg"></a>
+                                <a href="/diwalidance.webp"></a>
                             </div>
                         </div>
 
                         <!-- PERSONAL WORK -->
-                        <div class="gallery-item reveal" data-album="personal">
+                        <div class="gallery-item reveal" data-album-type="personal" data-title="Beyond the Gig" data-desc="Capturing the world outside of paid work.">
                             <div class="item-overlay">
                                 <h3>Personal Work</h3>
                                 <p>Beyond the gig: Capturing the world.</p>
                             </div>
                             <img src="/birdbeachbnw.jpg" alt="Personal Photography" class="gallery-img">
-
-                            <button class="album-close-btn" aria-label="Close Album">&times;</button>
-
-                            <!-- Visible Floating Thumbnails -->
-                            <div class="floating-thumbnails">
-                                <a href="/birdbeachbnw.jpg" class="glightbox thumb t1" data-gallery="personal"><img src="/birdbeachbnw.jpg"></a>
-                                <a href="/birdbeachbnw1.jpg" class="glightbox thumb t2" data-gallery="personal"><img src="/birdbeachbnw1.jpg"></a>
-                                <a href="/birdintree.jpg" class="glightbox thumb t3" data-gallery="personal"><img src="/birdintree.jpg"></a>
+                            
+                            <div class="hidden-album-data" style="display:none;">
+                                <a href="/birdbeachbnw.jpg"></a>
+                                <a href="/birdbeachbnw1.jpg"></a>
+                                <a href="/birdintree.jpg"></a>
                             </div>
                         </div>
                     </div>

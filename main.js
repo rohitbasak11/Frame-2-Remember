@@ -338,81 +338,95 @@ if (gradientBg) {
 }
 
 /* =====================================================
-   GALLERY ALBUM EXPANSION LOGIC
+   GALLERY ALBUM MODAL LOGIC (Fix for filter bugs)
    ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const galleryItems = document.querySelectorAll('.gallery-item');
-    const closeBtns = document.querySelectorAll('.album-close-btn');
+    const albumModal = document.getElementById('album-modal');
+    if (!albumModal) return;
 
-    galleryItems.forEach(item => {
-        item.addEventListener('click', (e) => {
-            // Don't expand if clicking a thumbnail or the close button
-            if (e.target.closest('.thumb') || e.target.closest('.album-close-btn')) return;
+    const modalTitle = document.getElementById('modal-album-title');
+    const modalDesc = document.getElementById('modal-album-desc');
+    const modalThumbs = document.getElementById('modal-thumbnails');
+    const closeBtn = albumModal.querySelector('.album-close-btn');
+    const bgOverlay = albumModal.querySelector('.modal-bg-overlay');
+
+    const openAlbum = (item) => {
+        const title = item.dataset.title;
+        const desc = item.dataset.desc;
+        const albumType = item.dataset.albumType;
+        const links = item.querySelectorAll('.hidden-album-data a');
+
+        // Populate Content
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc;
+        modalThumbs.innerHTML = '';
+
+        links.forEach((link, i) => {
+            const href = link.getAttribute('href');
+            // Select t1-t8 class based on index
+            const tClass = `t${(i % 8) + 1}`;
             
-            if (!item.classList.contains('expanded')) {
-                // Close any other open albums first (safety)
-                document.querySelectorAll('.gallery-item.expanded').forEach(openItem => {
-                    openItem.classList.remove('expanded');
-                });
+            const thumbA = document.createElement('a');
+            thumbA.href = href;
+            thumbA.className = `glightbox thumb ${tClass}`;
+            thumbA.setAttribute('data-gallery', albumType);
+            
+            const img = document.createElement('img');
+            img.src = href;
+            img.alt = `${title} photo ${i + 1}`;
+            
+            thumbA.appendChild(img);
+            modalThumbs.appendChild(thumbA);
 
-                item.classList.add('expanded');
-                document.body.style.overflow = 'hidden'; // Lock scroll
-            }
+            // Add organic drift to this specific thumb
+            const driftY = 20 + Math.random() * 30;
+            const driftX = 15 + Math.random() * 25;
+            const rot = (Math.random() - 0.5) * 12;
+
+            gsap.to(thumbA, {
+                y: `+=${driftY}`,
+                x: `+=${driftX}`,
+                rotation: `+=${rot}`,
+                duration: 4 + Math.random() * 2,
+                repeat: -1,
+                yoyo: true,
+                ease: "sine.inOut",
+                delay: i * 0.15
+            });
         });
-    });
 
-    closeBtns.forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            const expandedItem = document.querySelector('.gallery-item.expanded');
-            if (expandedItem) {
-                expandedItem.classList.remove('expanded');
-                document.body.style.overflow = ''; // Unlock scroll
-            }
-        });
-    });
+        // Show Modal
+        albumModal.classList.add('active');
+        document.body.style.overflow = 'hidden';
 
-    // Close on ESC key
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') {
-            const expandedItem = document.querySelector('.gallery-item.expanded');
-            if (expandedItem) {
-                expandedItem.classList.remove('expanded');
-                document.body.style.overflow = '';
-            }
-        }
-    });
-
-    // Initialize drift for ALL thumbs, but they are hidden by CSS until expanded
-    const thumbs = document.querySelectorAll('.thumb');
-    thumbs.forEach((thumb, i) => {
-        const driftY = 15 + Math.random() * 25;
-        const driftX = 10 + Math.random() * 20;
-        const rot = (Math.random() - 0.5) * 10;
-
-        gsap.to(thumb, {
-            y: `+=${driftY}`,
-            x: `+=${driftX}`,
-            rotation: `+=${rot}`,
-            duration: 4 + Math.random() * 2,
-            repeat: -1,
-            yoyo: true,
-            ease: "sine.inOut",
-            delay: i * 0.1
-        });
-    });
-
-    if (typeof GLightbox !== 'undefined') {
+        // Re-init Lightbox for new dynamic elements
         GLightbox({
             selector: '.glightbox',
             touchNavigation: true,
             loop: true,
-            zoomable: true,
-            openEffect: 'zoom',
-            closeEffect: 'zoom',
-            slideEffect: 'fade'
+            zoomable: true
         });
-    }
+    };
+
+    const closeAlbum = () => {
+        albumModal.classList.remove('active');
+        document.body.style.overflow = '';
+        modalThumbs.innerHTML = ''; // Kill animations
+    };
+
+    // Attach Click Events to Cards
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('click', (e) => {
+            openAlbum(item);
+        });
+    });
+
+    // Close Triggers
+    closeBtn.addEventListener('click', closeAlbum);
+    bgOverlay.addEventListener('click', closeAlbum);
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeAlbum();
+    });
 });
 
 console.log('Frame 2 Remember ✦ loaded');
