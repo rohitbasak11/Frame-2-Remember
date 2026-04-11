@@ -317,4 +317,26 @@ if (menuToggle && mobileMenu) {
     });
 }
 
+}
+
+/* =====================================================
+   SCROLL-DRIVEN GRADIENT MOVEMENT
+   ===================================================== */
+const gradientBg = document.getElementById('gradient-bg');
+if (gradientBg) {
+    // The background slowly rotates as you scroll down the page,
+    // which exponentially increases the visual movement of the orbs.
+    gsap.to(gradientBg, {
+        rotation: 45,
+        scale: 1.25,
+        ease: "none",
+        scrollTrigger: {
+            trigger: "body",
+            start: "top top",
+            end: "bottom bottom",
+            scrub: 1
+        }
+    });
+}
+
 console.log('Frame 2 Remember ✦ loaded');
