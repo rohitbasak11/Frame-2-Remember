@@ -293,7 +293,7 @@ const overlay = document.getElementById('transition-overlay');
 document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', e => {
         const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto') || link.target === '_blank') return;
+        if (!href || href.startsWith('#') || href.startsWith('mailto') || link.target === '_blank' || link.classList.contains('glightbox')) return;
         e.preventDefault();
         gsap.timeline({ onComplete: () => { window.location.href = href; } })
             .to(flash,   { autoAlpha: 1, duration: 0.05 })
@@ -445,3 +445,82 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') closeAlbum();
     });
 });
+
+/* =====================================================
+   PORTFOLIO PAGE SPECIAL UX
+   ===================================================== */
+const isPortfolio = window.location.pathname.includes('portfolio.html');
+
+if (isPortfolio) {
+    // 1. Navbar Auto-collapse & Slim Headers on Scroll
+    let lastScroll = 0;
+    const scrollThreshold = 100;
+
+    lenis.on('scroll', ({ scroll }) => {
+        const isScrollingDown = scroll > lastScroll;
+        const columnHeaders = document.querySelectorAll('.column-header');
+
+        if (scroll > scrollThreshold && isScrollingDown) {
+            navbar?.classList.add('nav-hidden');
+            columnHeaders.forEach(h => h.classList.add('slim'));
+        } else if (!isScrollingDown || scroll <= scrollThreshold) {
+            navbar?.classList.remove('nav-hidden');
+            columnHeaders.forEach(h => h.classList.remove('slim'));
+        }
+        lastScroll = scroll;
+    });
+
+    // 2. Aspect Ratio Expansion on Hover
+    if (window.matchMedia('(hover: hover)').matches) {
+        document.querySelectorAll('.photo-card').forEach(card => {
+            const img = card.querySelector('img');
+            let originalHeight = 0;
+
+            card.addEventListener('mouseenter', () => {
+                originalHeight = card.offsetHeight;
+                if (img.naturalWidth) {
+                    const rect = card.getBoundingClientRect();
+                    const ratio = img.naturalWidth / img.naturalHeight;
+                    const targetHeight = rect.width / ratio;
+
+                    gsap.to(card, {
+                        height: targetHeight,
+                        duration: 0.5,
+                        ease: 'power2.out',
+                        overwrite: true
+                    });
+                }
+            });
+
+            card.addEventListener('mouseleave', () => {
+                gsap.to(card, {
+                    height: originalHeight,
+                    duration: 0.5,
+                    ease: 'power2.inOut',
+                    overwrite: true,
+                    onComplete: () => gsap.set(card, { clearProps: 'height' })
+                });
+            });
+        });
+    }
+
+    // 3. GLightbox Init (Ensuring it hooks correctly after DOM/JS ready)
+    // Wait for the "developing" animation to finish before enabling lightbox clicks
+    const initLightbox = () => {
+        if (typeof GLightbox !== 'undefined') {
+            GLightbox({
+                selector: '.glightbox',
+                touchNavigation: true,
+                loop: true,
+                zoomable: true,
+                openEffect: 'zoom',
+                closeEffect: 'zoom',
+                slideEffect: 'fade'
+            });
+        }
+    };
+
+    window.addEventListener('load', initLightbox);
+    // Extra safety: re-init if not ready
+    setTimeout(initLightbox, 3000);
+}
