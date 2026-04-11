@@ -274,6 +274,96 @@ body:has(button:hover) #cursor-follower {
 .nav-links a.active::after { width: 100%; }
 .nav-links a:hover { color: var(--color-pink); }
 
+/* Drodown Menu */
+.nav-dropdown {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.nav-dropdown > a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.nav-dropdown > a::after {
+    content: '▾';
+    font-size: 0.8rem;
+    display: inline-block;
+    transition: transform 0.3s var(--ease);
+}
+
+.nav-dropdown:hover > a::after {
+    transform: rotate(180deg);
+}
+
+.dropdown-content {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    min-width: 180px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(25px) saturate(160%);
+    -webkit-backdrop-filter: blur(25px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: 20px;
+    padding: 15px 10px;
+    margin-top: 15px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(15px) scale(0.95);
+    transition: all 0.4s var(--ease);
+    z-index: 2010;
+}
+
+/* Tooltip arrow */
+.dropdown-content::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    right: 30px;
+    width: 12px;
+    height: 12px;
+    background: rgba(255, 255, 255, 0.45);
+    backdrop-filter: blur(25px);
+    border-left: 1px solid rgba(255, 255, 255, 0.4);
+    border-top: 1px solid rgba(255, 255, 255, 0.4);
+    transform: rotate(45deg);
+}
+
+.nav-dropdown:hover .dropdown-content {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+}
+
+.dropdown-content li {
+    width: 100%;
+}
+
+.dropdown-content a {
+    display: block;
+    padding: 10px 20px;
+    font-size: 0.85rem;
+    border-radius: 12px;
+    transition: all 0.3s;
+}
+
+.dropdown-content a:hover {
+    background: rgba(255, 255, 255, 0.5);
+    color: var(--color-pink);
+    transform: translateX(5px);
+}
+
+.dropdown-content a::after { display: none; }
+
 /* Mobile toggle — hidden on desktop */
 .menu-toggle { display: none; }
 
