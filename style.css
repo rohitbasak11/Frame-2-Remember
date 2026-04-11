@@ -43,8 +43,8 @@ html.lenis { height: auto; }
 /* Animated gradient canvas behind everything */
 #gradient-bg {
     position: fixed;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+    top: -30vh; left: -30vw;
+    width: 160vw; height: 160vh;
     z-index: -2;
     background: #fafafa;
     overflow: hidden;
