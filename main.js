@@ -337,46 +337,82 @@ if (gradientBg) {
     });
 }
 
-console.log('Frame 2 Remember ✦ loaded');
-
 /* =====================================================
-   GLIGHTBOX INITIALIZATION
+   GALLERY ALBUM EXPANSION LOGIC
    ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    if (typeof GLightbox !== 'undefined') {
-        const lightbox = GLightbox({
-            selector: '.glightbox',
-            touchNavigation: true,
-            loop: true,
-            autoplayVideos: true,
-            zoomable: true,
-            draggable: true,
-            openEffect: 'zoom',
-            closeEffect: 'zoom',
-            slideEffect: 'fade',
-            moreText: 'See more',
-            descPosition: 'bottom'
-        });
-    }
+    const galleryItems = document.querySelectorAll('.gallery-item');
+    const closeBtns = document.querySelectorAll('.album-close-btn');
 
-    // ── Floating Thumbnails Drift Animation ──
+    galleryItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            // Don't expand if clicking a thumbnail or the close button
+            if (e.target.closest('.thumb') || e.target.closest('.album-close-btn')) return;
+            
+            if (!item.classList.contains('expanded')) {
+                // Close any other open albums first (safety)
+                document.querySelectorAll('.gallery-item.expanded').forEach(openItem => {
+                    openItem.classList.remove('expanded');
+                });
+
+                item.classList.add('expanded');
+                document.body.style.overflow = 'hidden'; // Lock scroll
+            }
+        });
+    });
+
+    closeBtns.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const expandedItem = document.querySelector('.gallery-item.expanded');
+            if (expandedItem) {
+                expandedItem.classList.remove('expanded');
+                document.body.style.overflow = ''; // Unlock scroll
+            }
+        });
+    });
+
+    // Close on ESC key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            const expandedItem = document.querySelector('.gallery-item.expanded');
+            if (expandedItem) {
+                expandedItem.classList.remove('expanded');
+                document.body.style.overflow = '';
+            }
+        }
+    });
+
+    // Initialize drift for ALL thumbs, but they are hidden by CSS until expanded
     const thumbs = document.querySelectorAll('.thumb');
     thumbs.forEach((thumb, i) => {
-        // Random drift speed and range for a natural look
-        const delay = i * 0.2;
-        const driftY = 10 + Math.random() * 15;
-        const driftX = 5 + Math.random() * 10;
-        const rot = (Math.random() - 0.5) * 6;
+        const driftY = 15 + Math.random() * 25;
+        const driftX = 10 + Math.random() * 20;
+        const rot = (Math.random() - 0.5) * 10;
 
         gsap.to(thumb, {
             y: `+=${driftY}`,
             x: `+=${driftX}`,
             rotation: `+=${rot}`,
-            duration: 3 + Math.random() * 2,
+            duration: 4 + Math.random() * 2,
             repeat: -1,
             yoyo: true,
             ease: "sine.inOut",
-            delay: delay
+            delay: i * 0.1
         });
     });
+
+    if (typeof GLightbox !== 'undefined') {
+        GLightbox({
+            selector: '.glightbox',
+            touchNavigation: true,
+            loop: true,
+            zoomable: true,
+            openEffect: 'zoom',
+            closeEffect: 'zoom',
+            slideEffect: 'fade'
+        });
+    }
 });
+
+console.log('Frame 2 Remember ✦ loaded');

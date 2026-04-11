@@ -512,10 +512,98 @@ body:has(button:hover) #cursor-follower {
     transform: translateY(-4%) scale(1.04);
 }
 
-.item-overlay.always-visible {
+.item-overlay {
+    position: absolute;
+    bottom: 20px; left: 20px; right: 20px;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
+    color: white;
+    transform: translateY(16px);
+    opacity: 0;
+    transition: all 0.45s var(--ease);
+    z-index: 2;
+}
+
+.gallery-item:hover .item-overlay {
     transform: translateY(0);
     opacity: 1;
-    background: rgba(0, 0, 0, 0.25); /* Lighter to show bg clearly */
+}
+
+.gallery-item.expanded .item-overlay {
+    position: fixed;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    bottom: auto; right: auto;
+    width: auto;
+    background: transparent;
+    backdrop-filter: none;
+    border: none;
+    opacity: 1;
+    z-index: 100;
+    pointer-events: none;
+}
+
+.item-overlay h3 {
+    font-family: var(--font-heading);
+    font-size: 1.7rem;
+    margin-bottom: 8px;
+}
+
+.gallery-item.expanded h3 {
+    font-size: clamp(2.5rem, 8vw, 5rem);
+    text-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+/* =====================================================
+   EXPANDED STATE (Album Mode)
+   ===================================================== */
+.gallery-item.expanded {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    z-index: 9999 !important;
+    border-radius: 0 !important;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(40px) saturate(150%);
+    -webkit-backdrop-filter: blur(40px) saturate(150%);
+}
+
+.gallery-item.expanded .gallery-img {
+    position: absolute;
+    inset: 0;
+    height: 100%;
+    filter: blur(30px) brightness(0.7);
+    transform: scale(1.1);
+}
+
+.album-close-btn {
+    position: fixed;
+    top: 40px; right: 40px;
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    color: var(--color-text);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10001;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s var(--ease);
+}
+
+.gallery-item.expanded .album-close-btn {
+    opacity: 1;
+    visibility: visible;
 }
 
 /* =====================================================
@@ -526,6 +614,15 @@ body:has(button:hover) #cursor-follower {
     inset: 0;
     pointer-events: none;
     z-index: 5;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s var(--ease);
+}
+
+.gallery-item.expanded .floating-thumbnails {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
 }
 
 .thumb {
