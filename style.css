@@ -512,29 +512,89 @@ body:has(button:hover) #cursor-follower {
     transform: translateY(-4%) scale(1.04);
 }
 
-.item-overlay {
-    position: absolute;
-    bottom: 20px; left: 20px; right: 20px;
-    padding: 24px;
-    background: rgba(0, 0, 0, 0.45);
-    backdrop-filter: blur(12px) saturate(160%);
-    -webkit-backdrop-filter: blur(12px) saturate(160%);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 20px;
-    color: white;
-    transform: translateY(16px);
-    opacity: 0;
-    transition: all 0.45s var(--ease);
-    z-index: 2;
-}
-.gallery-item:hover .item-overlay {
+.item-overlay.always-visible {
     transform: translateY(0);
     opacity: 1;
+    background: rgba(0, 0, 0, 0.25); /* Lighter to show bg clearly */
 }
-.item-overlay h3 {
-    font-family: var(--font-heading);
-    font-size: 1.7rem;
-    margin-bottom: 8px;
+
+/* =====================================================
+   FLOATING THUMBNAILS (Scatter Effect)
+   ===================================================== */
+.floating-thumbnails {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
+}
+
+.thumb {
+    position: absolute;
+    width: 100px;
+    height: 125px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    cursor: pointer;
+    pointer-events: auto;
+    transition: transform 0.4s var(--ease), z-index 0s;
+    display: block;
+}
+
+.thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.thumb:hover {
+    z-index: 50 !important;
+    transform: scale(1.6) rotate(0deg) !important;
+}
+
+/* Precise Scatter Positions */
+.t1 { top: 15%; left: 10%; transform: rotate(-8deg); }
+.t2 { top: 20%; right: 12%; transform: rotate(12deg); }
+.t3 { bottom: 25%; left: 15%; transform: rotate(15deg); }
+.t4 { bottom: 20%; right: 10%; transform: rotate(-10deg); }
+.t5 { top: 50%; left: 5%; transform: translateY(-50%) rotate(-5deg); }
+.t6 { top: 50%; right: 5%; transform: translateY(-50%) rotate(5deg); }
+.t7 { top: 10%; left: 45%; transform: translateX(-50%) rotate(3deg); }
+.t8 { bottom: 10%; left: 45%; transform: translateX(-50%) rotate(-4deg); }
+
+.blur-bg {
+    filter: blur(4px) brightness(0.85);
+}
+
+@media (max-width: 768px) {
+    .floating-thumbnails {
+        position: relative;
+        inset: auto;
+        display: flex;
+        gap: 12px;
+        padding: 20px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        pointer-events: auto;
+        z-index: 10;
+        margin-top: -80px; /* pull up slightly over the card */
+    }
+    .floating-thumbnails::-webkit-scrollbar { display: none; }
+    
+    .thumb {
+        position: relative !important;
+        flex: 0 0 120px;
+        height: 150px;
+        top: auto !important;
+        left: auto !important;
+        right: auto !important;
+        bottom: auto !important;
+        transform: none !important;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
 }
 
 /* =====================================================

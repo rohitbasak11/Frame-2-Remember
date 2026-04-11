@@ -358,4 +358,25 @@ document.addEventListener('DOMContentLoaded', () => {
             descPosition: 'bottom'
         });
     }
+
+    // ── Floating Thumbnails Drift Animation ──
+    const thumbs = document.querySelectorAll('.thumb');
+    thumbs.forEach((thumb, i) => {
+        // Random drift speed and range for a natural look
+        const delay = i * 0.2;
+        const driftY = 10 + Math.random() * 15;
+        const driftX = 5 + Math.random() * 10;
+        const rot = (Math.random() - 0.5) * 6;
+
+        gsap.to(thumb, {
+            y: `+=${driftY}`,
+            x: `+=${driftX}`,
+            rotation: `+=${rot}`,
+            duration: 3 + Math.random() * 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut",
+            delay: delay
+        });
+    });
 });
