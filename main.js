@@ -185,8 +185,8 @@ if (logoEl && logoContainer && isHome) {
         { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.6 },
     0);
 
-    // 0.3 – 0.6  subtitle fades up much earlier
-    heroTl.to('.hero-subtitle', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.3);
+    // 0.3 – 0.6  subtitle block fades up much earlier
+    heroTl.to('.hero-subtitle-wrapper', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.3);
 
     // 0.4 – 0.7  CTA fades up earlier
     heroTl.to('.hero-cta', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.4);

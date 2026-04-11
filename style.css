@@ -300,13 +300,50 @@ body:has(button:hover) #cursor-follower {
     visibility: hidden;
 }
 
-.hero-subtitle {
-    font-size: clamp(1rem, 2.2vw, 1.3rem);
-    color: var(--color-text-muted);
-    font-weight: 300;
+.hero-subtitle-wrapper {
     margin-bottom: 44px;
     visibility: hidden; /* GSAP autoAlpha controls */
     transform: translateY(20px);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.hero-brand-name {
+    font-family: var(--font-heading);
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin: 0;
+}
+
+.hero-brand-tagline {
+    font-family: var(--font-heading);
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    font-weight: 400;
+    color: var(--color-text);
+    margin: 0 0 6px 0;
+}
+
+.shimmer-text {
+    background: linear-gradient(90deg, var(--color-salmon), var(--color-pink), var(--color-blue), var(--color-salmon));
+    background-size: 300% auto;
+    color: transparent;
+    -webkit-background-clip: text;
+    background-clip: text;
+    animation: shimmer 3.5s linear infinite;
+    display: inline-block;
+    font-weight: 600;
+}
+
+@keyframes shimmer {
+    to { background-position: 300% center; }
+}
+
+.hero-subtitle {
+    font-size: clamp(0.9rem, 2vw, 1.1rem);
+    color: var(--color-text-muted);
+    font-weight: 300;
+    margin: 0;
 }
 
 .hero-cta {
