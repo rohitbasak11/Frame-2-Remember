@@ -709,3 +709,37 @@ footer {
     .hero-content h1 { font-size: 2.2rem; }
     .main-f2r-btn { font-size: 1rem; padding: 16px 36px; }
 }
+
+/* =====================================================
+   GLIGHTBOX GLASS MATTE SKIN
+   ===================================================== */
+.glightbox-container .gcontainer[role="dialog"] {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px) saturate(180%);
+    -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+
+.gslide-description {
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    border: var(--glass-border) !important;
+    border-radius: 20px !important;
+    color: var(--color-text) !important;
+    max-width: 500px !important;
+    margin: 20px auto !important;
+    box-shadow: var(--glass-shadow) !important;
+}
+
+.gslide-title {
+    font-family: var(--font-heading) !important;
+    font-weight: 700 !important;
+    color: var(--color-text) !important;
+}
+
+.gprev, .gnext, .gclose {
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    border-radius: 50% !important;
+    padding: 10px !important;
+}

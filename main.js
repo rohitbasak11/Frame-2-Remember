@@ -338,3 +338,24 @@ if (gradientBg) {
 }
 
 console.log('Frame 2 Remember ✦ loaded');
+
+/* =====================================================
+   GLIGHTBOX INITIALIZATION
+   ===================================================== */
+document.addEventListener('DOMContentLoaded', () => {
+    if (typeof GLightbox !== 'undefined') {
+        const lightbox = GLightbox({
+            selector: '.glightbox',
+            touchNavigation: true,
+            loop: true,
+            autoplayVideos: true,
+            zoomable: true,
+            draggable: true,
+            openEffect: 'zoom',
+            closeEffect: 'zoom',
+            slideEffect: 'fade',
+            moreText: 'See more',
+            descPosition: 'bottom'
+        });
+    }
+});

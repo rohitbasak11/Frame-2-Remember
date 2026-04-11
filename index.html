@@ -13,6 +13,8 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap"
         rel="stylesheet">
+    <!-- GLightbox CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css">
 </head>
 
 <body>
@@ -94,26 +96,60 @@
                 <div class="container">
                     <h2 class="section-title reveal">Excellence in Every Frame</h2>
                     <div class="gallery-grid">
-                        <div class="gallery-item reveal">
+                        <!-- WEDDING ALBUM -->
+                        <div class="gallery-item glightbox reveal" data-gallery="wedding" href="/gracewed10.jpg" data-glightbox="title: Wedding Collection; description: Timeless celebrations of love.">
                             <div class="item-overlay">
                                 <h3>Weddings</h3>
                                 <p>Timeless celebrations of love.</p>
                             </div>
                             <img src="/gracewed10.jpg" alt="Wedding Photography" class="gallery-img">
                         </div>
-                        <div class="gallery-item reveal">
-                            <div class="item-overlay">
-                                <h3>Portraits</h3>
-                                <p>Authentic expressions, captured forever.</p>
-                            </div>
-                            <img src="/gracewed9.jpg" alt="Portrait Photography" class="gallery-img">
+                        <!-- Hidden Wedding Album Assets -->
+                        <div style="display:none;">
+                            <a href="/gracewed1.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed2.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed3.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed4.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed5.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed6.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed7.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed8.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed9.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed11.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed12.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed13.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed14.jpg" class="glightbox" data-gallery="wedding"></a>
+                            <a href="/gracewed15.jpg" class="glightbox" data-gallery="wedding"></a>
                         </div>
-                        <div class="gallery-item reveal">
+
+                        <!-- EVENTS ALBUM -->
+                        <div class="gallery-item glightbox reveal" data-gallery="events" href="/diwali dance.webp" data-glightbox="title: Events; description: Dynamic coverage of your important days.">
                             <div class="item-overlay">
                                 <h3>Events</h3>
                                 <p>Dynamic coverage of your important days.</p>
                             </div>
-                            <img src="/gracewed2.jpg" alt="Event Photography" class="gallery-img">
+                            <img src="/diwali dance.webp" alt="Events Photography" class="gallery-img">
+                        </div>
+                        <!-- Hidden Events Album Assets -->
+                        <div style="display:none;">
+                            <a href="/diwalithaidance.jpg" class="glightbox" data-gallery="events"></a>
+                            <a href="/diwalifoodstall.jpg" class="glightbox" data-gallery="events"></a>
+                            <a href="/diwalieventpolice.jpg" class="glightbox" data-gallery="events"></a>
+                            <a href="/diwalidance.webp" class="glightbox" data-gallery="events"></a>
+                        </div>
+
+                        <!-- PERSONAL WORK ALBUM (BEYOND THE GIG) -->
+                        <div class="gallery-item glightbox reveal" data-gallery="personal" href="/birdbeachbnw.jpg" data-glightbox="title: Beyond the Gig; description: Capturing the beauty of the world outside of paid work.">
+                            <div class="item-overlay">
+                                <h3>Personal Work</h3>
+                                <p>Beyond the gig: Capturing the world.</p>
+                            </div>
+                            <img src="/birdbeachbnw.jpg" alt="Personal Photography" class="gallery-img">
+                        </div>
+                        <!-- Hidden Personal Album Assets -->
+                        <div style="display:none;">
+                            <a href="/birdbeachbnw1.jpg" class="glightbox" data-gallery="personal"></a>
+                            <a href="/birdintree.jpg" class="glightbox" data-gallery="personal"></a>
                         </div>
                     </div>
                 </div>
@@ -150,6 +186,8 @@
     </main>
 
     <script type="module" src="./main.js"></script>
+    <!-- GLightbox JS -->
+    <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
     <script>
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
