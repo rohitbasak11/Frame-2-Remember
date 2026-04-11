@@ -146,7 +146,6 @@ if (logoEl && logoContainer && isHome) {
             end: '+=120%',          // 120vh of scroll travel
             pin: true,
             scrub: 1,
-            anticipatePin: 1,
             invalidateOnRefresh: true,
             onUpdate(self) {
                 // Drive navbar state from scroll progress
@@ -180,10 +179,10 @@ if (logoEl && logoContainer && isHome) {
         duration: 0.6,
     }, 0);
 
-    // 0.0 – 0.5  "Capturing Moments" zooms in instantly alongside logo
+    // 0.0 – 0.5  "Capturing Moments" smooth fade-in and zoom
     heroTl.fromTo('.hero-content h1',
-        { autoAlpha: 0, scale: 0.08, z: -900 },
-        { autoAlpha: 1, scale: 1,    z: 0, ease: 'power3.out', duration: 0.5 },
+        { opacity: 0, scale: 0.2 },
+        { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.6 },
     0);
 
     // 0.3 – 0.6  subtitle fades up much earlier
