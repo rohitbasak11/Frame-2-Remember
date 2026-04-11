@@ -180,17 +180,17 @@ if (logoEl && logoContainer && isHome) {
         duration: 0.6,
     }, 0);
 
-    // 0.1 – 0.7  "Capturing Moments" zooms in from back
+    // 0.0 – 0.5  "Capturing Moments" zooms in instantly alongside logo
     heroTl.fromTo('.hero-content h1',
         { autoAlpha: 0, scale: 0.08, z: -900 },
-        { autoAlpha: 1, scale: 1,    z: 0, ease: 'power3.out', duration: 0.6 },
-    0.1);
+        { autoAlpha: 1, scale: 1,    z: 0, ease: 'power3.out', duration: 0.5 },
+    0);
 
-    // 0.5 – 0.8  subtitle fades up
-    heroTl.to('.hero-subtitle', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.5);
+    // 0.3 – 0.6  subtitle fades up much earlier
+    heroTl.to('.hero-subtitle', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.3);
 
-    // 0.65 – end  CTA fades up
-    heroTl.to('.hero-cta', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.65);
+    // 0.4 – 0.7  CTA fades up earlier
+    heroTl.to('.hero-cta', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.4);
 
     // Resize: re-center logo if it hasn't moved yet
     window.addEventListener('resize', () => {
