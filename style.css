@@ -16,6 +16,12 @@
     --font-body: 'Inter', sans-serif;
 
     --ease: cubic-bezier(0.16, 1, 0.3, 1);
+
+    /* Glassmorphism Design Tokens */
+    --glass-bg: rgba(255, 255, 255, 0.35);
+    --glass-blur: blur(24px) saturate(180%);
+    --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
 }
 
 /* ── Reset ── */
@@ -186,11 +192,11 @@ body:has(button:hover) #cursor-follower {
 
 /* After scrolled — liquid glass */
 .navbar.scrolled {
-    background: rgba(255, 255, 255, 0.4);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.6);
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.05);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-bottom: var(--glass-border);
+    box-shadow: var(--glass-shadow);
     padding: 14px 0;
 }
 
@@ -477,11 +483,15 @@ body:has(button:hover) #cursor-follower {
 
 .gallery-item {
     position: relative;
+    border-radius: 30px;
     overflow: hidden;
-    border-radius: 28px;
+    height: 500px;
     cursor: pointer;
-    height: 560px;
-    transform-style: preserve-3d;
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
     transition: box-shadow 0.5s var(--ease);
     will-change: transform;
 }
@@ -504,9 +514,13 @@ body:has(button:hover) #cursor-follower {
 
 .item-overlay {
     position: absolute;
-    bottom: 0; left: 0; right: 0;
-    padding: 36px;
-    background: linear-gradient(transparent, rgba(0,0,0,0.82));
+    bottom: 20px; left: 20px; right: 20px;
+    padding: 24px;
+    background: rgba(0, 0, 0, 0.45);
+    backdrop-filter: blur(12px) saturate(160%);
+    -webkit-backdrop-filter: blur(12px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 20px;
     color: white;
     transform: translateY(16px);
     opacity: 0;
@@ -547,10 +561,10 @@ body:has(button:hover) #cursor-follower {
 
 /* FOOTER - liquid glass effect */
 footer {
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(24px) saturate(180%);
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    border-top: 1px solid rgba(255, 255, 255, 0.7);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-top: var(--glass-border);
     padding: 80px 0 36px;
     position: relative; /* ensure it sits above background */
     z-index: 1;
@@ -591,9 +605,9 @@ footer {
     display: none; /* shown only via JS class on mobile */
     position: fixed;
     inset: 0;
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(30px) saturate(180%);
-    -webkit-backdrop-filter: blur(30px) saturate(180%);
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
     z-index: 5000;
     flex-direction: column;
     align-items: center;
