@@ -17,18 +17,25 @@ gsap.ticker.add(time => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
 
 /* =====================================================
-   LIVE GRADIENT POINTER ORB
+   CUSTOM CURSOR
    ===================================================== */
+const cursorDot  = document.getElementById('cursor');
+const cursorRing = document.getElementById('cursor-follower');
+
+// Merge all mousemove work into one listener
+let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+let orbX = mouseX, orbY = mouseY;
+let rx = mouseX, ry = mouseY;
+
+document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (cursorDot) gsap.set(cursorDot, { x: mouseX, y: mouseY });
+});
+
+// Pointer orb smooth follow
 const pointerOrb = document.getElementById('gradient-pointer');
 if (pointerOrb) {
-    let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
-    let orbX = mouseX, orbY = mouseY;
-
-    document.addEventListener('mousemove', e => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-    });
-
     (function updateOrb() {
         orbX += (mouseX - orbX) * 0.06;
         orbY += (mouseY - orbY) * 0.06;
@@ -37,23 +44,11 @@ if (pointerOrb) {
     })();
 }
 
-/* =====================================================
-   CUSTOM CURSOR
-   ===================================================== */
-const cursorDot  = document.getElementById('cursor');
-const cursorRing = document.getElementById('cursor-follower');
+// Cursor ring smooth follow
 if (cursorDot && cursorRing) {
-    let mx = window.innerWidth / 2, my = window.innerHeight / 2;
-    let rx = mx, ry = my;
-
-    document.addEventListener('mousemove', e => {
-        mx = e.clientX; my = e.clientY;
-        gsap.set(cursorDot, { x: mx, y: my });
-    });
-
     (function animateCursor() {
-        rx += (mx - rx) * 0.12;
-        ry += (my - ry) * 0.12;
+        rx += (mouseX - rx) * 0.12;
+        ry += (mouseY - ry) * 0.12;
         gsap.set(cursorRing, { x: rx, y: ry });
         requestAnimationFrame(animateCursor);
     })();
@@ -207,7 +202,8 @@ if (logoEl && logoContainer && isHome) {
 
 } else if (logoEl && logoContainer) {
     // ── INTERIOR PAGES ────────────────────────────────────
-    // Content is always visible
+    // Content is always visible — ensure no filter flash
+    gsap.set('#smooth-wrapper', { filter: 'none', opacity: 1 });
     gsap.set('#smooth-content', { autoAlpha: 1 });
 
     // Place logo in navbar center after layout is ready
@@ -256,26 +252,28 @@ const observer = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal, .reveal-text').forEach(el => observer.observe(el));
 
 /* =====================================================
-   GALLERY — 3D TILT ON HOVER
+   GALLERY — 3D TILT ON HOVER (desktop only)
    ===================================================== */
-document.querySelectorAll('.gallery-item').forEach(item => {
-    item.addEventListener('mousemove', e => {
-        const r = item.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
-        const y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
-        gsap.to(item, {
-            rotateY: x * 10,
-            rotateX: -y * 7,
-            scale: 1.03,
-            duration: 0.45,
-            ease: 'power2.out',
-            transformPerspective: 900,
+if (window.matchMedia('(hover: hover)').matches) {
+    document.querySelectorAll('.gallery-item').forEach(item => {
+        item.addEventListener('mousemove', e => {
+            const r = item.getBoundingClientRect();
+            const x = ((e.clientX - r.left) / r.width  - 0.5) * 2;
+            const y = ((e.clientY - r.top)  / r.height - 0.5) * 2;
+            gsap.to(item, {
+                rotateY: x * 10,
+                rotateX: -y * 7,
+                scale: 1.03,
+                duration: 0.45,
+                ease: 'power2.out',
+                transformPerspective: 900,
+            });
+        });
+        item.addEventListener('mouseleave', () => {
+            gsap.to(item, { rotateX: 0, rotateY: 0, scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.55)' });
         });
     });
-    item.addEventListener('mouseleave', () => {
-        gsap.to(item, { rotateX: 0, rotateY: 0, scale: 1, duration: 0.7, ease: 'elastic.out(1, 0.55)' });
-    });
-});
+}
 
 /* =====================================================
    CAMERA FLASH — PAGE TRANSITIONS
@@ -340,6 +338,8 @@ if (gradientBg) {
 /* =====================================================
    GALLERY ALBUM MODAL LOGIC (Fix for filter bugs)
    ===================================================== */
+let activeLightbox = null;
+
 document.addEventListener('DOMContentLoaded', () => {
     const albumModal = document.getElementById('album-modal');
     if (!albumModal) return;
@@ -363,22 +363,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
         links.forEach((link, i) => {
             const href = link.getAttribute('href');
-            // Select t1-t8 class based on index
             const tClass = `t${(i % 8) + 1}`;
-            
+
             const thumbA = document.createElement('a');
             thumbA.href = href;
             thumbA.className = `glightbox thumb ${tClass}`;
             thumbA.setAttribute('data-gallery', albumType);
-            
+
             const img = document.createElement('img');
             img.src = href;
             img.alt = `${title} photo ${i + 1}`;
-            
+            img.setAttribute('loading', 'lazy');
+
             thumbA.appendChild(img);
             modalThumbs.appendChild(thumbA);
 
-            // Add organic drift to this specific thumb
+            // Add organic drift
             const driftY = 20 + Math.random() * 30;
             const driftX = 15 + Math.random() * 25;
             const rot = (Math.random() - 0.5) * 12;
@@ -390,7 +390,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 duration: 4 + Math.random() * 2,
                 repeat: -1,
                 yoyo: true,
-                ease: "sine.inOut",
+                ease: 'sine.inOut',
                 delay: i * 0.15
             });
         });
@@ -399,25 +399,33 @@ document.addEventListener('DOMContentLoaded', () => {
         albumModal.classList.add('active');
         document.body.style.overflow = 'hidden';
 
-        // Re-init Lightbox for new dynamic elements
-        GLightbox({
-            selector: '.glightbox',
-            touchNavigation: true,
-            loop: true,
-            zoomable: true
+        // Init lightbox after DOM flush to avoid race condition
+        requestAnimationFrame(() => {
+            if (activeLightbox) activeLightbox.destroy();
+            activeLightbox = GLightbox({
+                selector: '.glightbox',
+                touchNavigation: true,
+                loop: true,
+                zoomable: true
+            });
         });
     };
 
     const closeAlbum = () => {
         albumModal.classList.remove('active');
         document.body.style.overflow = '';
-        modalThumbs.innerHTML = ''; // Kill animations
+        modalThumbs.innerHTML = '';
+        gsap.killTweensOf('.thumb');
     };
 
-    // Attach Click Events to Cards
+    // Attach Click and Keyboard Events to Cards
     document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', (e) => {
-            openAlbum(item);
+        item.addEventListener('click', () => openAlbum(item));
+        item.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                openAlbum(item);
+            }
         });
     });
 
@@ -428,5 +436,3 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.key === 'Escape') closeAlbum();
     });
 });
-
-console.log('Frame 2 Remember ✦ loaded');

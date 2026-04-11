@@ -7,6 +7,15 @@
     <title>Frame 2 Remember | Premium Photography in New Zealand</title>
     <meta name="description"
         content="Timeless photography by Rohit Basak. Specializing in weddings, portraits, and events since 2018 in New Zealand.">
+    <!-- Open Graph / Social Sharing -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Frame 2 Remember | Premium Photography in New Zealand">
+    <meta property="og:description" content="Timeless photography by Rohit Basak. Weddings, portraits & events since 2018.">
+    <meta property="og:image" content="/Logo-1.png">
+    <meta property="og:url" content="https://frame2remember.com">
+    <meta name="twitter:card" content="summary_large_image">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/Logo-1.png">
     <link rel="stylesheet" href="./style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -112,14 +121,18 @@
                     <h2 class="section-title reveal">Excellence in Every Frame</h2>
                     <div class="gallery-grid">
                         <!-- WEDDING ALBUM -->
-                        <div class="gallery-item reveal" data-album-type="wedding" data-title="Wedding Collection" data-desc="Timeless celebrations of love.">
+                        <div class="gallery-item reveal"
+                             data-album-type="wedding"
+                             data-title="Wedding Collection"
+                             data-desc="Timeless celebrations of love."
+                             role="button"
+                             tabindex="0"
+                             aria-label="Open Wedding Collection Album">
                             <div class="item-overlay">
                                 <h3>Weddings</h3>
                                 <p>Timeless celebrations of love.</p>
                             </div>
-                            <img src="/gracewed10.jpg" alt="Wedding Photography" class="gallery-img">
-                            
-                            <!-- Hidden Album Links for JS to pick up -->
+                            <img src="/gracewed10.jpg" alt="Wedding Photography" class="gallery-img" loading="lazy">
                             <div class="hidden-album-data" style="display:none;">
                                 <a href="/gracewed1.jpg"></a>
                                 <a href="/gracewed2.jpg"></a>
@@ -140,13 +153,18 @@
                         </div>
 
                         <!-- EVENTS ALBUM -->
-                        <div class="gallery-item reveal" data-album-type="events" data-title="Events" data-desc="Dynamic coverage of your important days.">
+                        <div class="gallery-item reveal"
+                             data-album-type="events"
+                             data-title="Events"
+                             data-desc="Dynamic coverage of your important days."
+                             role="button"
+                             tabindex="0"
+                             aria-label="Open Events Album">
                             <div class="item-overlay">
                                 <h3>Events</h3>
                                 <p>Dynamic coverage of your important days.</p>
                             </div>
-                            <img src="/diwali dance.webp" alt="Events Photography" class="gallery-img">
-                            
+                            <img src="/diwali dance.webp" alt="Events Photography" class="gallery-img" loading="lazy">
                             <div class="hidden-album-data" style="display:none;">
                                 <a href="/diwali dance.webp"></a>
                                 <a href="/diwalithaidance.jpg"></a>
@@ -157,13 +175,18 @@
                         </div>
 
                         <!-- PERSONAL WORK -->
-                        <div class="gallery-item reveal" data-album-type="personal" data-title="Beyond the Gig" data-desc="Capturing the world outside of paid work.">
+                        <div class="gallery-item reveal"
+                             data-album-type="personal"
+                             data-title="Beyond the Gig"
+                             data-desc="Capturing the world outside of paid work."
+                             role="button"
+                             tabindex="0"
+                             aria-label="Open Personal Work Album">
                             <div class="item-overlay">
                                 <h3>Personal Work</h3>
                                 <p>Beyond the gig: Capturing the world.</p>
                             </div>
-                            <img src="/birdbeachbnw.jpg" alt="Personal Photography" class="gallery-img">
-                            
+                            <img src="/birdbeachbnw.jpg" alt="Personal Photography" class="gallery-img" loading="lazy">
                             <div class="hidden-album-data" style="display:none;">
                                 <a href="/birdbeachbnw.jpg"></a>
                                 <a href="/birdbeachbnw1.jpg"></a>
@@ -192,7 +215,7 @@
                         </div>
                         <div class="footer-contact">
                             <h4>Contact</h4>
-                            <p>rohitbasaknote@gmail.com</p>
+                            <p><a href="mailto:rohitbasaknote@gmail.com">rohitbasaknote@gmail.com</a></p>
                             <p>Established 2018</p>
                         </div>
                     </div>

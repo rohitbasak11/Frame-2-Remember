@@ -99,6 +99,12 @@ html.lenis { height: auto; }
     will-change: transform;
 }
 
+/* Hide pointer orb on touch/hover-less devices */
+@media (hover: none) {
+    #gradient-pointer { display: none; }
+    #cursor, #cursor-follower { display: none; }
+}
+
 /* =====================================================
    CAMERA FLASH & PAGE TRANSITION
    ===================================================== */
@@ -533,20 +539,6 @@ body:has(button:hover) #cursor-follower {
     opacity: 1;
 }
 
-.gallery-item.expanded .item-overlay {
-    position: fixed;
-    top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
-    bottom: auto; right: auto;
-    width: auto;
-    background: transparent;
-    backdrop-filter: none;
-    border: none;
-    opacity: 1;
-    z-index: 100;
-    pointer-events: none;
-}
-
 .item-overlay h3 {
     font-family: var(--font-heading);
     font-size: 1.7rem;
@@ -715,33 +707,6 @@ body:has(button:hover) #cursor-follower {
     }
 }
 
-@media (max-width: 768px) {
-    .floating-thumbnails {
-        position: relative;
-        inset: auto;
-        display: flex;
-        gap: 12px;
-        padding: 20px;
-        overflow-x: auto;
-        scrollbar-width: none;
-        pointer-events: auto;
-        z-index: 10;
-        margin-top: -80px; /* pull up slightly over the card */
-    }
-    .floating-thumbnails::-webkit-scrollbar { display: none; }
-    
-    .thumb {
-        position: relative !important;
-        flex: 0 0 120px;
-        height: 150px;
-        top: auto !important;
-        left: auto !important;
-        right: auto !important;
-        bottom: auto !important;
-        transform: none !important;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-    }
-}
 
 /* =====================================================
    SCROLL REVEAL — elements animate in via IntersectionObserver
