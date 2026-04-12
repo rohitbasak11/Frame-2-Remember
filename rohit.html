@@ -449,23 +449,33 @@
             const dec = dashboardData.declarations.find(item => item.id === id);
             if (!dec || !dec.pdf_base64) return;
 
-            const base64Data = dec.pdf_base64.split('base64,')[1];
-            const byteCharacters = atob(base64Data);
-            const byteNumbers = new Array(byteCharacters.length);
-            for (let i = 0; i < byteCharacters.length; i++) {
-                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            // Robust Base64 extraction - handles strings with or without prefix
+            let base64Data = dec.pdf_base64;
+            if (base64Data.includes('base64,')) {
+                base64Data = base64Data.split('base64,')[1];
             }
-            const byteArray = new Uint8Array(byteNumbers);
-            const blob = new Blob([byteArray], {type: 'application/pdf'});
 
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = `${(dec.name || 'Client').replace(/\s+/g, '_')}_Declaration.pdf`;
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(url);
+            try {
+                const byteCharacters = atob(base64Data);
+                const byteNumbers = new Array(byteCharacters.length);
+                for (let i = 0; i < byteCharacters.length; i++) {
+                    byteNumbers[i] = byteCharacters.charCodeAt(i);
+                }
+                const byteArray = new Uint8Array(byteNumbers);
+                const blob = new Blob([byteArray], {type: 'application/pdf'});
+
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${(dec.name || 'Client').replace(/\s+/g, '_')}_Declaration.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            } catch (err) {
+                console.error('PDF Download Error:', err);
+                alert('Could not process PDF data. The record might be corrupted.');
+            }
         }
 
         function downloadText(id) {
