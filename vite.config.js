@@ -10,6 +10,8 @@ export default defineConfig({
         portfolio: resolve(__dirname, 'portfolio.html'),
         enquire: resolve(__dirname, 'enquire.html'),
         declaration: resolve(__dirname, 'declaration.html'),
+        connect: resolve(__dirname, 'connect.html'),
+        rohit: resolve(__dirname, 'rohit.html'),
       },
     },
   },
