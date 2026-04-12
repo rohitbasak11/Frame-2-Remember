@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect | Frame 2 Remember</title>
+    <meta name="description" content="Connect with Frame 2 Remember to start planning your perfect shoot, review declarations, or reach out directly.">
+    <link rel="icon" type="image/png" href="/Logo-1.png">
+    <link rel="stylesheet" href="./style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ── Connect Page Specific ── */
+        .connect-hero {
+            padding: 160px 0 60px;
+            text-align: center;
+        }
+
+        .connect-hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2.8rem, 7vw, 5.5rem);
+            line-height: 1.1;
+            margin-bottom: 20px;
+        }
+
+        .connect-hero p {
+            font-size: 1.15rem;
+            color: var(--color-text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .connect-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 40px;
+            padding: 40px 60px 120px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .connect-card {
+            background: var(--glass-bg);
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            border: var(--glass-border);
+            box-shadow: var(--glass-shadow);
+            border-radius: 30px;
+            padding: 50px 40px;
+            text-align: left;
+            text-decoration: none;
+            color: var(--color-text);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            transition: all 0.4s var(--ease);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .connect-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 40px 80px rgba(0, 0, 0, 0.1);
+            border-color: rgba(255, 255, 255, 0.4);
+        }
+
+        .connect-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, var(--color-salmon), var(--color-pink));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+        }
+
+        .connect-card h2 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            margin: 0;
+        }
+
+        .connect-card p {
+            font-size: 1rem;
+            color: var(--color-text-muted);
+            line-height: 1.6;
+            margin: 0;
+            flex-grow: 1; /* Pushes button to bottom */
+        }
+
+        .connect-card .btn-text {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--color-blue);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 20px;
+            transition: gap 0.3s var(--ease);
+        }
+
+        .connect-card:hover .btn-text {
+            gap: 12px;
+            color: var(--color-pink);
+        }
+
+        /* Ambient Glow effect inside cards */
+        .connect-card::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255,255,255,0.1) 0%, transparent 60%);
+            opacity: 0;
+            transform: scale(0.5);
+            transition: all 0.6s var(--ease);
+            pointer-events: none;
+        }
+
+        .connect-card:hover::after {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        @media (max-width: 768px) {
+            .connect-grid {
+                padding: 20px 24px 80px;
+                gap: 30px;
+            }
+            .connect-card {
+                padding: 40px 30px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Backgrounds & Overlays -->
+    <div id="gradient-bg"></div>
+    <div id="gradient-pointer"></div>
+    <div id="camera-flash"></div>
+    <div id="transition-overlay"></div>
+    <div id="cursor"></div>
+    <div id="cursor-follower"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar scrolled">
+        <div class="nav-container">
+            <ul class="nav-links nav-left">
+                <li><a href="/">Home</a></li>
+                <li><a href="/about.html">About</a></li>
+            </ul>
+
+            <div id="nav-logo-placeholder"></div>
+
+            <ul class="nav-links nav-right">
+                <li><a href="/portfolio.html">Portfolio</a></li>
+                <li class="nav-dropdown">
+                    <a href="/connect.html" class="active">Connect</a>
+                    <ul class="dropdown-content">
+                        <li><a href="/enquire.html">Enquiry</a></li>
+                        <li><a href="/declaration.html">Declaration</a></li>
+                        <li><a href="#footer">Contact Us</a></li>
+                        <li><a href="https://www.instagram.com/frame2remember?igsh=MWFnbnR6ZjFmOTg4bg==" target="_blank">F2R Instagram</a></li>
+                        <li><a href="https://www.instagram.com/rohitbasak11?igsh=cXl5cWJxdWFoMDFy&utm_source=qr" target="_blank">Personal Instagram</a></li>
+                    </ul>
+                </li>
+            </ul>
+
+            <div class="menu-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu">
+        <a href="/">Home</a>
+        <a href="/about.html">About</a>
+        <a href="/portfolio.html">Portfolio</a>
+        <div style="height:1px; background:rgba(0,0,0,0.05); margin:10px 0;"></div>
+        <a href="/connect.html" class="active">Connect Hub</a>
+        <a href="/enquire.html">Enquiry</a>
+        <a href="/declaration.html">Declaration</a>
+        <a href="#footer">Contact Us</a>
+    </div>
+
+    <!-- Logo -->
+    <div id="logo-main-container">
+        <img src="/Logo-1.png" alt="Frame 2 Remember Logo" id="main-logo">
+    </div>
+
+    <main id="smooth-wrapper">
+        <div id="smooth-content">
+
+            <!-- Page Header -->
+            <section class="connect-hero container">
+                <h1 class="reveal-text">Let's <span class="accent-pink">Connect</span></h1>
+                <p class="reveal">Choose how you'd like to get in touch. Whether it's planning your next big shoot, reviewing our agreements, or just saying hello.</p>
+            </section>
+
+            <!-- Connect Options Grid -->
+            <div class="connect-grid">
+                
+                <a href="/enquire.html" class="connect-card reveal">
+                    <div class="connect-icon">✧</div>
+                    <h2>Let's Create</h2>
+                    <p>Ready to capture your memories? Head over to our enquiry form to share the details of your upcoming wedding or event, and we'll get the conversation started.</p>
+                    <div class="btn-text">Submit Enquiry &rarr;</div>
+                </a>
+
+                <a href="/declaration.html" class="connect-card reveal">
+                    <div class="connect-icon">📝</div>
+                    <h2>Formalities</h2>
+                    <p>For our booked clients: Please read and complete our digital declaration and confidentiality agreement to formalize our upcoming collaboration.</p>
+                    <div class="btn-text">Sign Declaration &rarr;</div>
+                </a>
+
+                <a href="mailto:rohitbasaknote@gmail.com" class="connect-card reveal">
+                    <div class="connect-icon">✉️</div>
+                    <h2>Direct Line</h2>
+                    <p>Have an immediate question or a unique request? Reach out to our studio directly via email and we will respond as soon as possible.</p>
+                    <div class="btn-text">Email Us &rarr;</div>
+                </a>
+
+                <div class="connect-card reveal">
+                    <div class="connect-icon">✨</div>
+                    <h2>Our Journey</h2>
+                    <p>Follow the daily frames, behind-the-scenes moments, and our latest curated portfolios over on Instagram.</p>
+                    <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                        <a href="https://www.instagram.com/frame2remember?igsh=MWFnbnR6ZjFmOTg4bg==" target="_blank" class="btn-text" style="text-decoration: none; margin-top: 0;">Follow F2R &rarr;</a>
+                        <a href="https://www.instagram.com/rohitbasak11?igsh=cXl5cWJxdWFoMDFy&utm_source=qr" target="_blank" class="btn-text" style="text-decoration: none; margin-top: 0; color: var(--color-salmon);">Personal Insta &rarr;</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Footer -->
+            <footer id="footer">
+                <div class="container">
+                    <div class="footer-grid">
+                        <div class="footer-brand">
+                            <img src="/Logo-1.png" alt="Frame 2 Remember" class="footer-logo">
+                            <p>Photography by Rohit Basak. Based in New Zealand.</p>
+                        </div>
+                        <div class="footer-links">
+                            <h4>Quick Links</h4>
+                            <ul>
+                                <li><a href="/">Home</a></li>
+                                <li><a href="/about.html">About</a></li>
+                                <li><a href="/portfolio.html">Portfolio</a></li>
+                                <li><a href="/connect.html">Connect</a></li>
+                            </ul>
+                        </div>
+                        <div class="footer-contact">
+                            <h4>Contact</h4>
+                            <p><a href="mailto:rohitbasaknote@gmail.com">rohitbasaknote@gmail.com</a></p>
+                            <p>Established 2018</p>
+                        </div>
+                    </div>
+                    <div class="footer-bottom">
+                        <p>&copy; 2018-2026 Frame 2 Remember. All rights reserved.</p>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script type="module" src="./main.js"></script>
+    <script>
+        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+
+</html>
