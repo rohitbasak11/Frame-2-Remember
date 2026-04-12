@@ -191,11 +191,23 @@
             text-decoration: none;
             font-size: 0.8rem;
             display: inline-block;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-danger {
+            background: var(--color-salmon);
         }
 
         .date-cell {
             font-size: 0.8rem;
             color: var(--color-text-muted);
+        }
+        
+        .action-cell {
+            min-width: 120px;
         }
     </style>
 </head>
@@ -237,8 +249,9 @@
                             <th>Date</th>
                             <th>Name</th>
                             <th>Contact</th>
-                            <th>Type</th>
+                            <th>Type & Length</th>
                             <th>Message</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="enquiries-body">
@@ -259,6 +272,7 @@
                             <th>Email</th>
                             <th>Submission Time</th>
                             <th>Document</th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="declarations-body">
@@ -342,10 +356,17 @@
                         <div>${eq.email || 'N/A'}</div>
                         <div style="font-size: 0.8rem; color: #aaa;">${eq.phone || ''}</div>
                     </td>
-                    <td>${eq.shoot_type || 'N/A'}</td>
+                    <td>
+                        <div>${eq.shoot_type || 'N/A'}</div>
+                        <div style="font-size: 0.8rem; color: var(--color-pink);">${eq.shoot_length || ''}</div>
+                    </td>
                     <td class="message-cell">${eq.message || ''}</td>
+                    <td class="action-cell">
+                        <button onclick="downloadText(${eq.id})" class="view-pdf-btn">Download TXT</button>
+                        <button onclick="deleteRecord('enquiries', ${eq.id})" class="view-pdf-btn btn-danger">Delete</button>
+                    </td>
                 </tr>
-            `).join('') || `<tr><td colspan="5" style="text-align:center">No enquiries yet</td></tr>`;
+            `).join('') || `<tr><td colspan="6" style="text-align:center">No enquiries yet</td></tr>`;
 
             // Render Declarations
             db.innerHTML = dashboardData.declarations.map(dec => `
@@ -360,8 +381,62 @@
                             : `<span style="color:#666">No PDF</span>`
                         }
                     </td>
+                    <td class="action-cell">
+                        <button onclick="deleteRecord('declarations', ${dec.id})" class="view-pdf-btn btn-danger">Delete</button>
+                    </td>
                 </tr>
-            `).join('') || `<tr><td colspan="5" style="text-align:center">No declarations yet</td></tr>`;
+            `).join('') || `<tr><td colspan="6" style="text-align:center">No declarations yet</td></tr>`;
+        }
+
+        async function deleteRecord(table, id) {
+            if (!confirm('Are you sure you want to permanently delete this record?')) return;
+
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+
+            try {
+                const res = await fetch('/api/admin-delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p, table, id })
+                });
+
+                if (!res.ok) throw new Error('Deletion failed');
+
+                // Remove from local data array and re-render so we don't have to fetch all again
+                dashboardData[table] = dashboardData[table].filter(item => item.id !== id);
+                renderData();
+                alert('Record deleted successfully.');
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        }
+
+        function downloadText(id) {
+            const eq = dashboardData.enquiries.find(item => item.id === id);
+            if (!eq) return;
+
+            const content = \`Frame 2 Remember - Enquiry Details\\n\` +
+                            \`=================================\\n\\n\` +
+                            \`Date Submitted: \${new Date(eq.created_at).toLocaleString()}\\n\` +
+                            \`Name: \${eq.name || 'N/A'}\\n\` +
+                            \`Email: \${eq.email || 'N/A'}\\n\` +
+                            \`Phone: \${eq.phone || 'N/A'}\\n\` +
+                            \`Shoot Type: \${eq.shoot_type || 'N/A'}\\n\` +
+                            \`Expected Length: \${eq.shoot_length || 'N/A'}\\n\\n\` +
+                            \`Requirements / Message:\\n\` +
+                            \`-----------------------\\n\` +
+                            \`\${eq.message || 'None'}\\n\`;
+
+            const blob = new Blob([content], { type: 'text/plain' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = \`Enquiry_\${(eq.name || 'Client').replace(/\\s+/g, '_')}.txt\`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
     </script>
 </body>

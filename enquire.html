@@ -98,18 +98,31 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="shoot-type">Type of Shoot *</label>
-                            <select id="shoot-type" name="shoot-type" class="form-field" required>
-                                <option value="" disabled selected>Select an option</option>
-                                <option value="Individual Portrait">Individual Portrait</option>
-                                <option value="Couple Session">Couple Session</option>
-                                <option value="Wedding">Wedding (Event)</option>
-                                <option value="Engagement">Engagement (Event)</option>
-                                <option value="Corporate Event">Corporate Event (Event)</option>
-                                <option value="Family Portraits">Family Portraits</option>
-                                <option value="Other">Other</option>
-                            </select>
+                        <div class="form-group-row">
+                            <div class="form-group">
+                                <label for="shoot-type">Type of Shoot *</label>
+                                <select id="shoot-type" name="shoot-type" class="form-field" required>
+                                    <option value="" disabled selected>Select an option</option>
+                                    <option value="Individual Portrait">Individual Portrait</option>
+                                    <option value="Couple Session">Couple Session</option>
+                                    <option value="Wedding">Wedding (Event)</option>
+                                    <option value="Engagement">Engagement (Event)</option>
+                                    <option value="Corporate Event">Corporate Event (Event)</option>
+                                    <option value="Family Portraits">Family Portraits</option>
+                                    <option value="Other">Other</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="shoot-length">Expected Length *</label>
+                                <select id="shoot-length" name="shoot-length" class="form-field" required>
+                                    <option value="" disabled selected>Select duration</option>
+                                    <option value="1-2 Hours">1-2 Hours</option>
+                                    <option value="Half Day (3-4 Hours)">Half Day (3-4 Hours)</option>
+                                    <option value="Full Day (8+ Hours)">Full Day (8+ Hours)</option>
+                                    <option value="Multiple Days">Multiple Days</option>
+                                    <option value="Not Sure Yet">Not Sure Yet</option>
+                                </select>
+                            </div>
                         </div>
 
                         <div class="form-group-row">
@@ -199,6 +212,7 @@
                     email: data.email,
                     phone: data.phone,
                     shootType: data['shoot-type'],
+                    shootLength: data['shoot-length'],
                     message: `Timing: ${data['shoot-time']}\nGuests: ${data.guests || 'N/A'}\n\nRequirements:\n${data.questions}`
                 };
 

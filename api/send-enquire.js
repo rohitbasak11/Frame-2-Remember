@@ -21,7 +21,7 @@ export default async function handler(req, res) {
     }
 
     try {
-        const { name, email, phone, shootType, message } = req.body;
+        const { name, email, phone, shootType, shootLength, message } = req.body;
 
         // 1. Save to Database (if configured)
         if (supabase) {
@@ -32,6 +32,7 @@ export default async function handler(req, res) {
                     email: email || null,
                     phone: phone || null,
                     shoot_type: shootType || null,
+                    shoot_length: shootLength || null,
                     message: message || null
                 }]);
 
@@ -55,6 +56,7 @@ export default async function handler(req, res) {
                     <p><strong>Email:</strong> ${esc(email) || 'N/A'}</p>
                     <p><strong>Phone:</strong> ${esc(phone) || 'Not provided'}</p>
                     <p><strong>Shoot Type:</strong> ${esc(shootType) || 'N/A'}</p>
+                    <p><strong>Expected Length:</strong> ${esc(shootLength) || 'N/A'}</p>
                     <br/>
                     <h3>Message:</h3>
                     <div style="padding: 15px; border-radius: 8px; background: #f9f9f9; border: 1px solid #ddd;">
