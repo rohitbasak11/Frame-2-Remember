@@ -8,11 +8,15 @@ export default async function handler(req, res) {
         return res.status(401).json({ error: 'Unauthorized' });
     }
 
+    console.log('Starting DB Connection via Vercel...');
+    
+    // Switch to IPv4 Pooler which is more reliable for cloud-to-cloud
     const client = new Client({
-        connectionString: 'postgresql://postgres:AslxYdFt7zuf5DVC@db.octgqfaufggixsytmjmn.supabase.co:5432/postgres',
+        connectionString: 'postgresql://postgres.octgqfaufggixsytmjmn:AslxYdFt7zuf5DVC@aws-0-ap-southeast-2.pooler.supabase.com:5432/postgres',
         ssl: {
             rejectUnauthorized: false
-        }
+        },
+        connectionTimeoutMillis: 5000,
     });
 
     try {
