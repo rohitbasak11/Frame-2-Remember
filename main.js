@@ -163,11 +163,6 @@ if (logoEl && logoContainer && isHome) {
             onEnterBack() {
                 // Hide page content
                 gsap.to('#smooth-content', { autoAlpha: 0, duration: 0.2 });
-                // Immediately snap hero elements back to their initial hidden state
-                // so the reverse scrub doesn't flash them
-                gsap.set('.hero-content h1', { opacity: 0, scale: 0.2 });
-                gsap.set('.hero-subtitle-wrapper', { autoAlpha: 0, y: 20 });
-                gsap.set('.hero-cta', { autoAlpha: 0, y: 20 });
             },
         },
     });
@@ -190,11 +185,8 @@ if (logoEl && logoContainer && isHome) {
         { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.6 },
     0);
 
-    // 0.3 – 0.6  subtitle block fades up much earlier
-    heroTl.to('.hero-subtitle-wrapper', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.3);
-
-    // 0.4 – 0.7  CTA fades up earlier
-    heroTl.to('.hero-cta', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.3 }, 0.4);
+    // 0.3 – 0.6  card block fades up much earlier
+    heroTl.to('.hero-glass-card', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.4 }, 0.3);
 
     // Resize: re-center logo if it hasn't moved yet
     window.addEventListener('resize', () => {

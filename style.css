@@ -414,10 +414,22 @@ body:has(button:hover) #cursor-follower {
     visibility: hidden;
 }
 
-.hero-subtitle-wrapper {
-    margin-bottom: 44px;
+.hero-glass-card {
+    background: var(--glass-bg);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    box-shadow: var(--glass-shadow);
+    border-radius: 28px;
+    padding: 32px 40px;
+    margin: 0 auto 10px;
+    max-width: 650px;
     visibility: hidden; /* GSAP autoAlpha controls */
     transform: translateY(20px);
+}
+
+.hero-subtitle-wrapper {
+    margin-bottom: 32px;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -465,8 +477,6 @@ body:has(button:hover) #cursor-follower {
     flex-direction: column;
     align-items: center;
     gap: 24px;
-    visibility: hidden; /* GSAP autoAlpha controls */
-    transform: translateY(20px);
 }
 
 /* Scroll indicator — animated cascading chevrons */
