@@ -377,7 +377,7 @@
                     <td class="date-cell">${dec.time || 'N/A'}</td>
                     <td>
                         ${dec.pdf_base64 
-                            ? `<a href="${dec.pdf_base64}" download="${(dec.name||'Client').replace(/\\s+/g, '_')}_Declaration.pdf" class="view-pdf-btn">Download PDF</a>`
+                            ? `<button onclick="downloadPDF(${dec.id})" class="view-pdf-btn">Download PDF</button>`
                             : `<span style="color:#666">No PDF</span>`
                         }
                     </td>
@@ -410,6 +410,29 @@
             } catch (err) {
                 alert('Error: ' + err.message);
             }
+        }
+
+        function downloadPDF(id) {
+            const dec = dashboardData.declarations.find(item => item.id === id);
+            if (!dec || !dec.pdf_base64) return;
+
+            const base64Data = dec.pdf_base64.split('base64,')[1];
+            const byteCharacters = atob(base64Data);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], {type: 'application/pdf'});
+
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `${(dec.name || 'Client').replace(/\s+/g, '_')}_Declaration.pdf`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
         }
 
         function downloadText(id) {

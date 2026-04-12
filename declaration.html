@@ -497,14 +497,13 @@ Signed Date  : ${signedDate}
                 });
 
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('Database insertion failed');
                 }
 
-                showToast('✅ Email with completely signed PDF sent to Rohit Basak!', 'success');
+                showToast('✅ Declaration saved successfully to your dashboard!', 'success');
             } catch (err) {
-                console.error('API Error:', err);
-                sendMailtoFallback(data);
-                showToast('⚠️ Auto-send failed — your email client has been opened.', 'warn');
+                console.error('Submission Error:', err);
+                showToast('❌ Submission failed. Please try again or check your internet connection.', 'error');
             }
 
             // Brief pause so toast is visible, then print
@@ -515,12 +514,7 @@ Signed Date  : ${signedDate}
             }, 1500);
         });
 
-        // ── mailto fallback ───────────────────────────────────────────
-        function sendMailtoFallback(data) {
-            const subject = encodeURIComponent(`F2R Declaration — ${data.name}`);
-            const body = encodeURIComponent(data.message);
-            window.location.href = `mailto:rohitbasaknote@gmail.com?subject=${subject}&body=${body}`;
-        }
+
 
         // ── Signature Pad Logic ───────────────────────────────────────
         document.addEventListener('DOMContentLoaded', () => {

@@ -203,7 +203,7 @@
                 const formData = new FormData(form);
                 const data = Object.fromEntries(formData.entries());
 
-                status.textContent = '⏳ Sending Enquiry...';
+                status.textContent = '⏳ Submitting Enquiry...';
                 status.style.color = 'var(--color-blue)';
                 form.querySelector('.submit-btn').disabled = true;
 
@@ -223,15 +223,15 @@
                         body: JSON.stringify(payload)
                     });
 
-                    if (!response.ok) throw new Error('Failed to send');
+                    if (!response.ok) throw new Error('Failed to submit');
 
-                    status.textContent = '✅ Thank you! Your enquiry has been routed to Rohit Basak.';
+                    status.textContent = '✅ Thank you! Your enquiry has been received and saved to our dashboard.';
                     status.style.color = '#27ae60';
                     form.reset();
                     guestMark.textContent = '';
                 } catch (err) {
                     console.error('Submit Error:', err);
-                    status.textContent = '⚠️ Error sending enquiry. Please email rohitbasaknote@gmail.com directly.';
+                    status.textContent = '⚠️ Application Error. Please message us on Instagram @frame.2.remember while we fix this.';
                     status.style.color = '#e74c3c';
                 } finally {
                     form.querySelector('.submit-btn').disabled = false;
