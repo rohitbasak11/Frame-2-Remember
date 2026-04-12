@@ -251,14 +251,14 @@ body:has(button:hover) #cursor-follower {
 
 #nav-logo-placeholder {
     width: 0px;
-    height: 45px;
+    height: 65px;
     flex-shrink: 0;
     transition: width 0.55s var(--ease);
     overflow: visible; /* logo floats over, not clipped */
 }
 
 .navbar.scrolled #nav-logo-placeholder {
-    width: 150px;
+    width: 250px;
 }
 
 #main-logo {

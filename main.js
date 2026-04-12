@@ -85,8 +85,8 @@ const logoContainer = document.getElementById('logo-main-container');
 const placeholder   = document.getElementById('nav-logo-placeholder');
 
 // The target width/height for the logo in the navbar
-const NAV_LOGO_W = 180;
-const NAV_LOGO_H = 60; // constrain height so logo never overflows the navbar
+const NAV_LOGO_W = 250;
+const NAV_LOGO_H = 86; // constrain height so logo never overflows the navbar
 
 /**
  * Get the center coords of the placeholder AFTER the navbar has transitioned
@@ -97,10 +97,9 @@ function getPlaceholderCenter() {
     if (!placeholder) return { x: window.innerWidth / 2, y: 36 };
     const rect = placeholder.getBoundingClientRect();
     // Fixed Y: always target the visual center of the scrolled navbar.
-    // Scrolled navbar: 14px top padding + 45px placeholder height + 14px bottom = 73px total.
-    // Center = 36.5px. We use a fixed value so the logo always lands in the same spot
-    // regardless of when getBoundingClientRect() is called during the CSS transition.
-    const NAV_CENTER_Y = 36;
+    // Scrolled navbar: 14px top padding + 65px placeholder height + 14px bottom = 93px total.
+    // Center = 46.5px. We use 48px so the bottom of the logo clears the bottom nav boundary perfectly.
+    const NAV_CENTER_Y = 48;
     if (rect.width < 10) {
         // Placeholder not yet expanded — estimate X as viewport center
         return { x: window.innerWidth / 2, y: NAV_CENTER_Y };
