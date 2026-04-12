@@ -85,8 +85,8 @@ const logoContainer = document.getElementById('logo-main-container');
 const placeholder   = document.getElementById('nav-logo-placeholder');
 
 // The target width/height for the logo in the navbar
-const NAV_LOGO_W = 140;
-const NAV_LOGO_H = 44; // constrain height so logo never overflows the navbar
+const NAV_LOGO_W = 180;
+const NAV_LOGO_H = 60; // constrain height so logo never overflows the navbar
 
 /**
  * Get the center coords of the placeholder AFTER the navbar has transitioned
