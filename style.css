@@ -122,12 +122,10 @@ html.lenis { height: auto; }
     z-index: 9999; pointer-events: none; opacity: 0;
 }
 
-/* =====================================================
-   DEVELOPING PHOTO LOAD EFFECT
-   ===================================================== */
+/* Developing Photo Load Effect — applied by JS only on home page */
 #smooth-wrapper {
-    filter: blur(8px) grayscale(100%) sepia(40%);
-    opacity: 0.3;
+    filter: none;
+    opacity: 1;
     will-change: filter, opacity;
 }
 

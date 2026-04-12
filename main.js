@@ -93,18 +93,20 @@ const NAV_LOGO_W = 140;
  * We force the scrolled class temporarily to measure, then revert.
  */
 function getPlaceholderCenter() {
-    if (!placeholder) return { x: window.innerWidth / 2, y: 35 };
+    if (!placeholder) return { x: window.innerWidth / 2, y: 36 };
     const rect = placeholder.getBoundingClientRect();
-    // If width is 0 (at-top state), compute where it WILL be when scrolled
+    // Fixed Y: always target the visual center of the scrolled navbar.
+    // Scrolled navbar: 14px top padding + 45px placeholder height + 14px bottom = 73px total.
+    // Center = 36.5px. We use a fixed value so the logo always lands in the same spot
+    // regardless of when getBoundingClientRect() is called during the CSS transition.
+    const NAV_CENTER_Y = 36;
     if (rect.width < 10) {
-        // Navbar container is flex centered with gap:56px on each side of placeholder
-        // Approximate: center of viewport horizontally, top of navbar
-        const navH = navbar ? navbar.getBoundingClientRect().height : 70;
-        return { x: window.innerWidth / 2, y: navH / 2 };
+        // Placeholder not yet expanded — estimate X as viewport center
+        return { x: window.innerWidth / 2, y: NAV_CENTER_Y };
     }
     return {
         x: rect.left + rect.width / 2,
-        y: rect.top  + rect.height / 2,
+        y: NAV_CENTER_Y,
     };
 }
 
@@ -121,10 +123,13 @@ if (logoEl && logoContainer && isHome) {
         autoAlpha: 1,
     });
 
-    // Step 2: Make sure content starts hidden
+    // Step 2: Apply developing-photo blur effect (home page only — CSS default is none)
+    gsap.set('#smooth-wrapper', { filter: 'blur(8px) grayscale(100%) sepia(40%)', opacity: 0.3 });
+
+    // Step 3: Make sure content starts hidden
     gsap.set('#smooth-content', { autoAlpha: 0 });
 
-    // Step 3: Start at-top navbar state
+    // Step 4: Start at-top navbar state
     navbar?.classList.add('at-top');
     navbar?.classList.remove('scrolled');
 
@@ -138,12 +143,11 @@ if (logoEl && logoContainer && isHome) {
         scrollTrigger: {
             trigger: '.hero',
             start: 'top top',
-            end: '+=60%',          // 60vh of scroll travel — content appears quickly
+            end: '+=60%',
             pin: true,
             scrub: 1,
             invalidateOnRefresh: true,
             onUpdate(self) {
-                // Drive navbar state from scroll progress
                 if (self.progress > 0.04 && navbar) {
                     navbar.classList.add('scrolled');
                     navbar.classList.remove('at-top');
@@ -153,11 +157,17 @@ if (logoEl && logoContainer && isHome) {
                 }
             },
             onLeave() {
-                // Pin is done — reveal main content
+                // Pin done — reveal main content
                 gsap.to('#smooth-content', { autoAlpha: 1, duration: 0.6, ease: 'power2.out' });
             },
             onEnterBack() {
-                gsap.to('#smooth-content', { autoAlpha: 0, duration: 0.3 });
+                // Hide page content
+                gsap.to('#smooth-content', { autoAlpha: 0, duration: 0.2 });
+                // Immediately snap hero elements back to their initial hidden state
+                // so the reverse scrub doesn't flash them
+                gsap.set('.hero-content h1', { opacity: 0, scale: 0.2 });
+                gsap.set('.hero-subtitle-wrapper', { autoAlpha: 0, y: 20 });
+                gsap.set('.hero-cta', { autoAlpha: 0, y: 20 });
             },
         },
     });
@@ -202,23 +212,24 @@ if (logoEl && logoContainer && isHome) {
 
 } else if (logoEl && logoContainer) {
     // ── INTERIOR PAGES ────────────────────────────────────
-    // Content is always visible — ensure no filter flash
+    // Make sure smooth-wrapper is never blurred on interior pages
     gsap.set('#smooth-wrapper', { filter: 'none', opacity: 1 });
     gsap.set('#smooth-content', { autoAlpha: 1 });
+    // Start logo invisible to prevent jump-from-nowhere flash
+    gsap.set(logoEl, { autoAlpha: 0 });
 
-    // Place logo in navbar center after layout is ready
+    // Position logo in navbar center THEN fade it in
     requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-            const c = getPlaceholderCenter();
-            gsap.set(logoEl, {
-                x: c.x,
-                y: c.y,
-                xPercent: -50,
-                yPercent: -50,
-                width: NAV_LOGO_W,
-                autoAlpha: 1,
-            });
+        const c = getPlaceholderCenter();
+        gsap.set(logoEl, {
+            x: c.x,
+            y: c.y,
+            xPercent: -50,
+            yPercent: -50,
+            width: NAV_LOGO_W,
         });
+        // Gentle fade-in after position is locked
+        gsap.to(logoEl, { autoAlpha: 1, duration: 0.35, ease: 'power2.out', delay: 0.05 });
     });
 }
 
@@ -293,12 +304,14 @@ const overlay = document.getElementById('transition-overlay');
 document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', e => {
         const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto') || link.target === '_blank' || link.classList.contains('glightbox')) return;
+        if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http') || link.target === '_blank' || link.classList.contains('glightbox')) return;
+        if (href === window.location.pathname || href === window.location.href) return; // same page
         e.preventDefault();
+        // Quick snappy transition — flash then navigate
         gsap.timeline({ onComplete: () => { window.location.href = href; } })
             .to(flash,   { autoAlpha: 1, duration: 0.05 })
-            .to(flash,   { autoAlpha: 0, duration: 0.25 })
-            .to(overlay, { autoAlpha: 1, duration: 0.5 }, '-=0.15');
+            .to(flash,   { autoAlpha: 0, duration: 0.15 })
+            .to(overlay, { autoAlpha: 1, duration: 0.25 }, '-=0.1');
     });
 });
 
