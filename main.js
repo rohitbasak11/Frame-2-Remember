@@ -167,9 +167,6 @@ if (logoEl && logoContainer && isHome) {
         },
     });
 
-    // 0.0 – 0.1  scroll indicator fades out fast
-    heroTl.to('.hero-scroll-indicator', { autoAlpha: 0, y: 10, duration: 0.1 }, 0);
-
     // 0.0 – 0.6  logo moves from center → navbar center
     heroTl.to(logoEl, {
         x: () => getPlaceholderCenter().x,
@@ -179,14 +176,22 @@ if (logoEl && logoContainer && isHome) {
         duration: 0.6,
     }, 0);
 
-    // 0.0 – 0.5  "Capturing Moments" smooth fade-in and zoom
-    heroTl.fromTo('.hero-content h1',
-        { opacity: 0, scale: 0.2 },
-        { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.6 },
-    0);
-
-    // 0.3 – 0.6  card block fades up much earlier
-    heroTl.to('.hero-glass-card', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.4 }, 0.3);
+    // Initial non-visible states for the decoupled text animations
+    gsap.set('.hero-content h1', { opacity: 0, scale: 0.85 });
+    
+    // Decoupled ScrollTrigger for elements that shouldn't bounce with 'scrub'
+    ScrollTrigger.create({
+        trigger: 'body',
+        start: 'top -20px',
+        onEnter: () => {
+            gsap.to('.hero-content h1', { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.6 });
+            gsap.to('.hero-glass-card', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.5, delay: 0.15 });
+        },
+        onLeaveBack: () => {
+            gsap.to('.hero-content h1', { opacity: 0, scale: 0.85, duration: 0.4 });
+            gsap.to('.hero-glass-card', { autoAlpha: 0, y: 20, duration: 0.4 });
+        }
+    });
 
     // Resize: re-center logo if it hasn't moved yet
     window.addEventListener('resize', () => {
