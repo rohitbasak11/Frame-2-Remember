@@ -457,6 +457,8 @@
 
             try {
                 const byteCharacters = atob(base64Data);
+                console.log(`Downloading PDF: ${dec.name}, Size: ${(byteCharacters.length / 1024 / 1024).toFixed(2)} MB`);
+                
                 const byteNumbers = new Array(byteCharacters.length);
                 for (let i = 0; i < byteCharacters.length; i++) {
                     byteNumbers[i] = byteCharacters.charCodeAt(i);
