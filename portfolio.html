@@ -75,9 +75,10 @@
         }
 
         .column-header.slim {
-            padding: 12px 24px;
+            padding: 8px 24px;
             top: 20px;
             margin-bottom: 24px;
+            border-radius: 40px;
         }
 
         .column-header .col-eyebrow {
@@ -103,6 +104,12 @@
             font-family: var(--font-heading);
             font-size: clamp(1.6rem, 3vw, 2.2rem);
             margin-bottom: 6px;
+            transition: all 0.3s var(--ease);
+        }
+
+        .column-header.slim h2 {
+            margin-bottom: 0;
+            font-size: 1.2rem;
         }
 
         .column-header p {
@@ -142,7 +149,7 @@
             position: relative;
             border-radius: 20px;
             overflow: hidden;
-            background: var(--glass-bg);
+            background: #111; /* Dark background for when image scales down to contain */
             border: var(--glass-border);
             box-shadow: var(--glass-shadow);
             cursor: pointer;
@@ -152,7 +159,7 @@
 
         .photo-card:hover {
             transform: translateY(-6px) scale(1.01);
-            box-shadow: 0 30px 60px rgba(0,0,0,0.14);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.4);
         }
 
         .photo-card img {
@@ -160,11 +167,12 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 0.7s var(--ease);
+            transition: all 0.5s var(--ease);
         }
 
         .photo-card:hover img {
-            transform: scale(1.06);
+            object-fit: contain;
+            transform: scale(1.02);
         }
 
         /* Varying heights for masonry feel */

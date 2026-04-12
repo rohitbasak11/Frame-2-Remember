@@ -257,6 +257,14 @@ body:has(button:hover) #cursor-follower {
     width: 150px;
 }
 
+#main-logo {
+    transition: opacity 0.4s var(--ease), transform 0.4s var(--ease);
+}
+#main-logo.nav-hidden {
+    opacity: 0 !important;
+    pointer-events: none;
+}
+
 .nav-links a {
     text-decoration: none;
     color: var(--color-text);
@@ -1021,22 +1029,22 @@ footer {
 }
 
 .gprev, .gnext, .gclose {
-    background: rgba(0, 0, 0, 0.45) !important; /* Darker for higher contrast */
-    backdrop-filter: blur(15px) !important;
-    -webkit-backdrop-filter: blur(15px) !important;
-    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    background: var(--glass-bg) !important;
+    backdrop-filter: var(--glass-blur) !important;
+    -webkit-backdrop-filter: var(--glass-blur) !important;
+    border: var(--glass-border) !important;
     border-radius: 50% !important;
-    width: 60px !important;
-    height: 60px !important;
+    width: 54px !important;
+    height: 54px !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
     transition: all 0.3s var(--ease) !important;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.3) !important;
+    box-shadow: none !important;
 }
 
 .gprev:hover, .gnext:hover, .gclose:hover {
-    background: rgba(0, 0, 0, 0.7) !important;
+    background: #fff !important;
     transform: scale(1.1) !important;
     border-color: rgba(255,255,255,0.5) !important;
 }
@@ -1054,12 +1062,20 @@ footer {
     height: 24px !important;
 }
 .gclose svg path {
-    fill: #ffffff !important;
+    fill: var(--color-text) !important;
+}
+
+.gclose:hover svg path {
+    fill: var(--color-pink) !important;
 }
 
 /* Ensure the arrows are also clear and matching */
 .gprev svg path, .gnext svg path {
-    fill: #ffffff !important;
+    fill: var(--color-text) !important;
+}
+
+.gprev:hover svg path, .gnext:hover svg path {
+    fill: var(--color-pink) !important;
 }
 
 /* Mobile adjustments: make buttons slightly smaller but still very accessible */

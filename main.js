@@ -459,52 +459,21 @@ if (isPortfolio) {
     lenis.on('scroll', ({ scroll }) => {
         const isScrollingDown = scroll > lastScroll;
         const columnHeaders = document.querySelectorAll('.column-header');
+        const mainLogo = document.getElementById('main-logo');
 
         if (scroll > scrollThreshold && isScrollingDown) {
             navbar?.classList.add('nav-hidden');
+            mainLogo?.classList.add('nav-hidden');
             columnHeaders.forEach(h => h.classList.add('slim'));
         } else if (!isScrollingDown || scroll <= scrollThreshold) {
             navbar?.classList.remove('nav-hidden');
+            mainLogo?.classList.remove('nav-hidden');
             columnHeaders.forEach(h => h.classList.remove('slim'));
         }
         lastScroll = scroll;
     });
 
-    // 2. Aspect Ratio Expansion on Hover
-    if (window.matchMedia('(hover: hover)').matches) {
-        document.querySelectorAll('.photo-card').forEach(card => {
-            const img = card.querySelector('img');
-            let originalHeight = 0;
-
-            card.addEventListener('mouseenter', () => {
-                originalHeight = card.offsetHeight;
-                if (img.naturalWidth) {
-                    const rect = card.getBoundingClientRect();
-                    const ratio = img.naturalWidth / img.naturalHeight;
-                    const targetHeight = rect.width / ratio;
-
-                    gsap.to(card, {
-                        height: targetHeight,
-                        duration: 0.5,
-                        ease: 'power2.out',
-                        overwrite: true
-                    });
-                }
-            });
-
-            card.addEventListener('mouseleave', () => {
-                gsap.to(card, {
-                    height: originalHeight,
-                    duration: 0.5,
-                    ease: 'power2.inOut',
-                    overwrite: true,
-                    onComplete: () => gsap.set(card, { clearProps: 'height' })
-                });
-            });
-        });
-    }
-
-    // 3. GLightbox Init (Ensuring it hooks correctly after DOM/JS ready)
+    // 2. GLightbox Init (Ensuring it hooks correctly after DOM/JS ready)
     // Wait for the "developing" animation to finish before enabling lightbox clicks
     const initLightbox = () => {
         if (typeof GLightbox !== 'undefined') {
