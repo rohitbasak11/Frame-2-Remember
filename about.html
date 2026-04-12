@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About | Frame 2 Remember - Rohit Basak</title>
-    <meta name="description" content="Meet Rohit Basak, the photographer behind Frame 2 Remember. Premium photography across New Zealand since 2018.">
+    <title>About | Frame 2 Remember - Rohit & Vishnu</title>
+    <meta name="description" content="Meet Rohit & Vishnu, the creative duo behind Frame 2 Remember. Premium photography across New Zealand since 2018.">
     <!-- Open Graph / Social Sharing -->
     <meta property="og:type" content="website">
-    <meta property="og:title" content="About | Frame 2 Remember - Rohit Basak">
-    <meta property="og:description" content="Meet Rohit Basak, the photographer behind Frame 2 Remember. Premium photography across NZ since 2018.">
+    <meta property="og:title" content="About | Frame 2 Remember - Rohit & Vishnu">
+    <meta property="og:description" content="Meet Rohit & Vishnu, the creative duo behind Frame 2 Remember. Premium photography across NZ since 2018.">
     <meta property="og:image" content="/Logo-1.png">
     <meta property="og:url" content="https://frame2remember.com/about">
     <meta name="twitter:card" content="summary_large_image">
@@ -79,13 +79,20 @@
                     <div class="about-text">
                         <h1 class="reveal-text">The Story Behind <br><span class="accent-pink">The Lens</span></h1>
                         <div class="reveal">
-                            <p class="lead">Frame 2 Remember was born out of a passion for capturing the raw, unscripted beauty of life. Established in 2018, we have been dedicated to preserving memories across New Zealand.</p>
-                            <p>Founded by Rohit Basak, our mission has always been simple: to create timeless images that tell a story. Whether it's the intimate glance during a wedding or the dynamic energy of a corporate event, we approach every shoot with the same level of care and artistic vision.</p>
-                            <p>Based in the stunning landscapes of New Zealand, we draw inspiration from our surroundings—incorporating natural light and authentic moments to create photography that resonates for a lifetime.</p>
+                            <p class="lead">Frame 2 Remember was born out of a shared passion for capturing the raw, unscripted beauty of life. Established in 2018, we have been dedicated to preserving memories across New Zealand.</p>
+                            <p>Founded and run ever since by **Rohit Basak and Vishnu**, our mission has always been simple: to create timeless images that tell a story. Together, we approach every shoot with the same level of care, technical precision, and artistic vision.</p>
+                            <p>Whether it's the intimate glance during a wedding or the dynamic energy of a corporate event, we believe in the power of connection. Based in the stunning landscapes of New Zealand, we draw inspiration from our surroundings—incorporating natural light and authentic moments to create photography that resonates for a lifetime.</p>
                         </div>
                     </div>
-                    <div class="about-image reveal">
-                        <img src="/rohitport.JPG" alt="Rohit Basak - Founder of Frame 2 Remember" style="width: 100%; border-radius: 20px; box-shadow: 0 30px 60px rgba(0,0,0,0.1);">
+                    <div class="team-container reveal">
+                        <div class="member-card">
+                            <img src="/rohitport.JPG" alt="Rohit Basak - Founder">
+                            <div class="member-badge">Meet Rohit</div>
+                        </div>
+                        <div class="member-card">
+                            <img src="/vishport.jpg" alt="Vishnu - Founder">
+                            <div class="member-badge">Meet Vishnu</div>
+                        </div>
                     </div>
                 </div>
             </section>
@@ -149,10 +156,45 @@
     <style>
         .about-grid {
             display: grid;
-            grid-template-columns: 1.2fr 1fr;
+            grid-template-columns: 1fr 1.2fr;
             gap: 60px;
             align-items: center;
             padding-top: 100px;
+        }
+        .team-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .member-card {
+            position: relative;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+            aspect-ratio: 4/5;
+        }
+        .member-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s var(--ease);
+        }
+        .member-card:hover img {
+            transform: scale(1.1);
+        }
+        .member-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            padding: 8px 16px;
+            border-radius: 40px;
+            color: #000;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         .lead {
             font-size: 1.4rem;
