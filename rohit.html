@@ -439,23 +439,23 @@
             const eq = dashboardData.enquiries.find(item => item.id === id);
             if (!eq) return;
 
-            const content = \`Frame 2 Remember - Enquiry Details\\n\` +
-                            \`=================================\\n\\n\` +
-                            \`Date Submitted: \${new Date(eq.created_at).toLocaleString()}\\n\` +
-                            \`Name: \${eq.name || 'N/A'}\\n\` +
-                            \`Email: \${eq.email || 'N/A'}\\n\` +
-                            \`Phone: \${eq.phone || 'N/A'}\\n\` +
-                            \`Shoot Type: \${eq.shoot_type || 'N/A'}\\n\` +
-                            \`Expected Length: \${eq.shoot_length || 'N/A'}\\n\\n\` +
-                            \`Requirements / Message:\\n\` +
-                            \`-----------------------\\n\` +
-                            \`\${eq.message || 'None'}\\n\`;
+            const content = `Frame 2 Remember - Enquiry Details\n` +
+                            `=================================\n\n` +
+                            `Date Submitted: ${new Date(eq.created_at).toLocaleString()}\n` +
+                            `Name: ${eq.name || 'N/A'}\n` +
+                            `Email: ${eq.email || 'N/A'}\n` +
+                            `Phone: ${eq.phone || 'N/A'}\n` +
+                            `Shoot Type: ${eq.shoot_type || 'N/A'}\n` +
+                            `Expected Length: ${eq.shoot_length || 'N/A'}\n\n` +
+                            `Requirements / Message:\n` +
+                            `-----------------------\n` +
+                            `${eq.message || 'None'}\n`;
 
             const blob = new Blob([content], { type: 'text/plain' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
             a.href = url;
-            a.download = \`Enquiry_\${(eq.name || 'Client').replace(/\\s+/g, '_')}.txt\`;
+            a.download = `Enquiry_${(eq.name || 'Client').replace(/\s+/g, '_')}.txt`;
             document.body.appendChild(a);
             a.click();
             document.body.removeChild(a);
