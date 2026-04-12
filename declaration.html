@@ -528,11 +528,11 @@ Signed Date  : ${signedDate}
                 placeholder.style.display = 'none';
 
                 const opt = {
-                    margin:       [10, 10, 10, 10], // top, left, bottom, right
+                    margin:       [8, 8, 8, 8],
                     filename:     `${data.name.replace(/\s+/g,'_')}_Declaration.pdf`,
-                    image:        { type: 'jpeg', quality: 0.95 },
+                    image:        { type: 'jpeg', quality: 0.85 },
                     html2canvas:  { 
-                        scale: 2, 
+                        scale: 1.5, 
                         useCORS: true, 
                         logging: false, 
                         letterRendering: true,
@@ -543,7 +543,19 @@ Signed Date  : ${signedDate}
                     pagebreak:    { mode: ['avoid-all', 'css', 'legacy'] }
                 };
                 
-                const pdfBase64 = await html2pdf().from(element).set(opt).outputPdf('datauristring');
+                // Get the full data URI string, then strip the prefix so we only store raw base64
+                const pdfDataUri = await html2pdf().from(element).set(opt).outputPdf('datauristring');
+                const pdfBase64 = pdfDataUri; // keep full data URI for reliable download
+                
+                // Estimate size before sending
+                const estimatedSizeMB = (pdfBase64.length * 0.75 / 1024 / 1024).toFixed(2);
+                console.log(`PDF size estimate: ${estimatedSizeMB} MB`);
+                
+                if (parseFloat(estimatedSizeMB) > 4) {
+                    element.classList.remove('pdf-export-mode');
+                    placeholder.style.display = origDisplay;
+                    throw new Error(`PDF too large (${estimatedSizeMB} MB). Please try with fewer images or contact support.`);
+                }
                 
                 // Restore UI state
                 element.classList.remove('pdf-export-mode');
