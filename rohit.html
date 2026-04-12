@@ -232,7 +232,10 @@
     <div id="dashboard-section">
         <div class="dash-header">
             <h1>Dashboard</h1>
-            <button class="logout-btn" onclick="logout()">Logout</button>
+            <div style="display: flex; gap: 12px; align-items: center;">
+                <button id="refresh-btn" class="view-pdf-btn" onclick="refreshData()" style="margin: 0; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);">Refresh Records</button>
+                <button class="logout-btn" onclick="logout()" style="margin: 0;">Logout</button>
+            </div>
         </div>
 
         <div class="tabs">
@@ -333,6 +336,36 @@
             
             event.target.classList.add('active');
             document.getElementById(tab + '-tab').classList.add('active');
+        }
+        
+        async function refreshData() {
+            const btn = document.getElementById('refresh-btn');
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
+            const origText = btn.textContent;
+            
+            btn.textContent = "Updating...";
+            btn.disabled = true;
+
+            try {
+                const res = await fetch('/api/admin-fetch', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ username: u, password: p })
+                });
+
+                const json = await res.json();
+                if (!res.ok) throw new Error(json.error || 'Refresh failed');
+
+                dashboardData = json.data;
+                renderData();
+                console.log('Dashboard refreshed');
+            } catch (err) {
+                alert('Error: ' + err.message);
+            } finally {
+                btn.textContent = origText;
+                btn.disabled = false;
+            }
         }
 
         function logout() {
