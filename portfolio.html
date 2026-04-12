@@ -170,47 +170,15 @@
             transition: all 0.5s var(--ease);
         }
 
-        .photo-card:hover img {
-            object-fit: contain;
-            transform: scale(1.02);
-        }
 
         /* Varying heights for masonry feel */
         .photo-card.tall  { height: 520px; }
         .photo-card.mid   { height: 360px; }
         .photo-card.short { height: 280px; }
         .photo-card.wide  { height: 440px; }
-
-        /* Hover overlay */
-        .photo-card-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.55) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s var(--ease);
-            display: flex;
-            align-items: flex-end;
-            padding: 24px;
-        }
-
-        .photo-card:hover .photo-card-overlay {
-            opacity: 1;
-        }
-
-        .photo-card-overlay span {
-            color: white;
-            font-size: 0.82rem;
-            font-weight: 500;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .photo-card-overlay span::before {
-            content: '↗';
-            font-size: 1.1rem;
+        /* Subtle zoom on hover — no overlay text */
+        .photo-card:hover img {
+            transform: scale(1.04);
         }
 
         /* Divider between columns on mobile */
@@ -314,77 +282,62 @@
 
                         <a href="/gracewed10.jpg" class="glightbox photo-card tall" data-gallery="client" data-title="Wedding — Grace &amp; Co.">
                             <img src="/gracewed10.jpg" alt="Wedding photography" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed1.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Ceremony">
                             <img src="/gracewed1.jpg" alt="Wedding ceremony" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed2.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Couple Portraits">
                             <img src="/gracewed2.jpg" alt="Wedding couple" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed3.jpg" class="glightbox photo-card wide" data-gallery="client" data-title="Wedding — Reception">
                             <img src="/gracewed3.jpg" alt="Wedding reception" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed4.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Details">
                             <img src="/gracewed4.jpg" alt="Wedding details" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed5.jpg" class="glightbox photo-card tall" data-gallery="client" data-title="Wedding — Bridal">
                             <img src="/gracewed5.jpg" alt="Bridal photography" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed6.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Candid">
                             <img src="/gracewed6.jpg" alt="Wedding candid" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed7.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Portraits">
                             <img src="/gracewed7.jpg" alt="Wedding portraits" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed8.jpg" class="glightbox photo-card wide" data-gallery="client" data-title="Wedding — Venue">
                             <img src="/gracewed8.jpg" alt="Wedding venue" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed9.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Moments">
                             <img src="/gracewed9.jpg" alt="Wedding moments" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed11.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Golden Hour">
                             <img src="/gracewed11.jpg" alt="Wedding golden hour" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed12.jpg" class="glightbox photo-card tall" data-gallery="client" data-title="Wedding — Dance">
                             <img src="/gracewed12.jpg" alt="Wedding dancing" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed13.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Wedding — Kiss">
                             <img src="/gracewed13.jpg" alt="Wedding first kiss" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed14.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Wedding — Family">
                             <img src="/gracewed14.jpg" alt="Wedding family" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/gracewed15.jpg" class="glightbox photo-card wide" data-gallery="client" data-title="Wedding — Final Portrait">
                             <img src="/gracewed15.jpg" alt="Wedding final portrait" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <p class="photo-section-label">Events</p>
@@ -392,39 +345,32 @@
 
                         <a href="/diwalithaidance.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Diwali Festival — Thai Dance">
                             <img src="/diwalithaidance.jpg" alt="Thai dance at Diwali" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/diwalifoodstall.jpg" class="glightbox photo-card short" data-gallery="client" data-title="Diwali Festival — Food Stalls">
                             <img src="/diwalifoodstall.jpg" alt="Diwali food stalls" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/diwalieventpolice.jpg" class="glightbox photo-card mid" data-gallery="client" data-title="Diwali Festival — Community">
                             <img src="/diwalieventpolice.jpg" alt="Diwali community event" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/diwalidance.webp" class="glightbox photo-card wide" data-gallery="client" data-title="Diwali Festival — Stage">
                             <img src="/diwalidance.webp" alt="Diwali stage performance" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <p class="photo-section-label">Concerts</p>
 
                         <a href="/f2r1.JPG" class="glightbox photo-card tall" data-gallery="client" data-title="Live Performance — Energy">
                             <img src="/f2r1.JPG" alt="Concert photography energy" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/f2r2.JPG" class="glightbox photo-card mid" data-gallery="client" data-title="Live Performance — Atmosphere">
                             <img src="/f2r2.JPG" alt="Concert atmosphere" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/f2r3.JPG" class="glightbox photo-card short" data-gallery="client" data-title="Live Performance — Detail">
                             <img src="/f2r3.JPG" alt="Concert detail" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
                     </div>
                 </div>
@@ -442,44 +388,36 @@
 
                         <a href="/birdbeachbnw.jpg" class="glightbox photo-card tall" data-gallery="personal" data-title="Shore — Black &amp; White Study">
                             <img src="/birdbeachbnw.jpg" alt="Bird on beach black and white" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/birdbeachbnw1.jpg" class="glightbox photo-card wide" data-gallery="personal" data-title="Shore — Solitude">
                             <img src="/birdbeachbnw1.jpg" alt="Bird on beach solitude" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/birdintree.jpg" class="glightbox photo-card tall" data-gallery="personal" data-title="Canopy — Bird in Tree">
                             <img src="/birdintree.jpg" alt="Bird perched in tree" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <p class="photo-section-label">Mood & Still Life</p>
 
                         <a href="/f2r4.JPG" class="glightbox photo-card mid" data-gallery="personal" data-title="Personal Vision — Composition I">
                             <img src="/f2r4.JPG" alt="Personal photography composition" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/f2r5.JPG" class="glightbox photo-card short" data-gallery="personal" data-title="Personal Vision — Composition II">
                             <img src="/f2r5.JPG" alt="Personal photography study" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/streetcook.jpg" class="glightbox photo-card mid" data-gallery="personal" data-title="Street — The Cook I">
                             <img src="/streetcook.jpg" alt="Street photography cook" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/streetcook1.jpg" class="glightbox photo-card tall" data-gallery="personal" data-title="Street — The Cook II">
                             <img src="/streetcook1.jpg" alt="Street photography portrait" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <a href="/street1.jpg" class="glightbox photo-card tall" data-gallery="personal" data-title="Street — Urban Geometry">
                             <img src="/street1.jpg" alt="Street photography urban geometry" loading="lazy">
-                            <div class="photo-card-overlay"><span>View Full</span></div>
                         </a>
 
                         <!-- Enquire CTA card -->
@@ -529,6 +467,22 @@
     <script src="https://cdn.jsdelivr.net/gh/mcstudios/glightbox/dist/js/glightbox.min.js"></script>
 
     <script>
+        // Initialize GLightbox — clean fullscreen view, X to close, click backdrop to close
+        const lightbox = GLightbox({
+            touchNavigation: true,
+            loop: false,
+            autoplayVideos: false,
+            closeButton: true,
+            closeOnOutsideClick: true,
+            openEffect: 'fade',
+            closeEffect: 'fade',
+            cssEfects: {
+                fade: { in: 'fadeIn', out: 'fadeOut' }
+            },
+            svg: {
+                close: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>'
+            }
+        });
         window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
     </script>
     <script defer src="/_vercel/insights/script.js"></script>
