@@ -12,8 +12,8 @@ export default async function handler(req, res) {
     try {
         const { username, password } = req.body;
 
-        // Hardcoded basic authentication as requested
-        if (username !== 'rohit' || password !== 'frame2remember') {
+        // Hardcoded basic authentication as requested (Case-insensitive username)
+        if (username?.trim().toLowerCase() !== 'rohit' || password !== 'frame2remember') {
             return res.status(401).json({ error: 'Unauthorized access' });
         }
 

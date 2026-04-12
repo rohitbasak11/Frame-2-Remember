@@ -12,10 +12,11 @@
     "vite": "^6.0.0"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.45.0",
     "@vercel/analytics": "^2.0.1",
     "gsap": "^3.12.5",
     "lenis": "^1.1.13",
-    "resend": "^6.10.0",
-    "@supabase/supabase-js": "^2.45.0"
+    "pg": "^8.20.0",
+    "resend": "^6.10.0"
   }
 }

@@ -294,8 +294,8 @@
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+            const u = document.getElementById('username').value.trim();
+            const p = document.getElementById('password').value.trim();
 
             submitBtn.textContent = "Verifying...";
             errorMsg.style.display = 'none';
