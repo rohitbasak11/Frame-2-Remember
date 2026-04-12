@@ -84,8 +84,9 @@ const logoEl        = document.getElementById('main-logo');
 const logoContainer = document.getElementById('logo-main-container');
 const placeholder   = document.getElementById('nav-logo-placeholder');
 
-// The target width for the logo in the navbar (fixed, not from placeholder which starts at 0)
+// The target width/height for the logo in the navbar
 const NAV_LOGO_W = 140;
+const NAV_LOGO_H = 44; // constrain height so logo never overflows the navbar
 
 /**
  * Get the center coords of the placeholder AFTER the navbar has transitioned
@@ -157,41 +158,40 @@ if (logoEl && logoContainer && isHome) {
                 }
             },
             onLeave() {
-                // Pin done — reveal main content
+                // Pin done — reveal main content, hide scroll indicator
                 gsap.to('#smooth-content', { autoAlpha: 1, duration: 0.6, ease: 'power2.out' });
+                gsap.to('.hero-scroll-indicator', { autoAlpha: 0, y: 8, duration: 0.5 });
             },
             onEnterBack() {
-                // Hide page content
+                // Hide page content, restore scroll indicator
                 gsap.to('#smooth-content', { autoAlpha: 0, duration: 0.2 });
+                gsap.to('.hero-scroll-indicator', { autoAlpha: 1, y: 0, duration: 0.4 });
             },
         },
     });
 
-    // 0.0 – 0.6  logo moves from center → navbar center
+    // 0.0 – 0.6  logo moves from center → navbar, height constrained so it fits
     heroTl.to(logoEl, {
         x: () => getPlaceholderCenter().x,
         y: () => getPlaceholderCenter().y,
         width: NAV_LOGO_W,
+        height: NAV_LOGO_H,
         ease: 'power2.inOut',
         duration: 0.6,
     }, 0);
 
-    // Initial non-visible states for the decoupled text animations
-    gsap.set('.hero-content h1', { opacity: 0, scale: 0.85 });
-    
-    // Decoupled ScrollTrigger for elements that shouldn't bounce with 'scrub'
-    ScrollTrigger.create({
-        trigger: 'body',
-        start: 'top -20px',
-        onEnter: () => {
-            gsap.to('.hero-content h1', { opacity: 1, scale: 1, ease: 'power2.out', duration: 0.6 });
-            gsap.to('.hero-glass-card', { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 0.5, delay: 0.15 });
-        },
-        onLeaveBack: () => {
-            gsap.to('.hero-content h1', { opacity: 0, scale: 0.85, duration: 0.4 });
-            gsap.to('.hero-glass-card', { autoAlpha: 0, y: 20, duration: 0.4 });
-        }
-    });
+    // 0.0 – 0.7  hero headline fades/scales in linearly — ease:'none' means
+    // it reverses perfectly when scrubbing backward (no bounce or glitch)
+    heroTl.fromTo('.hero-content h1',
+        { opacity: 0, scale: 0.88 },
+        { opacity: 1, scale: 1, ease: 'none', duration: 0.7 },
+    0);
+
+    // 0.2 – 0.9  glass card fades up linearly — same linear-safe approach
+    heroTl.fromTo('.hero-glass-card',
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, ease: 'none', duration: 0.7 },
+    0.2);
 
     // Resize: re-center logo if it hasn't moved yet
     window.addEventListener('resize', () => {
@@ -215,7 +215,7 @@ if (logoEl && logoContainer && isHome) {
     // Start logo invisible to prevent jump-from-nowhere flash
     gsap.set(logoEl, { autoAlpha: 0 });
 
-    // Position logo in navbar center THEN fade it in
+    // Position logo in navbar center, constrain height, THEN fade it in
     requestAnimationFrame(() => {
         const c = getPlaceholderCenter();
         gsap.set(logoEl, {
@@ -224,6 +224,7 @@ if (logoEl && logoContainer && isHome) {
             xPercent: -50,
             yPercent: -50,
             width: NAV_LOGO_W,
+            height: NAV_LOGO_H,
         });
         // Gentle fade-in after position is locked
         gsap.to(logoEl, { autoAlpha: 1, duration: 0.35, ease: 'power2.out', delay: 0.05 });
@@ -302,7 +303,7 @@ document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', e => {
         const href = link.getAttribute('href');
         if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http') || link.target === '_blank' || link.classList.contains('glightbox')) return;
-        if (href === window.location.pathname || href === window.location.href) return; // same page
+        if (href === window.location.pathname || href === window.location.href) { e.preventDefault(); return; } // same page — prevent reload
         e.preventDefault();
         // Quick snappy transition — flash then navigate
         gsap.timeline({ onComplete: () => { window.location.href = href; } })
