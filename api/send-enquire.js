@@ -1,6 +1,12 @@
 import { Resend } from 'resend';
+import { createClient } from '@supabase/supabase-js';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+// Safely initialize Supabase if keys exist
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const supabase = (supabaseUrl && supabaseKey) ? createClient(supabaseUrl, supabaseKey) : null;
 
 /** Escape HTML special chars to prevent XSS in email bodies */
 const esc = (str) => String(str || '')
@@ -16,6 +22,26 @@ export default async function handler(req, res) {
 
     try {
         const { name, email, phone, shootType, message } = req.body;
+
+        // 1. Save to Database (if configured)
+        if (supabase) {
+            const { error: dbError } = await supabase
+                .from('enquiries')
+                .insert([{
+                    name: name || null,
+                    email: email || null,
+                    phone: phone || null,
+                    shoot_type: shootType || null,
+                    message: message || null
+                }]);
+
+            if (dbError) {
+                console.error('Supabase Enquiries Insert Error:', dbError);
+                // We don't fail the request here so they still get the email
+            }
+        }
+
+        // 2. Send Notification Email
 
         const { data, error } = await resend.emails.send({
             from: 'Frame 2 Remember <onboarding@resend.dev>',
