@@ -84,9 +84,14 @@ const logoEl        = document.getElementById('main-logo');
 const logoContainer = document.getElementById('logo-main-container');
 const placeholder   = document.getElementById('nav-logo-placeholder');
 
-// The target width/height for the logo in the navbar
-const NAV_LOGO_W = 250;
-const NAV_LOGO_H = 86; // constrain height so logo never overflows the navbar
+// Dynamic dimensions for the navbar logo based on breakpoint
+function getNavLogoDims() {
+    const isSmall = window.innerWidth <= 920;
+    return {
+        w: isSmall ? 120 : 250,
+        h: isSmall ? 40 : 86
+    };
+}
 
 /**
  * Get the center coords of the placeholder AFTER the navbar has transitioned
@@ -96,12 +101,14 @@ const NAV_LOGO_H = 86; // constrain height so logo never overflows the navbar
 function getPlaceholderCenter() {
     if (!placeholder) return { x: window.innerWidth / 2, y: 36 };
     const rect = placeholder.getBoundingClientRect();
-    // Fixed Y: always target the visual center of the scrolled navbar.
-    // Scrolled navbar: 14px top padding + 65px placeholder height + 14px bottom = 93px total.
-    // Center = 46.5px. We use 48px so the bottom of the logo clears the bottom nav boundary perfectly.
-    const NAV_CENTER_Y = 48;
+    
+    // Fixed Y based on current navbar state
+    const isSmall = window.innerWidth <= 920;
+    // Mobile: 14px top + 40px placeholder + 14px bottom = 68px. Center = 34.
+    // Desktop: 14px top + 65px placeholder + 14px bottom = 93px. Center ~ 48.
+    const NAV_CENTER_Y = isSmall ? 34 : 48;
+
     if (rect.width < 10) {
-        // Placeholder not yet expanded — estimate X as viewport center
         return { x: window.innerWidth / 2, y: NAV_CENTER_Y };
     }
     return {
@@ -112,123 +119,137 @@ function getPlaceholderCenter() {
 
 if (logoEl && logoContainer && isHome) {
     // ── HOME PAGE ──────────────────────────────────────────
-    // Step 1: Place logo centered in viewport, large
-    gsap.set(logoEl, {
-        position: 'absolute', // Let GSAP control all positioning via x/y
-        x: window.innerWidth / 2,
-        y: window.innerHeight / 2,
-        xPercent: -50,
-        yPercent: -50,
-        width: 460,
-        autoAlpha: 1,
+    let heroTl;
+    let mm = gsap.matchMedia();
+
+    mm.add("(min-width: 0px)", () => {
+        // Step 1: Initial large centered state
+        gsap.set(logoEl, {
+            position: 'absolute',
+            x: window.innerWidth / 2,
+            y: window.innerHeight / 2,
+            xPercent: -50,
+            yPercent: -50,
+            width: window.innerWidth < 480 ? 280 : 460,
+            autoAlpha: 1,
+        });
+
+        gsap.set('#smooth-wrapper', { filter: 'blur(8px) grayscale(100%) sepia(40%)', opacity: 0.3 });
+        gsap.set('#smooth-content', { autoAlpha: 0 });
+        navbar?.classList.add('at-top');
+        navbar?.classList.remove('scrolled');
+
+        // Step 2: Build the Timeline
+        heroTl = gsap.timeline({
+            scrollTrigger: {
+                trigger: '.hero',
+                start: 'top top',
+                end: '+=60%',
+                pin: true,
+                scrub: 1,
+                invalidateOnRefresh: true,
+                onUpdate(self) {
+                    if (self.progress > 0.04 && navbar) {
+                        navbar.classList.add('scrolled');
+                        navbar.classList.remove('at-top');
+                    } else if (navbar) {
+                        navbar.classList.remove('scrolled');
+                        navbar.classList.add('at-top');
+                    }
+                },
+                onLeave() {
+                    gsap.to('#smooth-content', { autoAlpha: 1, duration: 0.6 });
+                },
+                onEnterBack() {
+                    gsap.to('#smooth-content', { autoAlpha: 0, duration: 0.2 });
+                },
+            },
+        });
+
+        // 0.0 – 0.6: Logo moves to navbar
+        heroTl.to(logoEl, {
+            x: () => getPlaceholderCenter().x,
+            y: () => getPlaceholderCenter().y,
+            width: () => getNavLogoDims().w,
+            height: () => getNavLogoDims().h,
+            ease: 'power2.inOut',
+            duration: 0.6,
+        }, 0);
+
+        // One-time Entrance Animation for Hero Content (so it doesn't replay on scroll up)
+        gsap.timeline({
+            scrollTrigger: {
+                trigger: '.hero-content',
+                start: 'top 85%',
+                toggleActions: "play none none none",
+                once: true
+            }
+        })
+        .fromTo('.hero-content h1',
+            { autoAlpha: 0, scale: 0.88, zIndex: 10 },
+            { autoAlpha: 1, scale: 1, ease: 'power2.out', duration: 1.2 }
+        )
+        .fromTo('.hero-glass-card',
+            { autoAlpha: 0, y: 30, zIndex: 10 },
+            { autoAlpha: 1, y: 0, ease: 'power2.out', duration: 1.2 },
+            '-=0.8'
+        );
+
+        return () => {
+            // Clean up when media changes or refresh happens
+            if (heroTl) heroTl.kill();
+        };
     });
 
-    // Step 2: Apply developing-photo blur effect (home page only — CSS default is none)
-    gsap.set('#smooth-wrapper', { filter: 'blur(8px) grayscale(100%) sepia(40%)', opacity: 0.3 });
-
-    // Step 3: Make sure content starts hidden
-    gsap.set('#smooth-content', { autoAlpha: 0 });
-
-    // Step 4: Start at-top navbar state
-    navbar?.classList.add('at-top');
-    navbar?.classList.remove('scrolled');
-
-    // Step 4: Build the pin + scrub timeline
-    //
-    // Layout of "virtual" scroll canvas:
-    //   0%   – 100%  : logo moves to navbar + navbar splits + hero text zooms in
-    //   100% – end   : pin releases, content visible
-    //
-    const heroTl = gsap.timeline({
-        scrollTrigger: {
-            trigger: '.hero',
-            start: 'top top',
-            end: '+=60%',
-            pin: true,
-            scrub: 1,
-            invalidateOnRefresh: true,
-            onUpdate(self) {
-                if (self.progress > 0.04 && navbar) {
-                    navbar.classList.add('scrolled');
-                    navbar.classList.remove('at-top');
-                } else if (navbar) {
-                    navbar.classList.remove('scrolled');
-                    navbar.classList.add('at-top');
-                }
-            },
-            onLeave() {
-                // Pin done — reveal main content, hide scroll indicator
-                gsap.to('#smooth-content', { autoAlpha: 1, duration: 0.6, ease: 'power2.out' });
-                gsap.to('.hero-scroll-indicator', { autoAlpha: 0, y: 8, duration: 0.5 });
-            },
-            onEnterBack() {
-                // Hide page content, restore scroll indicator
-                gsap.to('#smooth-content', { autoAlpha: 0, duration: 0.2 });
-                gsap.to('.hero-scroll-indicator', { autoAlpha: 1, y: 0, duration: 0.4 });
-            },
-        },
-    });
-
-    // 0.0 – 0.6  logo moves from center → navbar, height constrained so it fits
-    heroTl.to(logoEl, {
-        x: () => getPlaceholderCenter().x,
-        y: () => getPlaceholderCenter().y,
-        width: NAV_LOGO_W,
-        height: NAV_LOGO_H,
-        ease: 'power2.inOut',
-        duration: 0.6,
-    }, 0);
-
-    // 0.0 – 0.7  hero headline fades/scales in linearly — ease:'none' means
-    // it reverses perfectly when scrubbing backward (no bounce or glitch)
-    heroTl.fromTo('.hero-content h1',
-        { opacity: 0, scale: 0.88 },
-        { opacity: 1, scale: 1, ease: 'none', duration: 0.7 },
-    0);
-
-    // 0.2 – 0.9  glass card fades up linearly — same linear-safe approach
-    heroTl.fromTo('.hero-glass-card',
-        { autoAlpha: 0, y: 16 },
-        { autoAlpha: 1, y: 0, ease: 'none', duration: 0.7 },
-    0.2);
-
-    // Resize: re-center logo if it hasn't moved yet
-    window.addEventListener('resize', () => {
-        if (!ScrollTrigger.getById('heroPin')) return;
-        const st = heroTl.scrollTrigger;
-        if (st && st.progress < 0.02) {
-            gsap.set(logoEl, {
-                x: window.innerWidth / 2,
-                y: window.innerHeight / 2,
-                width: 460,
+    // Independent Scroll Indicator logic (fixes "sometimes shows" issue)
+    ScrollTrigger.create({
+        trigger: '.hero',
+        start: 'top top',
+        onUpdate: (self) => {
+            // Fades out linearly as you scroll down
+            const op = Math.max(0, 1 - self.progress * 8);
+            gsap.set('.hero-scroll-indicator', { 
+                autoAlpha: op,
+                y: self.progress * 40
             });
         }
-        ScrollTrigger.refresh();
     });
 
 } else if (logoEl && logoContainer) {
     // ── INTERIOR PAGES ────────────────────────────────────
-    // Make sure smooth-wrapper is never blurred on interior pages
     gsap.set('#smooth-wrapper', { filter: 'none', opacity: 1 });
     gsap.set('#smooth-content', { autoAlpha: 1 });
-    // Start logo invisible to prevent jump-from-nowhere flash
     gsap.set(logoEl, { autoAlpha: 0 });
 
-    // Position logo in navbar center, constrain height, THEN fade it in
-    requestAnimationFrame(() => {
+    const posInteriorLogo = () => {
         const c = getPlaceholderCenter();
+        const dims = getNavLogoDims();
         gsap.set(logoEl, {
             x: c.x,
             y: c.y,
             xPercent: -50,
             yPercent: -50,
-            width: NAV_LOGO_W,
-            height: NAV_LOGO_H,
+            width: dims.w,
+            height: dims.h,
         });
-        // Gentle fade-in after position is locked
+    };
+
+    requestAnimationFrame(() => {
+        posInteriorLogo();
         gsap.to(logoEl, { autoAlpha: 1, duration: 0.35, ease: 'power2.out', delay: 0.05 });
     });
+
+    window.addEventListener('resize', posInteriorLogo);
 }
+
+// Global Resize Hardening
+let lastWidth = window.innerWidth;
+window.addEventListener('resize', () => {
+    if (Math.abs(window.innerWidth - lastWidth) > 5) {
+        lastWidth = window.innerWidth;
+        ScrollTrigger.refresh();
+    }
+});
 
 /* =====================================================
    PAGE LOAD — DEVELOPING PHOTO EFFECT
@@ -324,15 +345,25 @@ if (menuToggle && mobileMenu) {
         menuToggle.classList.toggle('open', open);
         // Prevent body scroll while menu is open
         document.body.style.overflow = open ? 'hidden' : '';
-    });
-    mobileMenu.querySelectorAll('a').forEach(a => {
-        a.addEventListener('click', () => {
-            mobileMenu.classList.remove('open');
-            menuToggle.classList.remove('open');
-            document.body.style.overflow = '';
+        mobileMenu.querySelectorAll('a').forEach(a => {
+            a.addEventListener('click', () => {
+                mobileMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+                document.body.style.overflow = '';
+            });
         });
     });
 }
+
+// Touch support for nav dropdowns
+document.querySelectorAll('.nav-dropdown > a').forEach(link => {
+    link.addEventListener('click', (e) => {
+        if (window.matchMedia('(hover: none)').matches) {
+            e.preventDefault();
+            e.currentTarget.closest('.nav-dropdown').classList.toggle('touch-open');
+        }
+    });
+});
 
 /* =====================================================
    SCROLL-DRIVEN GRADIENT MOVEMENT
@@ -502,4 +533,47 @@ if (isPortfolio) {
     window.addEventListener('load', initLightbox);
     // Extra safety: re-init if not ready
     setTimeout(initLightbox, 3000);
+}
+
+/* =====================================================
+   DARK MODE LOGIC
+   ===================================================== */
+const themeToggle = document.getElementById('theme-toggle');
+const currentTheme = localStorage.getItem('theme') || 'light';
+
+// Initial check on load
+if (currentTheme === 'dark') {
+    document.documentElement.setAttribute('data-theme', 'dark');
+} else {
+    document.documentElement.setAttribute('data-theme', 'light');
+}
+
+if (themeToggle) {
+    themeToggle.addEventListener('click', () => {
+        const theme = document.documentElement.getAttribute('data-theme');
+        const newTheme = theme === 'dark' ? 'light' : 'dark';
+        
+        // Apply camera flash effect for smooth transition
+        const flash = document.getElementById('camera-flash');
+        if (flash) {
+            gsap.to(flash, {
+                opacity: 1, 
+                duration: 0.2, 
+                ease: 'power2.in',
+                onComplete: () => {
+                    document.documentElement.setAttribute('data-theme', newTheme);
+                    localStorage.setItem('theme', newTheme);
+                    gsap.to(flash, { 
+                        opacity: 0, 
+                        duration: 0.5, 
+                        ease: 'power2.out',
+                        delay: 0.1 
+                    });
+                }
+            });
+        } else {
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        }
+    });
 }
