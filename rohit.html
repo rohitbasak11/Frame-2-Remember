@@ -294,6 +294,7 @@
         const submitBtn = document.getElementById('login-submit');
 
         let dashboardData = null;
+        let savedCreds = { u: '', p: '' }; // Persist credentials in memory
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -316,7 +317,8 @@
                     throw new Error(json.error || 'Failed to authenticate');
                 }
 
-                // Success
+                // Success — store creds in memory so hidden inputs don't matter
+                savedCreds = { u, p };
                 dashboardData = json.data;
                 renderData();
                 loginSection.style.display = 'none';
@@ -340,8 +342,7 @@
         
         async function refreshData() {
             const btn = document.getElementById('refresh-btn');
-            const u = document.getElementById('username').value.trim();
-            const p = document.getElementById('password').value.trim();
+            const { u, p } = savedCreds;
             const origText = btn.textContent;
             
             btn.textContent = "Updating...";
@@ -370,6 +371,7 @@
 
         function logout() {
             dashboardData = null;
+            savedCreds = { u: '', p: '' };
             document.getElementById('username').value = '';
             document.getElementById('password').value = '';
             dashSection.style.display = 'none';
@@ -424,8 +426,7 @@
         async function deleteRecord(table, id) {
             if (!confirm('Are you sure you want to permanently delete this record?')) return;
 
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
+            const { u, p } = savedCreds;
 
             try {
                 const res = await fetch('/api/admin-delete', {
