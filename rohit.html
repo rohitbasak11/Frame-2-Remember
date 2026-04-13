@@ -395,8 +395,8 @@
                     </td>
                     <td class="message-cell">${eq.message || ''}</td>
                     <td class="action-cell">
-                        <button onclick="downloadText(${eq.id})" class="view-pdf-btn">Download TXT</button>
-                        <button onclick="deleteRecord('enquiries', ${eq.id})" class="view-pdf-btn btn-danger">Delete</button>
+                        <button onclick="downloadText('${eq.id}')" class="view-pdf-btn">Download TXT</button>
+                        <button onclick="deleteRecord('enquiries', '${eq.id}')" class="view-pdf-btn btn-danger">Delete</button>
                     </td>
                 </tr>
             `).join('') || `<tr><td colspan="6" style="text-align:center">No enquiries yet</td></tr>`;
@@ -410,12 +410,12 @@
                     <td class="date-cell">${dec.time || 'N/A'}</td>
                     <td>
                         ${dec.pdf_base64 
-                            ? `<button onclick="downloadPDF(${dec.id})" class="view-pdf-btn">Download PDF</button>`
+                            ? `<button onclick="downloadPDF('${dec.id}')" class="view-pdf-btn">Download PDF</button>`
                             : `<span style="color:#666">No PDF</span>`
                         }
                     </td>
                     <td class="action-cell">
-                        <button onclick="deleteRecord('declarations', ${dec.id})" class="view-pdf-btn btn-danger">Delete</button>
+                        <button onclick="deleteRecord('declarations', '${dec.id}')" class="view-pdf-btn btn-danger">Delete</button>
                     </td>
                 </tr>
             `).join('') || `<tr><td colspan="6" style="text-align:center">No declarations yet</td></tr>`;
