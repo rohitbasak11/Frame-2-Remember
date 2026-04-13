@@ -18,11 +18,14 @@ export default async function handler(req, res) {
         }
 
         if (!supabase) {
-            return res.status(503).json({ error: 'Database not configured yet.' });
+            return res.status(503).json({
+                error: 'Database not configured.',
+                debug: { hasUrl: !!supabaseUrl, hasKey: !!supabaseKey }
+            });
         }
 
         if (!table || !id) {
-            return res.status(400).json({ error: 'Table and ID are required' });
+            return res.status(400).json({ error: 'Table and ID are required', debug: { table, id } });
         }
 
         // Must strictly check table name to prevent arbitrary table deletion injection
@@ -30,17 +33,32 @@ export default async function handler(req, res) {
             return res.status(403).json({ error: 'Invalid table specified' });
         }
 
-        const { error } = await supabase
+        console.log(`Attempting delete: table=${table}, id=${id}, type=${typeof id}`);
+
+        const { data, error, count } = await supabase
             .from(table)
             .delete()
-            .eq('id', id);
+            .eq('id', id)
+            .select();
 
-        if (error) throw error;
+        if (error) {
+            console.error('Supabase delete error:', JSON.stringify(error));
+            return res.status(500).json({
+                error: 'Database deletion failed',
+                details: error.message || error.code || JSON.stringify(error)
+            });
+        }
 
-        return res.status(200).json({ success: true });
+        console.log(`Delete result: affected ${data?.length ?? 0} rows`);
+
+        return res.status(200).json({ success: true, deleted: data?.length ?? 0 });
 
     } catch (error) {
         console.error('Delete Record Error:', error);
-        return res.status(500).json({ error: 'Failed to delete record' });
+        return res.status(500).json({
+            error: 'Failed to delete record',
+            details: error.message || String(error)
+        });
     }
 }
+

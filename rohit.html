@@ -434,14 +434,18 @@
                     body: JSON.stringify({ username: u, password: p, table, id })
                 });
 
-                if (!res.ok) throw new Error('Deletion failed');
+                const json = await res.json();
+
+                if (!res.ok) {
+                    throw new Error(json.details || json.error || 'Deletion failed');
+                }
 
                 // Remove from local data array and re-render so we don't have to fetch all again
                 dashboardData[table] = dashboardData[table].filter(item => String(item.id) !== String(id));
                 renderData();
-                alert('Record deleted successfully.');
+                alert(`Record deleted successfully. (${json.deleted || 0} rows removed)`);
             } catch (err) {
-                alert('Error: ' + err.message);
+                alert('Delete Error: ' + err.message);
             }
         }
 
