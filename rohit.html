@@ -437,7 +437,7 @@
                 if (!res.ok) throw new Error('Deletion failed');
 
                 // Remove from local data array and re-render so we don't have to fetch all again
-                dashboardData[table] = dashboardData[table].filter(item => item.id !== id);
+                dashboardData[table] = dashboardData[table].filter(item => String(item.id) !== String(id));
                 renderData();
                 alert('Record deleted successfully.');
             } catch (err) {
@@ -446,7 +446,7 @@
         }
 
         function downloadPDF(id) {
-            const dec = dashboardData.declarations.find(item => item.id === id);
+            const dec = dashboardData.declarations.find(item => String(item.id) === String(id));
             if (!dec || !dec.pdf_base64) return;
 
             // Robust Base64 extraction - handles strings with or without prefix
