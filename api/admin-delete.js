@@ -14,7 +14,7 @@ export default async function handler(req, res) {
 
         // Verify Authentication
         console.log(`Auth check: username='${username}', password length=${password?.length || 0}, body keys=${Object.keys(req.body || {}).join(',')}`);
-        if (username !== 'rohit' || password !== 'frame2remember') {
+        if (username?.toLowerCase() !== 'rohit' || password !== 'frame2remember') {
             return res.status(401).json({ 
                 error: `Unauthorized. Received user='${username || '(empty)'}', pw_len=${password?.length || 0}` 
             });
