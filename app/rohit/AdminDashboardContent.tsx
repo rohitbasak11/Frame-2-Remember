@@ -36,17 +36,71 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
     }
   };
 
-  const downloadTxt = (data: any, filename: string) => {
-    const text = Object.entries(data)
-      .map(([key, value]) => `${key.toUpperCase()}: ${value}`)
-      .join("\n");
-    const blob = new Blob([text], { type: "text/plain" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = `${filename}.txt`;
-    a.click();
-    URL.revokeObjectURL(url);
+  const printRecord = (data: any, type: string) => {
+    const printWindow = window.open('', '_blank');
+    if (!printWindow) return;
+
+    const dateStr = new Date(data.created_at || data.time).toLocaleString();
+    const content = type === 'declaration' 
+      ? `
+        <div class="section">
+          <h2>Consents & Preferences</h2>
+          <p>${data.message}</p>
+        </div>
+        <div class="signature">
+          <h3>Digital Signature</h3>
+          ${data.pdf_base64 ? `<img src="${data.pdf_base64}" alt="Signature" />` : '<p>No signature provided.</p>'}
+        </div>
+      `
+      : `
+        <div class="section">
+          <h2>Enquiry Details</h2>
+          <p><strong>Shoot Type:</strong> ${data.shoot_type}</p>
+          <p><strong>Shoot Length:</strong> ${data.shoot_length}</p>
+          <p><strong>Phone:</strong> ${data.phone}</p>
+          <h3>Additional Notes</h3>
+          <pre>${data.message}</pre>
+        </div>
+      `;
+
+    printWindow.document.write(`
+      <html>
+        <head>
+          <title>${type.toUpperCase()} - ${data.name}</title>
+          <style>
+            body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; padding: 40px; line-height: 1.6; max-width: 800px; margin: 0 auto; color: #1a1a1a; }
+            h1 { color: #E85D9A; margin-bottom: 5px; text-transform: capitalize; }
+            h2 { font-size: 1.2rem; border-bottom: 1px solid #eaeaea; padding-bottom: 10px; }
+            .meta { color: #666; margin-bottom: 30px; font-size: 0.9em; background: #fafafa; padding: 15px; border-radius: 8px; }
+            .section { margin-bottom: 30px; }
+            .signature { margin-top: 40px; border-top: 2px solid #eee; padding-top: 20px; }
+            .signature img { max-height: 100px; display: block; margin-top: 10px; }
+            pre { white-space: pre-wrap; font-family: inherit; background: #fafafa; padding: 15px; border-radius: 8px; }
+            @media print {
+              body { padding: 0; }
+              @page { margin: 2cm; }
+            }
+          </style>
+        </head>
+        <body>
+          <h1>Frame 2 Remember - ${type}</h1>
+          <div class="meta">
+            <strong>Name:</strong> ${data.name}<br>
+            <strong>Email:</strong> ${data.email}<br>
+            <strong>Date:</strong> ${dateStr}<br>
+            <strong>Reference ID:</strong> ${data.id}
+          </div>
+          ${content}
+          <script>
+            setTimeout(() => {
+              window.print();
+              window.close();
+            }, 500);
+          </script>
+        </body>
+      </html>
+    `);
+    printWindow.document.close();
   };
 
   return (
