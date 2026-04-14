@@ -13,11 +13,10 @@ export default async function handler(req, res) {
         const { username, password, table, id } = req.body;
 
         // Verify Authentication
-        console.log(`Auth check: username='${username}', password length=${password?.length || 0}, hasBody=${!!req.body}`);
+        console.log(`Auth check: username='${username}', password length=${password?.length || 0}, body keys=${Object.keys(req.body || {}).join(',')}`);
         if (username !== 'rohit' || password !== 'frame2remember') {
             return res.status(401).json({ 
-                error: 'Unauthorized access',
-                debug: { receivedUser: username || '(empty)', passwordLength: password?.length || 0 }
+                error: `Unauthorized. Received user='${username || '(empty)'}', pw_len=${password?.length || 0}` 
             });
         }
 
