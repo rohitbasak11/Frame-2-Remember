@@ -7,7 +7,7 @@ import { cookies } from "next/headers";
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const authCookie = cookieStore.get("f2r_auth");
   
   if (authCookie?.value !== "true") {
