@@ -486,7 +486,7 @@
         }
 
         function downloadText(id) {
-            const eq = dashboardData.enquiries.find(item => item.id === id);
+            const eq = dashboardData.enquiries.find(item => String(item.id) === String(id));
             if (!eq) return;
 
             const content = `Frame 2 Remember - Enquiry Details\n` +
