@@ -132,7 +132,7 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                     <td className="px-8 py-6">
                       <div className="font-bold text-lg">{d.name}</div>
                       <div className="text-sm text-color-text-muted">{d.email}</div>
-                      <div className="text-xs opacity-50 font-mono uppercase tracking-tighter">ID: {d.id.slice(0,8)}</div>
+                      <div className="text-xs opacity-50 font-mono uppercase tracking-tighter">ID: {String(d.id).slice(0,8)}</div>
                     </td>
                     <td className="px-8 py-6">
                       <div className="text-sm text-color-text-muted mb-2">{d.message}</div>
