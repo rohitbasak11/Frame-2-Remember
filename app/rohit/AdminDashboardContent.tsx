@@ -162,7 +162,7 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end gap-2">
                         <button 
-                          onClick={() => downloadTxt(e, `enquiry_${(e.name || 'unnamed').replace(/\s/g, '_')}`)}
+                          onClick={() => printRecord(e, 'enquiry')}
                           className="p-3 bg-blue/10 text-blue hover:bg-blue hover:text-white rounded-xl transition-all"
                         >
                           <Download size={18} />
@@ -199,7 +199,7 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end gap-2">
                         <button 
-                          onClick={() => downloadTxt(d, `declaration_${(d.name || 'unnamed').replace(/\s/g, '_')}`)}
+                          onClick={() => printRecord(d, 'declaration')}
                           className="p-3 bg-blue/10 text-blue hover:bg-blue hover:text-white rounded-xl transition-all"
                         >
                           <Download size={18} />
