@@ -343,7 +343,19 @@ document.querySelectorAll('a').forEach(link => {
             return; // Exit here, let native or Lenis handle it, do NOT do the flash transition
         }
         
-        if (href === window.location.pathname || href === window.location.href) { e.preventDefault(); return; } // same page — prevent reload
+        if (href === window.location.pathname || href === window.location.href || (href === '/' && isHome)) {
+            e.preventDefault();
+            // Close mobile menu if open
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const menuToggle = document.querySelector('.menu-toggle');
+            if (mobileMenu && menuToggle) {
+                mobileMenu.classList.remove('open');
+                menuToggle.classList.remove('open');
+                document.body.style.overflow = '';
+            }
+            if (typeof lenis !== 'undefined') lenis.scrollTo(0);
+            return; 
+        } // same page — scroll to top
         e.preventDefault();
         // Quick snappy transition — flash then navigate
         gsap.timeline({ onComplete: () => { window.location.href = href; } })
