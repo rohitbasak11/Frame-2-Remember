@@ -577,3 +577,47 @@ if (themeToggle) {
         }
     });
 }
+
+/* =====================================================
+   SCROLL SPY / ACTIVE STATE LOGIC
+   ===================================================== */
+if (isHome) {
+    const sections = document.querySelectorAll('section, div[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    const observerOptions = {
+        root: null,
+        rootMargin: '-50% 0px -50% 0px', // Trigger when section passes the middle of viewport
+        threshold: 0
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // Determine target ID
+                let id = entry.target.getAttribute('id');
+                
+                // If it's a section without an ID but is part of hero, consider it home
+                if (!id && entry.target.classList.contains('hero')) {
+                    id = ''; // Home
+                }
+                
+                // Update nav links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    const linkHref = link.getAttribute('href');
+                    
+                    if (id === '') {
+                        if (linkHref === '/' || linkHref === '/index.html' || linkHref === '') {
+                            link.classList.add('active');
+                        }
+                    } else if (id && linkHref.includes(`#${id}`)) {
+                        link.classList.add('active');
+                    }
+                });
+            }
+        });
+    }, observerOptions);
+
+    sections.forEach(section => observer.observe(section));
+}
