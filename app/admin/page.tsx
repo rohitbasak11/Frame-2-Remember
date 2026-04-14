@@ -3,6 +3,8 @@ import { redirect } from "next/navigation";
 import Image from "next/image";
 import AdminDashboardContent from "./AdminDashboardContent";
 
+export const dynamic = "force-dynamic";
+
 export default async function AdminPage() {
   const supabase = await createClient();
 

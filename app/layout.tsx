@@ -20,6 +20,7 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://frame2remember.co.nz"),
   title: "Frame 2 Remember | Premium Photography in New Zealand",
   description: "Timeless photography by Rohit Basak. Specializing in weddings, portraits, and events since 2018 in New Zealand.",
   openGraph: {
