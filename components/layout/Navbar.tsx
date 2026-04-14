@@ -94,12 +94,20 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 top-[80px] glass z-[1900] flex flex-col p-8 gap-8 animate-in fade-in slide-in-from-top-4">
-          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Home</Link>
-          <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">About</Link>
-          <Link href="/#portfolio" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Portfolio</Link>
-          <Link href="/#connect" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Connect</Link>
-          <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading text-pink">Submit Enquiry</Link>
+        <div className="md:hidden fixed inset-0 bg-white/60 dark:bg-black/60 backdrop-blur-[30px] z-[1900] flex flex-col justify-center items-center p-8 gap-8 animate-in fade-in zoom-in duration-300">
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-heading hover:text-pink transition-colors">Home</Link>
+          <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-heading hover:text-pink transition-colors">About</Link>
+          <Link href="/#portfolio" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-heading hover:text-pink transition-colors">Portfolio</Link>
+          <Link href="/#connect" onClick={() => setIsMobileMenuOpen(false)} className="text-4xl font-heading hover:text-pink transition-colors">Connect</Link>
+          <div className="w-12 h-[2px] bg-pink/20 my-4" />
+          <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading text-pink hover:scale-110 transition-transform">Submit Enquiry</Link>
+          
+          <button 
+            onClick={() => setIsMobileMenuOpen(false)}
+            className="absolute top-8 right-8 w-12 h-12 flex items-center justify-center rounded-full bg-dark text-white hover:bg-pink transition-colors"
+          >
+            <X size={28} />
+          </button>
         </div>
       )}
     </nav>
