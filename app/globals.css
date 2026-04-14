@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-blue: #00C8E6;
+  --color-pink: #E85D9A;
+  --color-salmon: #FF6B5B;
+  --color-dark: #1a1a1a;
+  --color-light: #ffffff;
+  --color-gray: #f8f9fa;
+  --color-text: #2d3436;
+  --color-text-muted: #636e72;
+
+  --font-heading: var(--font-heading);
+  --font-body: var(--font-body);
+
+  --animate-orb1: orb1 18s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+  --animate-orb2: orb2 22s cubic-bezier(0.4, 0, 0.2, 1) infinite alternate;
+
+  --glass-bg: rgba(255, 255, 255, 0.35);
+  --glass-blur: blur(24px) saturate(180%);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.5);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.08);
+
+  @keyframes orb1 {
+    from { transform: translate(0vw, 0vh) scale(0.9); }
+    to { transform: translate(45vw, 35vh) scale(1.4); }
+  }
+  @keyframes orb2 {
+    from { transform: translate(0vw, 0vh) scale(0.9); }
+    to { transform: translate(-45vw, -30vh) scale(1.5); }
+  }
+}
+
+:root {
+  --bg-gradient-start: #f4f4f9;
+  --bg-gradient-end: #fafafa;
+  --orb-1-color: rgba(0, 180, 255, 0.4);
+  --orb-2-color: rgba(255, 50, 140, 0.35);
+  --orb-pointer-color: rgba(255, 107, 91, 0.4);
+}
+
+[data-theme="dark"] {
+  --color-light: #0d0d10;
+  --color-gray: #1a1a20;
+  --color-text: #f0f0f5;
+  --color-text-muted: #94a3b8;
+  
+  --glass-bg: rgba(15, 15, 20, 0.5);
+  --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+
+  --bg-gradient-start: #0a0a0c;
+  --bg-gradient-end: #121217;
+  --orb-1-color: rgba(0, 200, 230, 0.2);
+  --orb-2-color: rgba(232, 93, 154, 0.15);
+  --orb-pointer-color: rgba(255, 107, 91, 0.2);
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--color-text);
+  background: var(--color-light);
+  line-height: 1.6;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* Lenis Integration */
+html.lenis {
+  height: auto;
+}
+.lenis.lenis-smooth {
+  scroll-behavior: auto;
+}
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
