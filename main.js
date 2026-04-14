@@ -322,7 +322,27 @@ const overlay = document.getElementById('transition-overlay');
 document.querySelectorAll('a').forEach(link => {
     link.addEventListener('click', e => {
         const href = link.getAttribute('href');
-        if (!href || href.startsWith('#') || href.startsWith('mailto') || href.startsWith('http') || link.target === '_blank' || link.classList.contains('glightbox')) return;
+        if (!href || href.startsWith('mailto') || href.startsWith('http') || link.target === '_blank' || link.classList.contains('glightbox')) return;
+        
+        // Handle internal deep links
+        if (href.startsWith('#') || href.includes('/#')) {
+            const targetId = href.split('#')[1];
+            const targetEl = document.getElementById(targetId);
+            if (targetEl && isHome) {
+                e.preventDefault();
+                // Close mobile menu if open
+                const mobileMenu = document.querySelector('.mobile-menu');
+                const menuToggle = document.querySelector('.menu-toggle');
+                if (mobileMenu && menuToggle) {
+                    mobileMenu.classList.remove('open');
+                    menuToggle.classList.remove('open');
+                    document.body.style.overflow = '';
+                }
+                lenis.scrollTo(targetEl, { offset: -80 });
+            }
+            return; // Exit here, let native or Lenis handle it, do NOT do the flash transition
+        }
+        
         if (href === window.location.pathname || href === window.location.href) { e.preventDefault(); return; } // same page — prevent reload
         e.preventDefault();
         // Quick snappy transition — flash then navigate
