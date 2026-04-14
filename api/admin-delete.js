@@ -13,8 +13,12 @@ export default async function handler(req, res) {
         const { username, password, table, id } = req.body;
 
         // Verify Authentication
+        console.log(`Auth check: username='${username}', password length=${password?.length || 0}, hasBody=${!!req.body}`);
         if (username !== 'rohit' || password !== 'frame2remember') {
-            return res.status(401).json({ error: 'Unauthorized access' });
+            return res.status(401).json({ 
+                error: 'Unauthorized access',
+                debug: { receivedUser: username || '(empty)', passwordLength: password?.length || 0 }
+            });
         }
 
         if (!supabase) {
