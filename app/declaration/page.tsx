@@ -2,26 +2,41 @@
 
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { CheckCircle2, ShieldCheck, Download, Printer } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Download, Printer, AtSign } from "lucide-react";
 import Link from "next/link";
+import SignaturePad from "@/components/shared/SignaturePad";
 
 export default function DeclarationPage() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  const [fullName, setFullName] = useState("");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [signature, setSignature] = useState<string>("");
   const supabase = createClient();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!signature) {
+      alert("Please provide a digital signature to continue.");
+      return;
+    }
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
+    
+    // Format message with consents
+    const consents = [
+      formData.get("social-consent") === "on" ? "Social Media: YES" : "Social Media: NO",
+      formData.get("marketing-consent") === "on" ? "Marketing: YES" : "Marketing: NO",
+      formData.get("ads-consent") === "on" ? "Advertising: YES" : "Advertising: NO",
+    ].join(", ");
+
     const data = {
-      full_name: formData.get("full_name"),
-      can_share_social: formData.get("social-consent") === "on",
-      can_use_marketing: formData.get("marketing-consent") === "on",
-      can_use_ads: formData.get("ads-consent") === "on",
-      agreement_version: "1.0",
+      name: name,
+      email: email,
+      time: new Date().toISOString(),
+      message: consents,
+      pdf_base64: signature,
     };
 
     const { error } = await supabase.from("declarations").insert([data]);
@@ -43,7 +58,7 @@ export default function DeclarationPage() {
             <CheckCircle2 className="w-20 h-20 text-blue" />
           </div>
           <h2 className="text-4xl font-heading">Digital Signature Confirmed</h2>
-          <p className="text-color-text-muted">Thank you, {fullName}. Your declaration has been securely recorded. A copy has been sent to our records.</p>
+          <p className="text-color-text-muted">Thank you, {name}. Your declaration has been securely recorded and timestamped.</p>
           <Link href="/" className="inline-block px-8 py-4 bg-dark text-white rounded-full font-bold hover:bg-pink transition-all">
             Return Home &rarr;
           </Link>
@@ -112,23 +127,54 @@ export default function DeclarationPage() {
                             <h2 className="text-2xl font-heading text-color-text">4. Declaration & Signature</h2>
                             <p className="text-sm">I have read the terms above and certify that I am at least 18 years of age and have the full legal capacity to execute this release.</p>
                             
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                                <div className="space-y-4">
-                                    <label className="text-xs uppercase font-bold tracking-widest opacity-50">Full Name (E-Signature)</label>
-                                    <input 
-                                        name="full_name" 
-                                        type="text" 
-                                        required 
-                                        value={fullName}
-                                        onChange={(e) => setFullName(e.target.value)}
-                                        className="w-full bg-transparent border-b-2 border-dark dark:border-white py-4 text-3xl font-heading outline-none focus:border-pink transition-colors" 
-                                        placeholder="Type your name..."
-                                    />
-                                    <p className="text-[10px] uppercase opacity-40">Typing your name acts as a legally binding digital signature</p>
+                            <div className="space-y-8">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                                    <div className="space-y-4">
+                                        <label className="text-xs uppercase font-bold tracking-widest opacity-50">Full Legal Name</label>
+                                        <input 
+                                            name="name" 
+                                            type="text" 
+                                            required 
+                                            value={name}
+                                            onChange={(e) => setName(e.target.value)}
+                                            className="w-full bg-transparent border-b-2 border-dark dark:border-white py-4 text-3xl font-heading outline-none focus:border-pink transition-colors" 
+                                            placeholder="Type your name..."
+                                        />
+                                    </div>
+                                    <div className="space-y-4">
+                                        <label className="text-xs uppercase font-bold tracking-widest opacity-50">Email Address</label>
+                                        <div className="flex items-center gap-3 border-b-2 border-dark dark:border-white focus-within:border-pink transition-colors">
+                                            <AtSign size={20} className="opacity-30" />
+                                            <input 
+                                                name="email" 
+                                                type="email" 
+                                                required 
+                                                value={email}
+                                                onChange={(e) => setEmail(e.target.value)}
+                                                className="w-full bg-transparent py-4 text-xl outline-none" 
+                                                placeholder="john@example.com"
+                                            />
+                                        </div>
+                                    </div>
                                 </div>
-                                <div className="space-y-4 flex flex-col justify-end">
+
+                                <div className="space-y-4">
+                                    <label className="text-xs uppercase font-bold tracking-widest opacity-50 flex justify-between">
+                                        <span>Digital Signature Area</span>
+                                        <span className={signature ? "text-green-500" : "text-salmon"}>
+                                            {signature ? "✓ Signed" : "Required"}
+                                        </span>
+                                    </label>
+                                    <SignaturePad 
+                                        onSave={setSignature}
+                                        onClear={() => setSignature("")}
+                                    />
+                                    <p className="text-[10px] uppercase opacity-40">Your hand-drawn signature acts as a legally binding digital mark of agreement</p>
+                                </div>
+
+                                <div className="space-y-4">
                                     <label className="text-xs uppercase font-bold tracking-widest opacity-50">Date of Declaration</label>
-                                    <div className="py-4 text-2xl font-heading opacity-50">
+                                    <div className="text-2xl font-heading opacity-50">
                                         {new Date().toLocaleDateString('en-NZ', { day: 'numeric', month: 'long', year: 'numeric' })}
                                     </div>
                                 </div>
@@ -154,3 +200,4 @@ export default function DeclarationPage() {
     </div>
   );
 }
+

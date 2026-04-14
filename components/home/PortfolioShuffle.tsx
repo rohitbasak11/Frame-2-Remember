@@ -95,6 +95,8 @@ function PortfolioColumn({ title, eyebrow, description, items, initialIndices, s
 export default function PortfolioShuffle() {
   const { openPortfolioModal } = useUI();
 
+  const allImages = [...clientWorkData, ...personalWorkData];
+
   return (
     <section id="portfolio" className="py-24 px-12 max-w-[1400px] mx-auto">
       <div className="text-center mb-16">
@@ -105,10 +107,24 @@ export default function PortfolioShuffle() {
           Every frame tells a story. Here is a curated selection of commissions and personal explorations — the moments that define this practice.
         </p>
         
-        <div className="mt-12 flex justify-center">
+        <div className="mt-16 flex justify-center relative w-[100vw] left-1/2 -translate-x-1/2 overflow-hidden py-16 group">
+            {/* The infinite scrolling image strip */}
+            <div 
+              className="absolute inset-0 flex items-center opacity-30 group-hover:opacity-100 transition-opacity duration-700 cursor-pointer"
+              onClick={openPortfolioModal}
+            >
+              <div className="flex shrink-0 min-w-max animate-marquee gap-4 px-2 group-hover:[animation-play-state:paused]">
+                {[...allImages, ...allImages].map((img, i) => (
+                  <div key={i} className="relative w-32 h-44 md:w-40 md:h-56 rounded-2xl overflow-hidden glass hover:scale-[1.15] hover:z-10 transition-transform duration-300 shadow-xl border border-white/20">
+                    <Image src={img.src} alt={img.title} fill className="object-cover grayscale group-hover:grayscale-0 transition-all duration-700" sizes="(max-width: 768px) 128px, 160px" />
+                  </div>
+                ))}
+              </div>
+            </div>
+
              <button 
                 onClick={openPortfolioModal}
-                className="px-8 py-4 bg-dark text-white rounded-full font-medium hover:bg-pink transition-colors duration-300 flex items-center gap-2"
+                className="relative z-10 px-8 py-4 bg-dark text-white rounded-full font-medium hover:bg-pink transition-colors duration-300 flex items-center gap-2 shadow-[0_10px_40px_rgba(0,0,0,0.5)] group-hover:bg-pink pointer-events-auto"
              >
                 Discover Full Gallery &rarr;
              </button>

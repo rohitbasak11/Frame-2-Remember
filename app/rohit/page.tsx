@@ -2,19 +2,19 @@ import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import AdminDashboardContent from "./AdminDashboardContent";
+import { cookies } from "next/headers";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const supabase = await createClient();
-
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
+  const cookieStore = cookies();
+  const authCookie = cookieStore.get("f2r_auth");
+  
+  if (authCookie?.value !== "true") {
     return redirect("/login");
   }
+
+  const supabase = await createClient();
 
   // Fetch initial data
   const { data: enquiries } = await supabase

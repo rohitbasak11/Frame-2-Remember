@@ -39,10 +39,10 @@ export default function Navbar() {
   return (
     <nav
       ref={navbarRef}
-      className={`fixed top-0 left-0 w-full z-[2000] px-12 transition-all duration-400 ${
+      className={`fixed left-1/2 -translate-x-1/2 z-[2000] px-8 transition-all duration-500 ease-out ${
         isScrolled 
-          ? "py-4 glass border-b border-glass-border" 
-          : "py-6 bg-transparent"
+          ? "top-4 w-[95%] max-w-[1400px] py-4 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150" 
+          : "top-0 w-full py-6 bg-transparent"
       }`}
     >
       <div className="max-w-[1400px] mx-auto flex items-center justify-between">
@@ -69,9 +69,12 @@ export default function Navbar() {
             <ul className={`flex gap-10 list-none transition-all duration-400 ${isScrolled ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-2 pointer-events-none"} hidden md:flex`}>
               <li><Link href="/#portfolio" className="font-medium text-color-text hover:text-pink transition-colors">Portfolio</Link></li>
               <li className="relative group">
-                <button className="flex items-center gap-1 font-medium text-color-text group-hover:text-pink transition-colors focus:outline-none">
+                <Link 
+                  href="/#connect" 
+                  className="flex items-center gap-1 font-medium text-color-text group-hover:text-pink transition-colors focus:outline-none"
+                >
                   Connect <ChevronDown size={16} />
-                </button>
+                </Link>
                 <ul className="absolute right-0 top-full mt-2 w-48 py-2 glass rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
                   <li><Link href="/enquire" className="block px-4 py-2 hover:bg-pink/10 transition-colors">Enquiry</Link></li>
                   <li><Link href="/declaration" className="block px-4 py-2 hover:bg-pink/10 transition-colors">Declaration</Link></li>
@@ -95,7 +98,8 @@ export default function Navbar() {
           <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Home</Link>
           <Link href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">About</Link>
           <Link href="/#portfolio" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Portfolio</Link>
-          <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Enquiry</Link>
+          <Link href="/#connect" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading">Connect</Link>
+          <Link href="/enquire" onClick={() => setIsMobileMenuOpen(false)} className="text-2xl font-heading text-pink">Submit Enquiry</Link>
         </div>
       )}
     </nav>

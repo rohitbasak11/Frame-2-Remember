@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 
@@ -11,26 +10,19 @@ export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const router = useRouter();
-  const supabase = createClient();
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    // Map 'rohit' to the actual email as requested
-    const email = username.toLowerCase() === "rohit" ? "rohitbasaknote@gmail.com" : username;
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
+    // Hardcoded credentials as requested
+    if (username.toLowerCase() === "rohit" && password === "frame2remember") {
+      document.cookie = "f2r_auth=true; path=/; max-age=86400";
+      router.push("/rohit");
     } else {
-      router.push("/admin");
+      setError("Invalid login credentials");
+      setLoading(false);
     }
   };
 

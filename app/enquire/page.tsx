@@ -17,16 +17,20 @@ export default function EnquirePage() {
     setError(null);
 
     const formData = new FormData(e.currentTarget);
+    
+    // Legacy schema alignment
     const data = {
-      full_name: formData.get("name"),
+      name: formData.get("name"),
       email: formData.get("email"),
       phone: formData.get("phone"),
-      event_type: formData.get("shoot-type"),
-      duration: formData.get("shoot-length"),
-      location: formData.get("location"),
-      budget: formData.get("budget"),
-      source: formData.get("source"),
-      comments: formData.get("comments"),
+      shoot_type: formData.get("shoot-type"),
+      shoot_length: formData.get("shoot-length"),
+      message: `
+LOCATION: ${formData.get("location") || 'N/A'}
+BUDGET: ${formData.get("budget") || 'N/A'}
+SOURCE: ${formData.get("source") || 'N/A'}
+VISION: ${formData.get("comments") || 'N/A'}
+      `.trim()
     };
 
     const { error } = await supabase.from("enquiries").insert([data]);

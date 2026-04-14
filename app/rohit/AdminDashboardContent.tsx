@@ -96,19 +96,19 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                       {new Date(e.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-8 py-6">
-                      <div className="font-bold text-lg">{e.full_name}</div>
+                      <div className="font-bold text-lg">{e.name}</div>
                       <div className="text-sm text-color-text-muted">{e.email}</div>
                       <div className="text-xs text-pink">{e.phone}</div>
                     </td>
                     <td className="px-8 py-6">
-                      <div className="text-xs uppercase font-bold text-salmon mb-1">{e.event_type}</div>
-                      <div className="text-sm line-clamp-2 text-color-text-muted italic">&quot;{e.comments}&quot;</div>
-                      <div className="text-[10px] mt-2 text-white bg-blue px-2 py-0.5 rounded inline-block">{e.source}</div>
+                      <div className="text-xs uppercase font-bold text-salmon mb-1">{e.shoot_type}</div>
+                      <div className="text-xs text-color-text-muted mb-1 font-medium">{e.shoot_length}</div>
+                      <div className="text-sm line-clamp-2 text-color-text-muted italic">&quot;{e.message}&quot;</div>
                     </td>
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end gap-2">
                         <button 
-                          onClick={() => downloadTxt(e, `enquiry_${e.full_name.replace(/\s/g, '_')}`)}
+                          onClick={() => downloadTxt(e, `enquiry_${(e.name || 'unnamed').replace(/\s/g, '_')}`)}
                           className="p-3 bg-blue/10 text-blue hover:bg-blue hover:text-white rounded-xl transition-all"
                         >
                           <Download size={18} />
@@ -127,24 +127,25 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                 declarations.map((d) => (
                   <tr key={d.id} className="hover:bg-pink/5 transition-colors">
                     <td className="px-8 py-6 text-sm text-color-text-muted whitespace-nowrap">
-                      {new Date(d.created_at).toLocaleDateString()}
+                      {new Date(d.created_at || d.time).toLocaleDateString()}
                     </td>
                     <td className="px-8 py-6">
-                      <div className="font-bold text-lg">{d.full_name}</div>
-                      <div className="text-sm text-color-text-muted opacity-70">Client ID: {d.id.slice(0,8)}</div>
+                      <div className="font-bold text-lg">{d.name}</div>
+                      <div className="text-sm text-color-text-muted">{d.email}</div>
+                      <div className="text-xs opacity-50 font-mono uppercase tracking-tighter">ID: {d.id.slice(0,8)}</div>
                     </td>
                     <td className="px-8 py-6">
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        {d.can_share_social && <span className="text-[10px] bg-green-500/10 text-green-500 px-2 py-0.5 rounded border border-green-500/20">Social OK</span>}
-                        {d.can_use_marketing && <span className="text-[10px] bg-blue/10 text-blue px-2 py-0.5 rounded border border-blue/20">Marketing OK</span>}
-                        {d.can_use_ads && <span className="text-[10px] bg-pink/10 text-pink px-2 py-0.5 rounded border border-pink/20">Ads OK</span>}
-                      </div>
-                      <div className="text-xs text-color-text-muted">Agreement Version 1.0</div>
+                      <div className="text-sm text-color-text-muted mb-2">{d.message}</div>
+                      {d.pdf_base64 && (
+                        <div className="mt-2 bg-white/20 p-2 rounded-lg inline-block border border-glass-border">
+                          <img src={d.pdf_base64} alt="Signature" className="h-12 w-auto grayscale contrast-125" />
+                        </div>
+                      )}
                     </td>
                     <td className="px-8 py-6 text-right">
                       <div className="flex justify-end gap-2">
                         <button 
-                          onClick={() => downloadTxt(d, `declaration_${d.full_name.replace(/\s/g, '_')}`)}
+                          onClick={() => downloadTxt(d, `declaration_${(d.name || 'unnamed').replace(/\s/g, '_')}`)}
                           className="p-3 bg-blue/10 text-blue hover:bg-blue hover:text-white rounded-xl transition-all"
                         >
                           <Download size={18} />
