@@ -418,73 +418,178 @@ if (gradientBg) {
 }
 
 /* =====================================================
-   GALLERY ALBUM MODAL LOGIC (Fix for filter bugs)
+   PORTFOLIO CONFIG & DATA
    ===================================================== */
-let activeLightbox = null;
+const clientWorkData = [
+    { src: '/gracewed10.webp', title: 'Wedding — First Look' },
+    { src: '/gracewed1.webp', title: 'Wedding — Ceremony' },
+    { src: '/gracewed2.webp', title: 'Wedding — Couple Portraits' },
+    { src: '/gracewed3.webp', title: 'Wedding — Reception' },
+    { src: '/gracewed4.webp', title: 'Wedding — Details' },
+    { src: '/gracewed5.webp', title: 'Wedding — Bridal' },
+    { src: '/gracewed6.webp', title: 'Wedding — Candid' },
+    { src: '/gracewed7.webp', title: 'Wedding — Portraits' },
+    { src: '/stillport.webp', title: 'Client Work — Couple Portrait' },
+    { src: '/gracewed8.webp', title: 'Wedding — Venue' },
+    { src: '/gracewed9.webp', title: 'Wedding — Moments' },
+    { src: '/gracewed11.webp', title: 'Wedding — Golden Hour' },
+    { src: '/gracewed12.webp', title: 'Wedding — Dance' },
+    { src: '/gracewed13.webp', title: 'Wedding — Kiss' },
+    { src: '/gracewed14.webp', title: 'Wedding — Family' },
+    { src: '/gracewed15.webp', title: 'Wedding — Final Portrait' },
+    { src: '/diwalithaidance.webp', title: 'Diwali Festival — Thai Dance' },
+    { src: '/diwalifoodstall.webp', title: 'Diwali Festival — Food Stalls' },
+    { src: '/diwalieventpolice.webp', title: 'Diwali Festival — Community' },
+    { src: '/diwalidance.webp', title: 'Diwali Festival — Stage' },
+    { src: '/f2r1.webp', title: 'Live Performance — Energy' },
+    { src: '/f2r2.webp', title: 'Live Performance — Atmosphere' },
+    { src: '/f2r3.webp', title: 'Live Performance — Detail' }
+];
 
+const personalWorkData = [
+    { src: '/birdbeachbnw.webp', title: 'Shore — Black & White Study' },
+    { src: '/birdbeachbnw1.webp', title: 'Shore — Solitude' },
+    { src: '/birdintree.webp', title: 'Canopy — Bird in Tree' },
+    { src: '/f2r4.webp', title: 'Personal Vision — Composition I' },
+    { src: '/f2r5.webp', title: 'Personal Vision — Composition II' },
+    { src: '/streetcook.webp', title: 'Street — The Cook I' },
+    { src: '/streetcook1.webp', title: 'Street — The Cook II' },
+    { src: '/street1.webp', title: 'Street — Urban Geometry' }
+];
+
+/* =====================================================
+   SHUFFLING ENGINE
+   ===================================================== */
 document.addEventListener('DOMContentLoaded', () => {
-    const albumModal = document.getElementById('album-modal');
-    if (!albumModal) return;
+    const activeClientIndices = [0, 1, 16]; // Initial slots
+    const activePersonalIndices = [0, 3, 7]; // Initial slots
+    
+    const clientCards = document.querySelectorAll('#client-grid .shuffle-card');
+    const personalCards = document.querySelectorAll('#personal-grid .shuffle-card');
+    let dynamicLightbox = null;
+    
+    const reinitLightboxForShuffle = () => {
+        if(dynamicLightbox) dynamicLightbox.destroy();
+        dynamicLightbox = GLightbox({
+            selector: '.shuffle-card',
+            touchNavigation: true,
+            loop: true,
+            zoomable: true
+        });
+    };
+    
+    reinitLightboxForShuffle(); // Init initially
+    
+    // Shuffles one specific card in a grid
+    const shuffleCard = (cards, dataArray, activeIndices, cardIndex) => {
+        if (!cards[cardIndex]) return;
+        
+        let newIndex;
+        // Find a random index that isn't currently displayed
+        do {
+            newIndex = Math.floor(Math.random() * dataArray.length);
+        } while (activeIndices.includes(newIndex));
+        
+        activeIndices[cardIndex] = newIndex;
+        const newData = dataArray[newIndex];
+        const card = cards[cardIndex];
+        const img = card.querySelector('img');
+        
+        // GSAP Fade transition
+        gsap.to(card, {
+            opacity: 0,
+            y: 10,
+            duration: 0.4,
+            ease: "power2.in",
+            onComplete: () => {
+                card.href = newData.src;
+                card.dataset.title = newData.title;
+                img.src = newData.src;
+                img.alt = newData.title;
+                
+                reinitLightboxForShuffle(); // Let GLightbox grab the newly swapped href
+                
+                gsap.to(card, {
+                    opacity: 1,
+                    y: 0,
+                    duration: 0.6,
+                    ease: "power2.out"
+                });
+            }
+        });
+    };
 
-    const modalTitle = document.getElementById('modal-album-title');
-    const modalDesc = document.getElementById('modal-album-desc');
-    const modalThumbs = document.getElementById('modal-thumbnails');
-    const closeBtn = albumModal.querySelector('.album-close-btn');
-    const bgOverlay = albumModal.querySelector('.modal-bg-overlay');
+    if (clientCards.length > 0 && personalCards.length > 0) {
+        let currentClientCardIndex = 0;
+        let currentPersonalCardIndex = 0;
+        
+        // Main Loop
+        setInterval(() => {
+            // Staggered: update client grid, then 1 second later update personal grid
+            shuffleCard(clientCards, clientWorkData, activeClientIndices, currentClientCardIndex);
+            currentClientCardIndex = (currentClientCardIndex + 1) % 3;
+            
+            setTimeout(() => {
+                shuffleCard(personalCards, personalWorkData, activePersonalIndices, currentPersonalCardIndex);
+                currentPersonalCardIndex = (currentPersonalCardIndex + 1) % 3;
+            }, 1000); // 1 second offset makes it feel extremely organic
+            
+        }, 2000);
+    }
 
-    const openAlbum = (item) => {
-        const title = item.dataset.title;
-        const desc = item.dataset.desc;
-        const albumType = item.dataset.albumType;
-        const links = item.querySelectorAll('.hidden-album-data a');
+/* =====================================================
+   "SEE ALL" MODAL ENGINE
+   ===================================================== */
+    let overlayLightbox = null;
+    const portfolioModal = document.getElementById('portfolio-modal');
+    if (!portfolioModal) return;
 
-        // Populate Content
-        modalTitle.textContent = title;
-        modalDesc.textContent = desc;
-        modalThumbs.innerHTML = '';
+    const modalTitle = document.getElementById('portfolio-modal-title');
+    const modalDesc = document.getElementById('portfolio-modal-desc');
+    const modalGrid = document.getElementById('portfolio-modal-grid');
+    const closeBtn = document.getElementById('portfolio-modal-close');
+    
+    const gridClasses = ['tall', 'mid', 'wide', 'short'];
 
-        links.forEach((link, i) => {
-            const href = link.getAttribute('href');
-            const tClass = `t${(i % 8) + 1}`;
+    const openModal = (category) => {
+        const isClient = category === 'client';
+        const data = isClient ? clientWorkData : personalWorkData;
+        
+        modalTitle.textContent = isClient ? 'Client Work' : 'Personal Vision';
+        modalDesc.textContent = isClient ? 'Complete portfolio of commissions.' : 'Complete portfolio of explorations.';
+        modalGrid.innerHTML = ''; // clear grid
 
-            const thumbA = document.createElement('a');
-            thumbA.href = href;
-            thumbA.className = `glightbox thumb ${tClass}`;
-            thumbA.setAttribute('data-gallery', albumType);
-
+        data.forEach((item, i) => {
+            const sizeClass = gridClasses[i % gridClasses.length];
+            const a = document.createElement('a');
+            a.href = item.src;
+            a.className = `glightbox photo-card ${sizeClass}`;
+            a.dataset.gallery = `modal-${category}`;
+            a.dataset.title = item.title;
+            
             const img = document.createElement('img');
-            img.src = href;
-            img.alt = `${title} photo ${i + 1}`;
-            img.setAttribute('loading', 'lazy');
-
-            thumbA.appendChild(img);
-            modalThumbs.appendChild(thumbA);
-
-            // Add organic drift
-            const driftY = 20 + Math.random() * 30;
-            const driftX = 15 + Math.random() * 25;
-            const rot = (Math.random() - 0.5) * 12;
-
-            gsap.to(thumbA, {
-                y: `+=${driftY}`,
-                x: `+=${driftX}`,
-                rotation: `+=${rot}`,
-                duration: 4 + Math.random() * 2,
-                repeat: -1,
-                yoyo: true,
-                ease: 'sine.inOut',
-                delay: i * 0.15
-            });
+            img.src = item.src;
+            img.alt = item.title;
+            img.loading = 'lazy';
+            
+            a.appendChild(img);
+            modalGrid.appendChild(a);
         });
 
         // Show Modal
-        albumModal.classList.add('active');
-        document.body.style.overflow = 'hidden';
+        portfolioModal.style.display = 'block';
+        document.body.style.overflow = 'hidden'; // Lock background scrolling
 
-        // Init lightbox after DOM flush to avoid race condition
+        // Animate modal content staggering in
+        gsap.fromTo(portfolioModal, { opacity: 0 }, { opacity: 1, duration: 0.3 });
+        gsap.fromTo('#portfolio-modal-grid .photo-card', 
+            { opacity: 0, y: 30 }, 
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.05, ease: 'power2.out', delay: 0.1 }
+        );
+
         requestAnimationFrame(() => {
-            if (activeLightbox) activeLightbox.destroy();
-            activeLightbox = GLightbox({
+            if (overlayLightbox) overlayLightbox.destroy();
+            overlayLightbox = GLightbox({
                 selector: '.glightbox',
                 touchNavigation: true,
                 loop: true,
@@ -493,29 +598,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
 
-    const closeAlbum = () => {
-        albumModal.classList.remove('active');
-        document.body.style.overflow = '';
-        modalThumbs.innerHTML = '';
-        gsap.killTweensOf('.thumb');
-    };
-
-    // Attach Click and Keyboard Events to Cards
-    document.querySelectorAll('.gallery-item').forEach(item => {
-        item.addEventListener('click', () => openAlbum(item));
-        item.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                openAlbum(item);
+    const closeModal = () => {
+        gsap.to(portfolioModal, { 
+            opacity: 0, 
+            duration: 0.3, 
+            onComplete: () => {
+                portfolioModal.style.display = 'none';
+                document.body.style.overflow = ''; // Unlock scroll
+                modalGrid.innerHTML = '';
             }
         });
+    };
+
+    // Attach to buttons
+    const btnClient = document.getElementById('btn-see-all-client');
+    const btnPersonal = document.getElementById('btn-see-all-personal');
+    if(btnClient) btnClient.addEventListener('click', () => openModal('client'));
+    if(btnPersonal) btnPersonal.addEventListener('click', () => openModal('personal'));
+
+    closeBtn.addEventListener('click', closeModal);
+    
+    // Close on click outside (glassy overlay)
+    portfolioModal.addEventListener('click', (e) => {
+        if(e.target === portfolioModal || e.target.classList.contains('modal-content-area')) {
+            closeModal();
+        }
     });
 
-    // Close Triggers
-    closeBtn.addEventListener('click', closeAlbum);
-    bgOverlay.addEventListener('click', closeAlbum);
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeAlbum();
+        if (e.key === 'Escape' && portfolioModal.style.display === 'block') closeModal();
     });
 });
 
