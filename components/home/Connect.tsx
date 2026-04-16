@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Sparkles, FileText, MessageCircle, Mail, Instagram, Star } from "lucide-react";
+import { Sparkles, FileText, MessageCircle, Mail, Star } from "lucide-react";
 
 export default function Connect() {
   const options = [

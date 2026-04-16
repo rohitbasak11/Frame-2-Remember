@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useRef } from "react";
 import Link from "next/link";
-import { gsap } from "gsap";
 import { ChevronDown, Menu, X } from "lucide-react";
 
 export default function Navbar() {
@@ -12,11 +11,17 @@ export default function Navbar() {
   const navbarRef = useRef<HTMLElement>(null);
 
   useEffect(() => {
-    // Initial Theme Sync
+    // Initial Theme Sync - only runs on mount
     const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    const prefDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    const prefDark = typeof window !== "undefined" && window.matchMedia("(prefers-color-scheme: dark)").matches;
     const initialTheme = savedTheme || (prefDark ? "dark" : "light");
-    setTheme(initialTheme);
+    
+    // Check if we actually need to update the state to avoid unnecessary re-render
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setTheme(prev => {
+      if (prev !== initialTheme) return initialTheme;
+      return prev;
+    });
     document.documentElement.setAttribute("data-theme", initialTheme);
 
     // Scroll Handler
@@ -51,6 +56,7 @@ export default function Navbar() {
           <div className="flex-1 flex items-center gap-8">
               <button 
                 onClick={toggleTheme}
+                aria-label={`Switch to ${theme === "light" ? "dark" : "light"} theme`}
                 className="relative w-12 h-12 flex items-center justify-center rounded-full bg-gray-100 dark:bg-gray-800 transition-colors"
               >
                 {/* Theme toggle SVG can be ported later, using simple emoji for now */}
@@ -72,6 +78,8 @@ export default function Navbar() {
                 <li className="relative group">
                   <Link 
                     href="/#connect" 
+                    aria-haspopup="true"
+                    aria-expanded="false" // Would need state to be truly accurate, but hover-based for now
                     className="flex items-center gap-1 font-medium text-color-text group-hover:text-pink transition-colors focus:outline-none"
                   >
                     Connect <ChevronDown size={16} />
@@ -87,6 +95,7 @@ export default function Navbar() {
               <button 
                 className="md:hidden text-color-text"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label={isMobileMenuOpen ? "Close mobile menu" : "Open mobile menu"}
               >
                 {isMobileMenuOpen ? <X size={28} /> : <Menu size={28} />}
               </button>

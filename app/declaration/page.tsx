@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { CheckCircle2, ShieldCheck, Download, Printer, AtSign } from "lucide-react";
+import { CheckCircle2, ShieldCheck, Printer, AtSign } from "lucide-react";
 import Link from "next/link";
 import SignaturePad from "@/components/shared/SignaturePad";
 
@@ -38,6 +38,12 @@ export default function DeclarationPage() {
       message: consents,
       pdf_base64: signature,
     };
+
+    if (!supabase) {
+      alert("System configuration error: Database client unavailable.");
+      setLoading(false);
+      return;
+    }
 
     const { error } = await supabase.from("declarations").insert([data]);
 

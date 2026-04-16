@@ -13,10 +13,9 @@ interface PortfolioColumnProps {
   description: string;
   items: PortfolioItem[];
   initialIndices: number[];
-  staggerDelay?: number;
 }
 
-function PortfolioColumn({ title, eyebrow, description, items, initialIndices, staggerDelay = 0 }: PortfolioColumnProps) {
+function PortfolioColumn({ title, eyebrow, description, items, initialIndices }: PortfolioColumnProps) {
   const [activeIndices, setActiveIndices] = useState(initialIndices);
   const cardsRef = useRef<(HTMLDivElement | null)[]>([]);
 
@@ -145,7 +144,6 @@ export default function PortfolioShuffle() {
           description="Photographs made purely for the love of the craft — observations of the natural world and quiet, considered moments."
           items={personalWorkData}
           initialIndices={[0, 3, 7]}
-          staggerDelay={1000}
         />
       </div>
     </section>

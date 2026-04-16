@@ -5,9 +5,12 @@ export function createClient() {
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
   if (!url || !key) {
-    // During static prerendering on Vercel, env vars may not be injected.
-    // Return a dummy that won't be used (page is client-side only).
-    return null as any;
+    if (process.env.NODE_ENV === "development") {
+      console.error("Supabase environment variables are missing!");
+    }
+    // Return a dummy client that will fail on use rather than null, 
+    // or handle at the call site. For browser client, we can return null if we type it correctly.
+    return null;
   }
 
   return createBrowserClient(url, key);

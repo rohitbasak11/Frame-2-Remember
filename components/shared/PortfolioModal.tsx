@@ -47,12 +47,12 @@ export default function PortfolioModal() {
   return (
     <div 
       ref={modalRef}
-      className="fixed inset-0 z-[9999] bg-black/90 backdrop-blur-xl overflow-y-auto"
+      className="fixed inset-0 z-[10000] bg-black/90 backdrop-blur-xl overflow-y-auto"
       data-lenis-prevent
     >
       <button 
         onClick={closePortfolioModal}
-        className="fixed top-8 right-8 z-[10000] p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
+        className="fixed top-8 right-8 z-[10010] p-4 bg-white/10 hover:bg-white/20 rounded-full text-white transition-colors"
       >
         <X size={32} />
       </button>

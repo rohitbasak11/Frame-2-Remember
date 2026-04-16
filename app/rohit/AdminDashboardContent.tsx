@@ -4,19 +4,45 @@ import { useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Download, Trash2, RefreshCw, Layers } from "lucide-react";
 
+interface Enquiry {
+  id: string;
+  created_at: string;
+  name: string;
+  email: string;
+  phone: string;
+  shoot_type: string;
+  shoot_length: string;
+  message: string;
+}
+
+function isDeclaration(data: unknown): data is Declaration {
+  return typeof data === 'object' && data !== null && ('pdf_base64' in data || 'time' in data);
+}
+
+interface Declaration {
+  id: string;
+  created_at?: string;
+  time?: string;
+  name: string;
+  email: string;
+  message: string;
+  pdf_base64?: string;
+}
+
 interface AdminDashboardContentProps {
-  initialEnquiries: any[];
-  initialDeclarations: any[];
+  initialEnquiries: Enquiry[];
+  initialDeclarations: Declaration[];
 }
 
 export default function AdminDashboardContent({ initialEnquiries, initialDeclarations }: AdminDashboardContentProps) {
   const [activeTab, setActiveTab] = useState<"enquiries" | "declarations">("enquiries");
-  const [enquiries, setEnquiries] = useState(initialEnquiries);
-  const [declarations, setDeclarations] = useState(initialDeclarations);
+  const [enquiries, setEnquiries] = useState<Enquiry[]>(initialEnquiries);
+  const [declarations, setDeclarations] = useState<Declaration[]>(initialDeclarations);
   const [refreshing, setRefreshing] = useState(false);
   const supabase = createClient();
 
   const handleRefresh = async () => {
+    if (!supabase) return;
     setRefreshing(true);
     const { data: enq } = await supabase.from("enquiries").select("*").order("created_at", { ascending: false });
     const { data: decl } = await supabase.from("declarations").select("*").order("created_at", { ascending: false });
@@ -26,7 +52,7 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
   };
 
   const handleDelete = async (table: string, id: string) => {
-    if (!confirm("Are you sure you want to delete this record?")) return;
+    if (!supabase || !confirm("Are you sure you want to delete this record?")) return;
     
     const { error } = await supabase.from(table).delete().eq("id", id);
     if (error) {
@@ -36,12 +62,12 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
     }
   };
 
-  const printRecord = (data: any, type: string) => {
+  const printRecord = (data: Enquiry | Declaration, type: string) => {
     const printWindow = window.open('', '_blank');
     if (!printWindow) return;
 
-    const dateStr = new Date(data.created_at || data.time).toLocaleString();
-    const content = type === 'declaration' 
+    const dateStr = new Date((data.created_at || (isDeclaration(data) ? data.time : '') || new Date().toISOString())).toLocaleString();
+    const content = isDeclaration(data) 
       ? `
         <div class="section">
           <h2>Consents & Preferences</h2>
@@ -181,7 +207,7 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                 declarations.map((d) => (
                   <tr key={d.id} className="hover:bg-pink/5 transition-colors">
                     <td className="px-8 py-6 text-sm text-color-text-muted whitespace-nowrap">
-                      {new Date(d.created_at || d.time).toLocaleDateString()}
+                      {new Date(d.created_at || d.time || new Date().toISOString()).toLocaleDateString()}
                     </td>
                     <td className="px-8 py-6">
                       <div className="font-bold text-lg">{d.name}</div>
@@ -192,6 +218,7 @@ export default function AdminDashboardContent({ initialEnquiries, initialDeclara
                       <div className="text-sm text-color-text-muted mb-2">{d.message}</div>
                       {d.pdf_base64 && (
                         <div className="mt-2 bg-white/20 p-2 rounded-lg inline-block border border-glass-border">
+                          {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img src={d.pdf_base64} alt="Signature" className="h-12 w-auto grayscale contrast-125" />
                         </div>
                       )}

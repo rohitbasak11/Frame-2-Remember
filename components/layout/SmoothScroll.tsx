@@ -5,6 +5,12 @@ import Lenis from "lenis";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 
+declare global {
+  interface Window {
+    lenis: Lenis | null;
+  }
+}
+
 export default function SmoothScroll({ children }: { children: React.ReactNode }) {
   const lenisRef = useRef<Lenis | null>(null);
 
@@ -29,11 +35,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     requestAnimationFrame(raf);
 
     // Make lenis accessible globally for cases like scroll stops
-    (window as any).lenis = lenis;
+    window.lenis = lenis;
 
     return () => {
       lenis.destroy();
-      (window as any).lenis = null;
+      window.lenis = null;
     };
   }, []);
 

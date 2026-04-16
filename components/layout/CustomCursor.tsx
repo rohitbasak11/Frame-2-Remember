@@ -60,11 +60,11 @@ export default function CustomCursor() {
     <>
       <div 
         ref={dotRef}
-        className="fixed top-0 left-0 w-2 h-2 bg-pink rounded-full pointer-events-none z-[9999] -translate-x-1/2 -translate-y-1/2 hidden md:block" 
+        className="fixed top-0 left-0 w-2 h-2 bg-pink rounded-full pointer-events-none z-[11000] -translate-x-1/2 -translate-y-1/2 hidden md:block" 
       />
       <div 
         ref={ringRef}
-        className="fixed top-0 left-0 w-11 h-11 border-2 border-pink/50 rounded-full pointer-events-none z-[9998] -translate-x-1/2 -translate-y-1/2 transition-[border-color,background] duration-300 hidden md:block" 
+        className="fixed top-0 left-0 w-11 h-11 border-2 border-pink/50 rounded-full pointer-events-none z-[11000] -translate-x-1/2 -translate-y-1/2 transition-[border-color,background] duration-300 hidden md:block" 
       />
     </>
   );
