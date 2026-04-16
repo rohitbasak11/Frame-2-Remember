@@ -10,26 +10,18 @@ interface UIContextType {
 
 const UIContext = createContext<UIContextType | undefined>(undefined);
 
-declare global {
-  interface Window {
-    lenis: {
-      stop: () => void;
-      start: () => void;
-    } | null;
-  }
-}
 
 export function UIProvider({ children }: { children: ReactNode }) {
   const [isPortfolioModalOpen, setIsPortfolioModalOpen] = useState(false);
 
   const openPortfolioModal = () => {
     setIsPortfolioModalOpen(true);
-    if (window.lenis) window.lenis.stop();
+    if (window.lenisInstance) window.lenisInstance.stop();
   };
 
   const closePortfolioModal = () => {
     setIsPortfolioModalOpen(false);
-    if (window.lenis) window.lenis.start();
+    if (window.lenisInstance) window.lenisInstance.start();
   };
 
   return (

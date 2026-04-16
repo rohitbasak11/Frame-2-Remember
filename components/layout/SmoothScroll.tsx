@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 declare global {
   interface Window {
-    lenis: Lenis | null;
+    lenisInstance: Lenis | null;
   }
 }
 
@@ -35,11 +35,11 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     requestAnimationFrame(raf);
 
     // Make lenis accessible globally for cases like scroll stops
-    window.lenis = lenis;
+    window.lenisInstance = lenis;
 
     return () => {
       lenis.destroy();
-      window.lenis = null;
+      window.lenisInstance = null;
     };
   }, []);
 
