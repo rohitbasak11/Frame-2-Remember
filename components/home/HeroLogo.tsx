@@ -53,7 +53,7 @@ export default function HeroLogo() {
         alignItems: "center",
         justifyContent: "center",
         zIndex: 2005,
-        touchAction: "none", // Prevent default touch actions like panning/zooming
+        touchAction: "pan-y", // Allow vertical scrolling
       });
 
       // 2. Mesh Animations

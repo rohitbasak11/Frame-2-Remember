@@ -22,13 +22,17 @@ interface Particle {
 
 export default function FloatingHeroImages() {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [particles] = useState<Particle[]>(() => {
+  const [mounted, setMounted] = useState(false);
+  const [particles, setParticles] = useState<Particle[]>([]);
+  
+  useEffect(() => {
+    setMounted(true);
     const pool = [...clientWorkData, ...personalWorkData];
-    return Array.from({ length: 12 }).map((_, i) => ({
+    const initialParticles = Array.from({ length: 12 }).map((_, i) => ({
       id: i,
       img: pool[Math.floor(Math.random() * pool.length)],
-      x: 0, // Will be randomized in useEffect or just here
-      y: 0,
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
       vx: (Math.random() - 0.5) * 1.2,
       vy: (Math.random() - 0.5) * 1.2,
       size: Math.random() * 150 + 150,
@@ -37,9 +41,11 @@ export default function FloatingHeroImages() {
       rotation: Math.random() * 360,
       vr: (Math.random() - 0.5) * 0.2
     }));
-  });
+    setParticles(initialParticles);
+    particlesRef.current = initialParticles;
+  }, []);
   
-  const particlesRef = useRef<Particle[]>(particles);
+  const particlesRef = useRef<Particle[]>([]);
   const imageNodes = useRef<(HTMLDivElement | null)[]>([]);
   const mousePos = useRef({ x: -1000, y: -1000 });
   
