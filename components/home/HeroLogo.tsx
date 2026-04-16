@@ -134,10 +134,23 @@ export default function HeroLogo() {
 
       // Touch Listeners
       const handleTouchMove = (e: TouchEvent) => {
-        if (e.touches[0]) {
-          // IMPORTANT: preventDefault stops the page from scrolling while interacting
-          if (e.cancelable) e.preventDefault();
-          onMove(e.touches[0].clientX, e.touches[0].clientY);
+        const touch = e.touches[0];
+        if (!touch || !el) return;
+
+        // Only reveal the mesh if the touch is within the container's bounding box.
+        // This allows the page to scroll naturally when the user swipes outside.
+        const rect = el.getBoundingClientRect();
+        const withinBounds =
+          touch.clientX >= rect.left &&
+          touch.clientX <= rect.right &&
+          touch.clientY >= rect.top &&
+          touch.clientY <= rect.bottom;
+
+        if (withinBounds) {
+          onMove(touch.clientX, touch.clientY);
+        } else {
+          // Outside bounds – snap back the mask so it doesn't linger
+          onLeave();
         }
       };
       
@@ -158,9 +171,9 @@ export default function HeroLogo() {
         el.addEventListener("mouseenter", handleMouseEnter);
         el.addEventListener("mouseleave", handleMouseLeave);
         
-        // Use non-passive for touchmove to allow preventDefault
+        // Passive touch listeners – lets the browser handle vertical scrolling naturally
         el.addEventListener("touchstart", handleTouchStart, { passive: true });
-        el.addEventListener("touchmove", handleTouchMove, { passive: false });
+        el.addEventListener("touchmove", handleTouchMove, { passive: true });
         el.addEventListener("touchend", handleTouchEnd, { passive: true });
         el.addEventListener("touchcancel", handleTouchEnd, { passive: true });
       }
@@ -183,9 +196,10 @@ export default function HeroLogo() {
   }, []);
 
   return (
-    <div 
-        ref={containerRef} 
+    <div
+        ref={containerRef}
         className="hero-logo-container select-none group pointer-events-auto"
+        style={{ touchAction: 'pan-y' }}
     >
       {/* Base Layer: Solid Logo */}
       <div ref={solidLayerRef} className="absolute inset-0 flex flex-col items-center justify-center opacity-100 px-4">
