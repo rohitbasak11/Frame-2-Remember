@@ -33,6 +33,13 @@ VISION: ${formData.get("comments") || 'N/A'}
       `.trim()
     };
 
+    const supabase = createClient();
+    if (!supabase) {
+      setError("Supabase configuration is missing. Please check your environment variables.");
+      setLoading(false);
+      return;
+    }
+
     const { error } = await supabase.from("enquiries").insert([data]);
 
     if (error) {

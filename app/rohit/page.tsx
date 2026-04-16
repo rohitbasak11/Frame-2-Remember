@@ -16,6 +16,14 @@ export default async function AdminPage() {
 
   const supabase = await createClient();
 
+  if (!supabase) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <p className="text-salmon italic">Database configuration error. Please contact the administrator.</p>
+      </div>
+    );
+  }
+
   // Fetch initial data
   const { data: enquiries } = await supabase
     .from("enquiries")
