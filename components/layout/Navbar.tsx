@@ -79,7 +79,7 @@ export default function Navbar() {
     <>
       <nav
         ref={navbarRef}
-        className={`fixed left-1/2 -translate-x-1/2 z-[2000] px-8 transition-all duration-500 ease-out overflow-hidden hidden md:flex ${navVisibility} ${
+        className={`fixed left-1/2 -translate-x-1/2 z-[2000] px-8 transition-all duration-500 ease-out overflow-visible hidden md:flex ${navVisibility} ${
           isScrolled || !isHomePage
             ? "top-4 w-[95%] max-w-[1400px] py-4 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150" 
             : "top-0 w-full max-w-[1400px] py-6 bg-transparent"
@@ -115,7 +115,7 @@ export default function Navbar() {
                   >
                     Connect <ChevronDown size={16} />
                   </SmoothLink>
-                  <ul className="absolute right-0 top-full mt-2 w-48 py-2 glass rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300">
+                  <ul className="absolute right-0 top-full mt-2 w-48 py-2 glass rounded-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 z-50">
                     <li><Link href="/enquire" className="block px-4 py-2 hover:bg-pink/10 transition-colors">Enquiry</Link></li>
                     <li><Link href="/declaration" className="block px-4 py-2 hover:bg-pink/10 transition-colors">Declaration</Link></li>
                     <li><a href="https://wa.me/message/EVETACBTZR3QF1" target="_blank" className="block px-4 py-2 hover:bg-pink/10 transition-colors">WhatsApp</a></li>
@@ -128,7 +128,7 @@ export default function Navbar() {
 
       {/* Mobile Navbar */}
       <nav
-        className={`md:hidden fixed left-1/2 -translate-x-1/2 z-[2000] transition-all duration-500 ease-out overflow-hidden top-4 w-[90%] py-3 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150 flex items-center justify-between px-6 ${navVisibility}`}
+        className={`md:hidden fixed left-1/2 -translate-x-1/2 z-[2000] transition-all duration-500 ease-out overflow-visible top-4 w-[90%] py-3 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150 flex items-center justify-between px-6 ${navVisibility}`}
       >
           <button 
                 onClick={toggleTheme}
@@ -151,7 +151,7 @@ export default function Navbar() {
 
       {/* Mobile Menu Dropdown */}
       {isMobileMenuOpen && (
-        <div className="md:hidden fixed inset-0 z-[1999] bg-white/80 dark:bg-[#0d0d10]/90 backdrop-blur-2xl flex flex-col justify-center items-center gap-6">
+        <div className={`md:hidden fixed inset-0 z-[1999] backdrop-blur-2xl flex flex-col justify-center items-center gap-6 ${theme === 'light' ? 'bg-white/80 text-black' : 'bg-[#0d0d10]/90 text-white'}`}>
           <SmoothLink href="/" onClick={() => setIsMobileMenuOpen(false)} className="text-3xl font-heading hover:text-pink transition-colors">Home</SmoothLink>
           <SmoothLink href="/#about" onClick={() => setIsMobileMenuOpen(false)} className="text-3xl font-heading hover:text-pink transition-colors">About</SmoothLink>
           <SmoothLink href="/#portfolio" onClick={() => setIsMobileMenuOpen(false)} className="text-3xl font-heading hover:text-pink transition-colors">Portfolio</SmoothLink>

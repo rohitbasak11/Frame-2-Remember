@@ -133,7 +133,7 @@ export default function NavbarLogo({ isScrolled }: { isScrolled: boolean }) {
     <button
       ref={containerRef}
       onClick={handleClick}
-      className={`relative flex-shrink-0 transition-all duration-600 overflow-hidden flex items-center justify-center group ${
+      className={`relative flex-shrink-0 transition-all duration-600 overflow-visible -my-4 flex items-center justify-center group ${
         isVisible ? "w-[120px] md:w-[160px] opacity-100" : "w-0 opacity-0 pointer-events-none"
       }`}
       style={{ touchAction: 'pan-y' }}
