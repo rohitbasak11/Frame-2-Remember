@@ -69,7 +69,7 @@ export default function HeroLogo() {
         animation: gsap.to(containerRef.current, {
           y: () => -(window.innerHeight * 0.5 - 48),
           scale: 0.15,
-          autoAlpha: 1,
+          autoAlpha: 0,
           ease: "power2.inOut",
         }),
       });
