@@ -26,7 +26,7 @@ export default function NavbarLogo({ isScrolled }: { isScrolled: boolean }) {
   const LogoSVG = useCallback(() => (
     <svg
       viewBox="0 0 400 300"
-      className="w-[120px] h-[90px] md:w-[160px] md:h-[120px] pointer-events-none"
+      className="w-full h-auto pointer-events-none"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -133,22 +133,20 @@ export default function NavbarLogo({ isScrolled }: { isScrolled: boolean }) {
     <button
       ref={containerRef}
       onClick={handleClick}
-      className={`relative h-16 flex-shrink-0 transition-all duration-600 overflow-hidden flex items-center justify-center group ${
-        isVisible ? "w-[140px] md:w-[180px] opacity-100" : "w-0 opacity-0 pointer-events-none"
+      className={`relative flex-shrink-0 transition-all duration-600 overflow-hidden flex items-center justify-center group ${
+        isVisible ? "w-[120px] md:w-[160px] opacity-100" : "w-0 opacity-0 pointer-events-none"
       }`}
       style={{ touchAction: 'pan-y' }}
       aria-label="Home"
     >
       {/* Solid Image */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div className="relative w-[120px] h-[120px] md:w-[160px] md:h-[160px]">
-          <Image 
+      <div className="relative w-full aspect-[4/3]">
+        <Image 
             src="/Logo-1.png"
             alt="Frame 2 Remember"
             fill
             className="object-contain"
           />
-        </div>
       </div>
 
       {/* Mesh Layer */}

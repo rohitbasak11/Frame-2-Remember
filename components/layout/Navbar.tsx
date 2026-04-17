@@ -41,6 +41,10 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [theme, setTheme] = useState<"light" | "dark">("light");
   const navbarRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+  const isHomePage = pathname === "/";
+  // On home page at the top, the navbar is invisible and pushed up slightly.
+  const navVisibility = (isHomePage && !isScrolled) ? "opacity-0 pointer-events-none -translate-y-4" : "opacity-100 translate-y-0";
 
   useEffect(() => {
     // Initial Theme Sync - only runs on mount
@@ -75,10 +79,10 @@ export default function Navbar() {
     <>
       <nav
         ref={navbarRef}
-        className={`fixed left-1/2 -translate-x-1/2 z-[2000] px-[2vw] transition-all duration-500 ease-out overflow-hidden hidden md:flex ${
-          isScrolled 
-            ? "top-4 w-[95%] max-w-[1400px] h-20 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150" 
-            : "top-0 w-full max-w-[1400px] h-24 bg-transparent"
+        className={`fixed left-1/2 -translate-x-1/2 z-[2000] px-8 transition-all duration-500 ease-out overflow-hidden hidden md:flex ${navVisibility} ${
+          isScrolled || !isHomePage
+            ? "top-4 w-[95%] max-w-[1400px] py-4 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150" 
+            : "top-0 w-full max-w-[1400px] py-6 bg-transparent"
         }`}
       >
         <div className="w-full h-full flex items-center justify-between">
@@ -124,7 +128,7 @@ export default function Navbar() {
 
       {/* Mobile Navbar */}
       <nav
-        className={`md:hidden fixed left-1/2 -translate-x-1/2 z-[2000] transition-all duration-500 ease-out overflow-hidden top-4 w-[90%] h-16 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150 flex items-center justify-between px-6`}
+        className={`md:hidden fixed left-1/2 -translate-x-1/2 z-[2000] transition-all duration-500 ease-out overflow-hidden top-4 w-[90%] py-3 glass border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.1)] rounded-full backdrop-blur-xl saturate-150 flex items-center justify-between px-6 ${navVisibility}`}
       >
           <button 
                 onClick={toggleTheme}
